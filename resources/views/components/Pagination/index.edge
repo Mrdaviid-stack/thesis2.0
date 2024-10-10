@@ -1,0 +1,30 @@
+@let(rangeMin = paginator.currentPage - 3)
+@let(rangeMax = paginator.currentPage + 3)
+@let(pagination = paginator.getUrlsForRange(1, paginator.lastPage).filter((item) => {
+  return item.page >= rangeMin && item.page <= rangeMax
+}))
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        @if (paginator.hasPages)
+            <li class="page-item"><a class="page-link" href="{{ paginator.getUrl(paginator.firstPage)  }}"><i class="fa-solid fa-angles-left"></i></a></li>
+        @endif
+
+        @if (paginator.currentPage > paginator.firstPage)
+            <li class="page-item"><a class="page-link" href="{{ paginator.getPreviousPageUrl()  }}"><i class="fa-solid fa-angle-left"></i></a></li>
+        @endif
+
+        @each(item in pagination)
+            <li class="page-item {{ item.isActive }}"><a class="page-link" href={{ item.url }}>{{ item.page }}</a></li>
+        @endeach
+
+        @if (paginator.currentPage < paginator.lastPage)
+        <li class="page-item"><a class="page-link" href="{{ paginator.getNextPageUrl()  }}"><i class="fa-solid fa-angle-right"></i></a></li>
+        @endif
+
+        @if (paginator.hasPages)
+        <li class="page-item"><a class="page-link" href="{{ paginator.getUrl(paginator.lastPage)  }}"><i class="fa-solid fa-angles-right"></i></a></li>
+        @endif
+ 
+    </ul>
+</nav>

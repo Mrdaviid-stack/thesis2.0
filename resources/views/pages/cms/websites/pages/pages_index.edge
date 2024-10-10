@@ -1,0 +1,13 @@
+@layout.cms.app({ title: "Pages" })
+
+    @!datatable({
+        records: records.data,
+        paginations: paginations,
+        path: '/websites/pages/add/',
+        isModal: false,
+        canAdd: 'websites-pages-add',
+		canEdit: 'websites-pages-edit',
+		canDelete: 'websites-pages-delete',
+    })
+
+@end

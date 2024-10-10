@@ -1,0 +1,30 @@
+@layout.app({ title: "Welcome page titlesss" })
+
+<div x-data="{}"> 
+
+    <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+
+            <form id="form" action="/action" method="POST" @submit.prevent="$store.global.useForm()">
+                {{csrfField()}}
+    
+                @!forms.inputField({
+                    name: "name",
+                    label: "Sample Text",
+                    placeholder: "Input Name"
+                })
+
+                @!forms.richTextField({
+                    name: "editor"
+                })
+                @!buttons.button({ label: "Submit"})
+            </form>
+
+      </div>
+
+</div>
+
+@end

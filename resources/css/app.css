@@ -1,0 +1,35 @@
+@import '../../node_modules/@fortawesome/fontawesome-free/css/all.css';
+@import '../css/theme/nucleo-icons.css';
+@import '../css/theme/nucleo-svg.css';
+@import '../css/theme/soft-ui-dashboard.css';
+@import '../../node_modules/alertifyjs/build/css/alertify.css';
+@import '../../node_modules/bootswatch/dist/flatly/bootstrap.min.css';
+@import '../../node_modules/dropzone/dist/dropzone.css';
+
+html, body {
+    background-color: rgb(238, 245, 243);
+}
+
+.btn {
+    text-transform: none;
+}
+
+.breadcrumb {
+    border: none;
+    box-shadow: none;
+}
+
+.row-main {
+    padding-top: 3.4333%;
+    padding-left: 10%;
+    padding-right: 10%;
+}
+
+.nav-link.active .icon {
+    background-image: none!important;
+    background: #95A5A6!important;
+}
+
+/* .custom-table > .custom-table-wrapper >  .custom-table-checkbox  {
+    border: 1px solid black!important;
+} */

@@ -1,0 +1,56 @@
+@layout.cms.app({ title: "Users" })
+
+<div x-data="useForm">
+    <div class="modal-body">
+        <form id="form" action="/admin/groups/add" method="POST" @submit.prevent="submitForm">
+            {{csrfField()}}
+            <input type="hidden" id="name" name="id" value="{{ (record && record.id) ? record.id : '' }}"  />
+
+                <div class="card card-body">
+                    @!forms.inputField({
+                        name: "firstname",
+                        label: "First Name",
+                        placeholder: "First Name",
+                        value: (record && record.firstname) ? record.firstname : ''
+                    })
+                    @!forms.inputField({
+                        name: "lastname",
+                        label: "Last Name",
+                        placeholder: "Last Name",
+                        value: (record && record.lastname) ? record.lastname : ''
+                    })
+                    @!forms.inputField({
+                        name: "email",
+                        label: "Email",
+                        placeholder: "Email",
+                        value: (record && record.email) ? record.email : ''
+                    })
+                    @!forms.inputField({
+                        name: "password",
+                        label: "Password",
+                        placeholder: "Password",
+                        value: (record && record.password) ? record.password : ''
+                    })
+                    @!forms.textField({
+                        name: "address",
+                        label: "Address",
+                        placeholder: "Address",
+                        value: (record && record.address) ? record.address : '',
+                        cols: 5,
+                        rows: 6
+                    })
+                </div>
+      
+
+
+            {{-- <div class="float-end mt-5">
+                @!buttons.button({ 
+                    label: "Submit",
+                    variant: "secondary"
+                })
+            </div> --}}
+        </form>
+    </div>
+</div>
+ 
+@end

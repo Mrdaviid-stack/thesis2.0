@@ -1,0 +1,5 @@
+<div class="mb-3">
+    <label for="{{name}}">{{ label }}</label>
+    <textarea name="{{ name || 'content' }}" id="editor">{{ value }}</textarea>
+    <div class="text-danger" x-text="errors.{{name}}"></div>
+</div>

@@ -1,0 +1,50 @@
+
+@layout.cms.bare({ title: "Update" })
+
+<div x-data="useForm({})">
+    <div class="modal-header">
+        <h5 class="modal-title">Permissions</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+        <form id="form" action="/admin/permissions/add/{{groupId}}" method="POST" @submit.prevent="submitForm">
+            {{csrfField()}}
+            @each((permission, index) in permissions)
+                <div class="accordion accordion-flush" id="accordionExample">
+                    <div class="accordion-item">
+                        <h6 class="accordion-header">
+                            <button class="accordion-button collapsed border-bottom" type="button" data-bs-toggle="collapse" data-bs-target="#{{index}}collapse" aria-expanded="false" aria-controls="{{index}}collapse">
+                                {{index}}
+                              </button>                        
+                        </h6>
+                        <div id="{{index}}collapse" class="accordion-collapse collapse px-3" data-bs-parent="#{{index}}collapse">
+                            @each(perm in permission)
+                                <div class="form-check">
+                                    <input 
+                                        name="permissions" 
+                                        type="checkbox" 
+                                        value="{{ perm.id }}" 
+                                        class="form-check-input" 
+                                        {{ perm.isChecked }}>
+                                    <label class="form-check-label">
+                                        {{ perm.description }}
+                                    </label>
+                                </div>
+                            @end
+                        </div>
+                    </div>
+                </div>
+            @end
+            <div class="float-end mt-5">
+                @!buttons.button({
+                    label: "Update permissions",
+                    variant: "secondary",
+                })
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@end

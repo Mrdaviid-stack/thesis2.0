@@ -1,0 +1,14 @@
+@layout.cms.app({ title: "Users" })
+
+	@!datatable({
+		records: records.data,
+		paginations: paginations,
+		path: '/admin/users/add/',
+		isModal: false,
+		canAdd: 'admin-users-add',
+		canEdit: 'admin-users-edit',
+		canDelete: 'admin-users-delete',
+	})
+
+ 
+@end

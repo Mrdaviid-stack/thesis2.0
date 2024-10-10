@@ -1,0 +1,13 @@
+
+<div class="mb-3">
+    <label for="{{ name }}" class="form-label">{{ label || '' }}</label>
+    <input
+        id="{{ name }}"
+        name="{{ name }}" 
+        type="{{ type || 'text' }}" 
+        value="{{value || ''}}"
+        class="form-control {{ size || '' }} shadow-none"
+        placeholder="{{ placeholder || '' }}"
+    >
+    <div class="text-danger" x-text="errors.{{name}}"></div>
+</div>

@@ -1,0 +1,14 @@
+<div class="mb-3">
+    <label for="{{ name }}" class="form-label">{{ label }}</label>
+    <textarea
+        id="{{ name}}"
+        name="{{ name }}"
+        class="form-control"
+        rows="{{ rows || 3}}"
+        cols="{{ cols || 3}}"
+        placeholder="{{ placeholder || ''}}"
+    >
+    {{ value }}
+    </textarea>
+    <div class="text-danger" x-text="errors.{{name}}"></div>
+</div>

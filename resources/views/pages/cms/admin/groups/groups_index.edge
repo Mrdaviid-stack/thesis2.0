@@ -1,0 +1,18 @@
+@layout.cms.app({ title: "Groups" })
+	@slot('meta')
+		<meta name="description" content="A welcome page made with EdgeJS">
+	@endslot
+
+	@!datatable({
+		records: records.data,
+		paginations: paginations,
+		path: '/admin/groups/add/',
+		isModal: true,
+		canAdd: 'admin-groups-add',
+		canEdit: 'admin-groups-edit',
+		canDelete: 'admin-groups-delete',
+		canEditPermission: 'admin-permissions-edit'
+	})
+
+ 
+@end

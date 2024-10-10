@@ -1,0 +1,61 @@
+@layout.cms.app({ title: "Page Form" })
+
+<div x-data="useForm({ redirect: '/websites/pages', images: '{{ (record && record.files) ? JSON.stringify(record.files) : '' }}' })">
+    <div class="modal-body">
+        <a href="/websites/pages" class="nav-link mb-2 text-lg"><i class="fa-solid fa-arrow-left-long"></i> back</a>
+        <form id="form" action="/websites/pages/add" method="POST" @submit.prevent="submitForm">
+            {{csrfField()}}
+            <input type="hidden" id="id" name="id" value="{{ (record && record.id) ? record.id : '' }}"  />
+            <div class="row">
+                <div class="col-7">
+                    <div class="card card-body mb-3">
+                        @!forms.inputField({
+                            id: "name",
+                            name: "name",
+                            label: "Page Name",
+                            placeholder: "Page Name",
+                            value: (record && record.name) ? record.name : ''
+                        })
+                        
+                        @!forms.richTextField({
+                            id: "content",
+                            name: "content",
+                            label: "Content",
+                            value: (record && record.content) ? record.content : ''
+                        })
+
+                    </div>
+
+                </div>
+                <div class="col-5">
+                    <div class="card card-body">
+                        @!forms.selectField({
+                            id: "status",
+                            name: "status",
+                            label: "Status",
+                            value: (record && record.status) ? record.status : '',
+                            menus: [
+                                {value: 'draft', label: 'Draft'},
+                                {value: 'publish', label: 'Publish'},
+                            ]
+                        })
+                    </div>
+
+                    <div class="card card-body">
+                        {{-- @!forms.dropzone() --}}
+                        <div id="dropzone"  class="dropzone _dropzone"></div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="d-flex justify-content-center mt-5">
+                @!buttons.button({ 
+                    label: "Submit",
+                    variant: "secondary",
+                })
+            </div>
+        </form>
+    </div>
+</div>
+ 
+@end

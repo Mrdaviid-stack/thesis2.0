@@ -1,0 +1,110 @@
+@let(segment = request.url().split('/')[1])
+@let(sub_segment = request.url().split('/')[2])
+@let(menus = [
+    {
+        permission: 'dashboard-dashboard-view',
+        route: '/',
+        label: 'Dashboard',
+        icon: 'fa-house',
+        active: !segment && 'active'
+    },
+    {
+        permission: 'websites-websites-view',
+        route: 'websites',
+        label: 'Websites',
+        icon: 'fa-table-columns',
+        active: segment == 'websites' && 'active',
+        sub_menu: [
+            {
+                permission: 'websites-pages-view',
+                route: '/websites/pages',
+                label: 'Pages',
+                icon: 'fa-house',
+                active: sub_segment == 'pages' && 'text-decoration-underline'
+            },
+        ]
+    },
+    {
+        permission: 'admin-admin-view',
+        route: 'admin',
+        label: 'Admin',
+        icon: 'fa-user-tie',
+        active: segment == 'admin' && 'active',
+        sub_menu: [
+            {
+                permission: 'admin-groups-view',
+                route: '/admin/groups',
+                label: 'Groups',
+                icon: 'fa-house',
+                active: sub_segment == 'groups' && 'text-decoration-underline'
+            },
+            {
+                permission: 'admin-users-view',
+                route: '/admin/users',
+                label: 'Users',
+                icon: 'fa-house',
+                active: sub_segment == 'users' && 'text-decoration-underline'
+            },
+        ]
+    },
+])
+
+
+
+<aside class="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3 bg-white" id="sidenav-main">
+    <div class="sidenav-header">
+        <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
+        <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/soft-ui-dashboard/pages/dashboard.html " target="_blank">
+            <span class="ms-1 font-weight-bold">Soft UI Dashboard</span>
+        </a>
+    </div>
+    <hr class="horizontal dark mt-0"/>
+    <div class="collapse navbar-collapse w-auto" id="sidenav-collapse-main" style="overflow-x: hidden;">
+        <ul class="navbar-nav">
+            @each(menu in menus)
+                @if (menu.sub_menu)
+                    @can('hasAccess', menu.permission)
+                        <li class="nav-item" >
+                            <a class="nav-link {{ menu.active }}" data-bs-toggle="collapse" href="#{{ menu.route }}" role="button" aria-expanded="false" aria-controls="{{ menu.route }}">
+                                <div class="icon icon-shape icon-sm shadow-md border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="fa-solid {{ menu.icon }} {{ menu.active ? 'text-white' : 'text-dark' }} fa-lg"></i>
+                                </div>
+                                <span class="nav-link-text ms-1">{{ menu.label }}</span>
+                            </a>
+                            <div class="collapse {{ !menu.active ? '' : 'show' }}" id="{{ menu.route }}">
+                                <ul class="navbar-nav" style="padding-left: 18%;">
+                                    @each(sub_menu in menu.sub_menu)
+                                        @can('hasAccess', sub_menu.permission)
+                                            <li class="nav-item align-self-center">
+                                                <a class="nav-link {{ sub_menu.active }}" href="{{ sub_menu.route }}">{{ sub_menu.label }}</a>
+                                            </li>
+                                        @end
+                                    @end
+                                </ul>
+                            </div>
+                        </li>
+                    @end
+                @else
+                    @can('hasAccess', menu.permission)
+                        <li class="nav-item" >
+                            <a class="nav-link {{ menu.active }}" href="/">
+                                <div class="icon icon-shape icon-sm shadow-md border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
+                                    <i class="fa-solid {{ menu.icon }} {{ menu.active ? 'text-white' : 'text-dark' }} fa-lg"></i>
+                                </div>
+                                <span class="nav-link-text ms-1">Dashboard</span>
+                            </a>
+                        </li>
+                    @end
+                @end
+
+            @end
+        </ul>
+
+    </div>
+    <div class="sidenav-footer mx-3 ">
+        <form action="/auth/sign-out" method="post">
+            {{csrfField()}}
+            <button type="submit" class="btn btn-secondary border shadow-md mt-5 w-100" >Signout</button>
+        </form>
+    </div>
+</aside>

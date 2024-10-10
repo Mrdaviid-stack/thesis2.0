@@ -1,0 +1,10 @@
+@let(options = menus)
+<div class="mb-3">
+    <label>{{ label }}</label>
+    <select name="{{name}}" class="form-select" aria-label="Default select example">
+        @each(option in options)
+            <option value="{{option.value}}" {{ option.value === value ? 'selected' : '' }}>{{ option.label }}</option>
+        @end
+    </select>
+    <div class="text-danger" x-text="errors.{{name}}"></div>
+</div>
