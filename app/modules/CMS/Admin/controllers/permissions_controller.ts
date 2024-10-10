@@ -18,7 +18,7 @@ export default class PermissionsController {
         }))
 
         return view.render('pages/cms/admin/permissions/permissions_form', {
-            permissions: _.groupBy(sync_permissions, item => item.name.split('-')[1]),
+            permissions: _.groupBy(sync_permissions, item => item.name.split('-')[0]),
             groupId:group.id
         })
     }
