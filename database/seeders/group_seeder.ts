@@ -14,28 +14,41 @@ export default class extends BaseSeeder {
 
     await Permission.createMany([
       //
-      { name: 'dashboard-view', description: 'dashboard view'},
-      { name: 'websites-view', description: 'website view'},
-      { name: 'admin-view', description: 'admin view'},
+      { name: 'dashboard-dashboard-view', description: 'dashboard view'},
+      { name: 'websites-websites-view', description: 'website view'},
+      { name: 'admin-admin-view', description: 'admin view'},
       //
-      { name: 'pages-view', description: 'pages view'},
-      { name: 'pages-index', description: 'pages index'},
-      { name: 'pages-add', description: 'pages add'},
-      { name: 'pages-edit', description: 'pages edit'},
-      { name: 'pages-delete', description: 'pages delete'},
+      { name: 'websites-pages-view', description: 'pages view'},
+      { name: 'websites-pages-index', description: 'pages index'},
+      { name: 'websites-pages-add', description: 'pages add'},
+      { name: 'websites-pages-edit', description: 'pages edit'},
+      { name: 'websites-pages-delete', description: 'pages delete'},
       //
-      { name: 'groups-view', description: 'groups view'},
-      { name: 'groups-index', description: 'groups index'},
-      { name: 'groups-add', description: 'groups add'},
-      { name: 'groups-edit', description: 'groups edit'},
-      { name: 'groups-delete', description: 'groups delete'},
+      { name: 'admin-groups-view', description: 'groups view'},
+      { name: 'admin-groups-index', description: 'groups index'},
+      { name: 'admin-groups-add', description: 'groups add'},
+      { name: 'admin-groups-edit', description: 'groups edit'},
+      { name: 'admin-groups-delete', description: 'groups delete'},
       //
-      { name: 'users-view', description: 'users view'},
-      { name: 'users-index', description: 'users index'},
-      { name: 'users-add', description: 'users add'},
-      { name: 'users-edit', description: 'users edit'},
-      { name: 'users-delete', description: 'users delete'},
-      { name: 'permissions-edit', description: 'permission edit'},
+      { name: 'admin-users-view', description: 'users view'},
+      { name: 'admin-users-index', description: 'users index'},
+      { name: 'admin-users-add', description: 'users add'},
+      { name: 'admin-users-edit', description: 'users edit'},
+      { name: 'admin-users-delete', description: 'users delete'},
+      { name: 'admin-permissions-edit', description: 'permission edit'},
+      //
+      { name: 'websites-categories-view', description: 'categories view'},
+      { name: 'websites-categories-index', description: 'categories index'},
+      { name: 'websites-categories-add', description: 'categories add'},
+      { name: 'websites-categories-edit', description: 'categories edit'},
+      { name: 'websites-categories-delete', description: 'categories delete'},
+      //
+      { name: 'websites-subcategories-view', description: 'subcategories view'},
+      { name: 'websites-subcategories-index', description: 'subcategories index'},
+      { name: 'websites-subcategories-add', description: 'subcategories add'},
+      { name: 'websites-subcategories-edit', description: 'subcategories edit'},
+      { name: 'websites-subcategories-delete', description: 'subcategories delete'},
+      //
     ])
 
     await User.create({
