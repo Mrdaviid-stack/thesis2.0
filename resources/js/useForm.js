@@ -3,16 +3,25 @@ import axios from "axios";
 import * as alertify from "alertifyjs";
 import Dropzone from "dropzone";
 
+Dropzone.autoDiscover = false
+
 document.addEventListener('alpine:init', () => {
     Alpine.data('useForm', (props) => ({
         errors: {},
+        form: props.form,
         redirect: props.redirect,
         dropzone: null,
-        files: props.images,
         csrf: document.querySelector('input[name="_csrf"]').value,
 
         init() {
-            this.dropzone = new Dropzone("._dropzone", {
+
+            const dropzoneElement = document.querySelector("._dropzone");
+            if (!dropzoneElement) {
+                console.error("Dropzone element not found");
+                return;
+            }
+
+            this.dropzone = new Dropzone(dropzoneElement, {
                 url: "/files/tinymce/uploads",
                 headers: {
                     'X-CSRF-TOKEN': document.querySelector('input[name="_csrf"]').value
@@ -23,16 +32,16 @@ document.addEventListener('alpine:init', () => {
                 addRemoveLinks: true,
             });
 
-            if (this.files !== '') {
+            if (this.form && this.form.files !== '') {
 
                 if (Array.isArray(this.images)) {
                     let mockFile = { name: "Filename 2", size: 12345 };
-                    this.files.map(image =>{
+                    this.form.files.map(image =>{
                         this.dropzone.displayExistingFile(mockFile, `http://cms-alpine.localhost:3333/${image.replace(/"/g, '')}`);
                     })
                 } else {
                     let mockFile = { name: "Filename 2", size: 12345 };
-                    this.dropzone.displayExistingFile(mockFile, `http://cms-alpine.localhost:3333/${this.files.replace(/"/g, '')}`);
+                    this.dropzone.displayExistingFile(mockFile, `http://cms-alpine.localhost:3333/${this.form.files.replace(/"/g, '')}`);
                 }
             }
 
@@ -49,6 +58,8 @@ document.addEventListener('alpine:init', () => {
                 })
             }
 
+            console.log(this.form)
+
             try {
                 const response = await axios.post(form.action, formData)
                 alertify.success(response.data.message)
@@ -63,6 +74,7 @@ document.addEventListener('alpine:init', () => {
                     console.log(response)
                 }
                 if (status === 422) {
+                    console.log(response.data)
                     for (const error of response.data) {
                         this.errors[error.field] = error.message;
                     }

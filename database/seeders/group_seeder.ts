@@ -60,7 +60,7 @@ export default class extends BaseSeeder {
     })
 
     const group = await Group.findBy('name','Superadmin')
-    await group?.related('permissions').sync(Array.from({ length: 19}, (_, index) => index + 1))
+    await group?.related('permissions').sync(Array.from({ length: 29}, (_, index) => index + 1))
     await group?.related('users').sync([1])
   }
 }

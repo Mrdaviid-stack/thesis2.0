@@ -1,5 +1,13 @@
 @layout.cms.app({ title: "Categories" })
 
-    <h1>Categories</h1>
+    @!datatable({
+        records: records.data,
+        paginations: paginations,
+        path: '/websites/categories/add/',
+        isModal: true,
+        canAdd: 'websites-categories-add',
+        canEdit: 'websites-categories-edit',
+        canDelete: 'websites-categories-delete',
+    })
 
 @end

@@ -15,7 +15,7 @@ export default class Category extends BaseModel {
   declare slug: string
 
   @column()
-  declare description: string | null
+  declare description: string
 
   @column()
   declare status: 'active' | 'inactive'

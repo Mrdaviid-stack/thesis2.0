@@ -5,9 +5,9 @@
         id="{{ name }}"
         name="{{ name }}" 
         type="{{ type || 'text' }}" 
-        value="{{value || ''}}"
         class="form-control {{ size || '' }} shadow-none"
         placeholder="{{ placeholder || '' }}"
+        x-model="form.{{name}}"
     >
     <div class="text-danger" x-text="errors.{{name}}"></div>
 </div>

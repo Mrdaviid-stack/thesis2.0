@@ -1,11 +1,10 @@
 @let(data = records)
 @let(pagination = paginations)
+@let(column = sortColumn || 'name') 
 {{-- @let(isPermission = !hasPermission ? false : true) --}}
 @let(isStatus = !hasStatus ? false : true)
 
-<p x-text="isModal"></p>
-
-<section x-data="datatable({ records: {{JSON.stringify(data)}} })" class="shadow-md">
+<section x-data="datatable({ records: {{JSON.stringify(data)}}, sortColumn: {{JSON.stringify(column)}} })" class="shadow-md">
     <div class="border bg-light pt-3 pb-2 px-4">
         <div class="d-flex justify-content-start align-items-center gap-1 mb-1">
             <input type="text" class="form-control form-control-sm flex-grow-1" placeholder="Search" x-model="searchQuery" />
@@ -67,8 +66,15 @@
                     <input type="checkbox" class="form-check-input" :value="record.id" x-model="selectedItems" />
                 </div>
                 <div class="lh-sm">
-                    <h6 class="card-title" x-text="record.name"></h6> 
-                    <small class="text-muted"><span x-text="record.description"></span> | <span x-text="record.status"></span> |
+                    @if (module == "users")
+                        <h6 class="card-title"><span x-text="record.firstname"> </span> <span x-text="record.lastname"> </span></h6> 
+                        <small class="text-muted"><span x-text="record.email"></span> | <span x-text="record.status"></span> |
+                    @else
+                        <h6 class="card-title" x-text="record.name"></h6> 
+                        <small class="text-muted"><span x-text="record.description"></span> | <span x-text="record.status"></span> |
+                    @end
+
+
                         @can('hasAccess', canEdit)
                             @if(isModal)
                                 <a data-bs-toggle="modal" data-bs-target="#modal" :href="'{{path}}' + record.id" accesskey="n" style="color: #495057BF;">Edit <i class="fa-solid fa-pen-to-square"></i></a> |

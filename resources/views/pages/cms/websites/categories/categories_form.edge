@@ -1,5 +1,61 @@
-@layout.cms.app({ title: "Categories Form" })
+@layout.cms.bare({ title: "Categories Form" })
 
-    <h1>Categories Form</h1>
+    <div x-data="useForm({ 
+        form: {
+            name: '{{(record && record.name) ? record.name : ''}}',
+            description: '{{(record && record.description) ? record.description : ''}}',
+            status: '{{(record && record.status) ? record.status : 'inactive'}}',
+        } 
+    })">
+        <div class="modal-header">
+            <h5 class="modal-title">Category</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form id="form" action="/websites/categories/add" method="POST" @submit.prevent="submitForm">
+                {{csrfField()}}
+                <input type="hidden" id="id" name="id" value="{{ (record && record.id) ? record.id : '' }}"  />
+                <div class="row">
+
+                    @!forms.inputField({
+                        id: "name",
+                        name: "name",
+                        label: "Category Name:",
+                        placeholder: "Category Name",
+                    })
+
+                    @!forms.textField({
+                        name: "description",
+                        label: "Category Description:",
+                        placeholder: "Category  Description",
+                        cols: 10,
+                        rows: 6
+                    })
+
+
+                    <div class="pl-2">
+                        @!forms.radioField({
+                            name: "status",
+                            label: "Active",
+                            value: "active",
+                        })
+                        @!forms.radioField({
+                            name: "status",
+                            label: "Inactive",
+                            value: "inactive",
+                        })
+                    </div>
+
+            
+                    @!buttons.button({ 
+                        label: "Submit",
+                        variant: "secondary",
+                    })
+            
+
+                </div>
+            </form>
+        </div>
+    </div>
 
 @end

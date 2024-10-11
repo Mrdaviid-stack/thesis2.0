@@ -1,0 +1,13 @@
+@layout.cms.app({ title: "Sub Categories" })
+
+    @!datatable({
+        records: records.data,
+        paginations: paginations,
+        path: '/websites/subcategories/add/',
+        isModal: true,
+        canAdd: 'websites-subcategories-add',
+        canEdit: 'websites-subcategories-edit',
+        canDelete: 'websites-subcategories-delete',
+    })
+
+@end

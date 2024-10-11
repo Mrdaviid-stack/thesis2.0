@@ -7,8 +7,8 @@
         rows="{{ rows || 3}}"
         cols="{{ cols || 3}}"
         placeholder="{{ placeholder || ''}}"
+        x-model="form.{{name}}"
     >
-    {{ value }}
     </textarea>
     <div class="text-danger" x-text="errors.{{name}}"></div>
 </div>
