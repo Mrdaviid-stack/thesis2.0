@@ -1,6 +1,7 @@
 @layout.cms.app({ title: "Categories" })
 
     @!datatable({
+        module: "categories",
         records: records.data,
         paginations: paginations,
         path: '/websites/categories/add/',
@@ -8,6 +9,7 @@
         canAdd: 'websites-categories-add',
         canEdit: 'websites-categories-edit',
         canDelete: 'websites-categories-delete',
+        canView: 'websites-subcategories-view'
     })
 
 @end

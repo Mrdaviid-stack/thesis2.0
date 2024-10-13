@@ -3,6 +3,7 @@ import { BaseModel, beforeSave, belongsTo, column } from '@adonisjs/lucid/orm'
 import string from '@adonisjs/core/helpers/string'
 import Category from './category.js'
 import type { BelongsTo } from '@adonisjs/lucid/types/relations'
+import Product from './product.js'
 
 export default class Subcategory extends BaseModel {
   @column({ isPrimary: true })
@@ -31,6 +32,9 @@ export default class Subcategory extends BaseModel {
 
   @belongsTo(() => Category)
   declare category: BelongsTo<typeof Category>
+
+  @belongsTo(() => Product)
+  declare product: BelongsTo<typeof Product>
 
   @beforeSave()
   static async slugifyName(subcategory: Subcategory) {

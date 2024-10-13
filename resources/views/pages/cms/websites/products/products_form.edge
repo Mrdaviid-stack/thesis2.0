@@ -1,0 +1,186 @@
+@layout.cms.app({ title: "Product Form" })
+
+<div x-data="products({ 
+    redirect: '/websites/products', 
+    form: {
+        id: '{{ (record && record.id) ? record.id : '' }}', 
+        name: '{{ (record && record.name) ? record.name : '' }}',
+        modelNumber: '{{ (record && record.modelNumber) ? record.modelNumber : '' }}',
+        content: '{{ (record && record.content) ? record.content : '' }}',
+        categoryId: '{{ (record && record.categoryId) ? record.categoryId : '1' }}',
+        subcategoryId: '{{ (record && record.subcategoryId) ? record.subcategoryId : '1' }}',
+        files: '{{ (record && record.files) ? record.files : '' }}',
+        status: '{{ (record && record.status) ? record.status : 'draft'}}',
+        variants: {{JSON.stringify(record && record.productVariants ? record.productVariants : []) }}
+    }, 
+})">
+    <div class="modal-body">
+ 
+        <form id="form" action="/websites/products/add" method="POST" enctype="multipart/form-data"  @submit.prevent="submit">
+            <div class="d-flex justify-content-between align-items-center">
+                <a href="/websites/products" class="nav-link mb-2 text-lg"><i class="fa-solid fa-arrow-left-long"></i> <span x-text="form.name"></span></a>
+         
+                    @!buttons.button({ 
+                        label: "save changed",
+                        variant: "secondary",
+                    })
+           
+            </div>
+
+            {{csrfField()}}
+            <input type="hidden" id="id" name="id" value="{{ (record && record.id) ? record.id : '' }}"  />
+            <div class="row">
+                <div class="col-9">
+                    <div class="card card-body mb-3">
+                        @!forms.inputField({
+                            name: "name",
+                            label: "Name",
+                            placeholder: "Product Name",
+                        })
+
+                        @!forms.inputField({
+                            name: "modelNumber",
+                            label: "Product Model Number",
+                            placeholder: "Model Number",
+                        })
+
+                        @!forms.richTextField({
+                            name: "content",
+                            label: "Description",
+                            placeholder: "Description",
+                        })
+
+                    </div>
+
+                    <div>
+
+                        <div class="card card-body mb-3">
+                            <button type="button" @click="addVariant" class="btn btn-secondary btn-sm mb-0 w-25 align-self-end"><i class="fa-solid fa-circle-plus"></i> add variant</button>
+                        </div>
+
+                        <template x-for="(variant, index) in form.variants" :key="index">
+                            <div class="card card-body mb-3">
+                                <div class="row mb-2">
+                                    <div class="col">
+                                        <div>
+                                            <label>SKU</label>
+                                            <input type="text" x-model="variant.sku" placeholder="SKU" class="form-control form-control-sm" />
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div>
+                                            <label>Storage</label>
+                                            <input x-model="variant.storage" placeholder="Storage" class="form-control form-control-sm" />
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div>
+                                            <label>Price</label>
+                                            <input x-model="variant.price" placeholder="Price" class="form-control form-control-sm" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-2">
+                                    <div class="col">
+                                        <div>
+                                            <label>Color</label>
+                                            <input type="text" x-model="variant.color" placeholder="Color" class="form-control form-control-sm" />
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div>
+                                            <label>Stock</label>
+                                            <input type="number" x-model="variant.stock" placeholder="Stock" class="form-control form-control-sm" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col mb-2">
+                                    <label>Feature</label>
+                                    <textarea :id="'editor' + index" name="feature" class="tinymce" id="feature" x-model="variant.feature"></textarea>
+                                </div>
+
+                                <div :id="'dropzone_variant'+index"  :class="'dropzone _dropzone_variant'+index"></div>
+                       
+    
+                       
+                                <button type="button" @click="removeVariant(index, variant.id)" class="btn btn-danger mt-2" >
+                                    <i class="fa-solid fa-circle-minus"></i> remove variant
+                                </button>
+                                
+                            </div>
+                
+                        </template>
+                    </div>
+            
+
+                </div>
+                <div class="col-3">
+                    <div class="card card-body mb-3">
+                        <div class="">
+                            <label>Status</label>
+                            @!forms.radioField({
+                                name: "status",
+                                label: "Publish",
+                                value: "publish",
+                            })
+                            @!forms.radioField({
+                                name: "status",
+                                label: "Draft",
+                                value: "draft",
+                            })
+                        </div>
+
+                    </div>
+
+                    <div x-data="{
+                        subcategories: {{JSON.stringify(options.subcategories)}},
+                        filteredSuncategories() {
+                            console.log(form.variants)
+                            return this.subcategories.filter(subcategory => subcategory.parentCategoryId == form.categoryId);
+                        }
+                    }"  class="card card-body mb-3">
+
+                        <div  class="mb-3">
+                            <label>Parent category</label>
+                            <select class="form-select" x-model="form.categoryId">
+                                <template x-for="option in {{JSON.stringify(options.categories)}}">
+                                    <option :value="option.value" x-bind:selected="option.value == form.categoryId"   x-text="option.label"></option>
+                                </template>
+                            </select>
+                            <div class="text-danger" x-text="errors.category"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label>Subcategory</label>
+                            <select name="subcategoryId" class="form-select" x-model="form.subcategoryId">
+                                <template x-for="(option, i) in filteredSuncategories">
+                                    <option :value="option.value" x-bind:selected="option.value == form.subcategoryId"  x-text="option.label"></option>
+                                </template>
+
+                            </select>
+                            <div class="text-danger" x-text="errors.category"></div>
+                        </div>
+
+                    </div>
+
+                    {{-- <div class="card card-body">
+                        <div id="dropzone"  class="dropzone _dropzone"></div>
+                    </div> --}}
+
+                </div>
+
+            </div>
+            <div class="d-flex justify-content-center mt-5">
+                @!buttons.button({ 
+                    label: "Submit",
+                    variant: "secondary",
+                })
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@end

@@ -6,9 +6,13 @@ import Category from '../models/category.js';
 
 export default class SubcategoriesController {
 
-    async index({ view, request }: HttpContext) {
+    async index({ view, request, params, session }: HttpContext) {
+
         const page = request.input('page', 1)
-        const records = await Subcategory.query().select('*').paginate(page, 10)
+        const category = await Category.findByOrFail('slug', params.slug)
+        const records = await Subcategory.query().where('categoryId', category.id).select('*').paginate(page, 10)
+
+        session.put('slug', params.slug)
 
         const baseUrl = request.url().split('?',1)[0]
         records?.baseUrl(baseUrl)
@@ -17,26 +21,25 @@ export default class SubcategoriesController {
     }
 
     async form({ view, params }: HttpContext) {
-        const categories = await Category.query().select('*').where('status', 'active')
-        const options = categories.map((category) => ({ value: category.id, label: category.name}))
         if (params.id) {
             const record = await Subcategory.findOrFail(params.id)
-            return view.render('pages/cms/websites/categories/subcategories_form', { record, options })
+            return view.render('pages/cms/websites/categories/subcategories_form', { record })
         }
-        return view.render('pages/cms/websites/categories/subcategories_form', { options })
+        return view.render('pages/cms/websites/categories/subcategories_form')
     }
 
-    async store({ request, response }: HttpContext) {
+    async store({ request, response, session }: HttpContext) {
         const data = await request.validateUsing(SubcategoryValidationSchema)
+        const slug  = session.get('slug')
 
-        // if params id present update record
+        const category = await Category.findByOrFail('slug', slug)
         if (data.id) {
             const record = await Subcategory.findOrFail(data.id)
             await record?.merge({
                 name:data.name,
                 description: data.description,
                 status: data.status,
-                categoryId: data.categoryId,
+                categoryId: String(category.id),
             }).save()
             return response.status(200).json({ message: 'Updated Successfully!', data: record })
         }
@@ -46,7 +49,7 @@ export default class SubcategoriesController {
             name: data.name,
             description: data.description,
             status: data.status,
-            categoryId: data.categoryId,
+            categoryId: String(category.id),
         })
         return response.status(200).json({ message: 'Added Successfully!', data: newRecord })
 

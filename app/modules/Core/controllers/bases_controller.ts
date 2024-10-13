@@ -1,6 +1,4 @@
-import { cuid } from '@adonisjs/core/helpers'
 import type { HttpContext } from '@adonisjs/core/http'
-import app from '@adonisjs/core/services/app'
 import { LucidModel } from "@adonisjs/lucid/types/model"
 import { VineValidator } from '@vinejs/vine'
 
@@ -50,20 +48,8 @@ export default class BasesController {
 
     async store({ request, response }: HttpContext) {
         const data = await request.validateUsing(this.validationSchema!)
+        console.log(data)
 
-        // handle file if exists
-        if (this.files?.length! > 0) {
-            await Promise.all(this.files!.map(async (files) => {
-                const file = request.file(files)
-                if (file) {
-                    const date = new Date()
-                    await file.move(app.makePath(`public/uploads/${date.getFullYear()}/${date.getMonth()}/${date.getDate()}/`), {
-                        name: `${cuid()}.${file.extname}`
-                    })
-                    data[files] = file.filePath?.split(`\\`).splice(-5).join(`\\`).replaceAll('\\', '/')
-                }
-            }))
-        }
         // if params id present update record
         if (data.id) {
             const record = await this.model?.findOrFail(data.id)

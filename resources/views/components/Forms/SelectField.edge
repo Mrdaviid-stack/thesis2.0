@@ -2,8 +2,9 @@
 <div  class="mb-3">
     <label>{{ label }}</label>
     <select name="{{name}}" id="{{name}}"  class="form-select" aria-label="Default select example" x-model="form.{{name}}">
+            <option selected hidden>Select Parent Category</option>
         @each(option in options)
-            <option value="{{option.value}}"  {{ option.value === value ? 'selected' : '' }}>{{ option.label }}</option>
+            <option value="{{option.value}}"  :selected="form.{{name}} == '{{option.value}}'">{{ option.label }}</option>
         @end
     </select>
     <div class="text-danger" x-text="errors.{{name}}"></div>

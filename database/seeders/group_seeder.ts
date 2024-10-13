@@ -49,6 +49,12 @@ export default class extends BaseSeeder {
       { name: 'websites-subcategories-edit', description: 'subcategories edit'},
       { name: 'websites-subcategories-delete', description: 'subcategories delete'},
       //
+      { name: 'websites-products-view', description: 'products view'},
+      { name: 'websites-products-index', description: 'products index'},
+      { name: 'websites-products-add', description: 'products add'},
+      { name: 'websites-products-edit', description: 'products edit'},
+      { name: 'websites-products-delete', description: 'products delete'},
+      //
     ])
 
     await User.create({
@@ -60,7 +66,7 @@ export default class extends BaseSeeder {
     })
 
     const group = await Group.findBy('name','Superadmin')
-    await group?.related('permissions').sync(Array.from({ length: 29}, (_, index) => index + 1))
+    await group?.related('permissions').sync(Array.from({ length: 34}, (_, index) => index + 1))
     await group?.related('users').sync([1])
   }
 }

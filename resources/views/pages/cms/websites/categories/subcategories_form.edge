@@ -1,11 +1,12 @@
 @layout.cms.bare({ title: "Sub Categories Form" })
 
-<div x-data="useForm({ 
-    form: {
+<div x-data="categories({ 
+    formData: {
+        id: '{{ (record && record.id) ? record.id : '' }}',
         name: '{{(record && record.name) ? record.name : ''}}',
         description: '{{(record && record.description) ? record.description : ''}}',
         status: '{{(record && record.status) ? record.status : 'inactive'}}',
-        categoryId: '{{(record && record.categoryId) ? record.categoryId : ''}}',
+        categoryId: '{{(record && record.categoryId) ? record.categoryId : '1'}}',
     } 
 })">
     <div class="modal-header">
@@ -13,9 +14,8 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body">
-        <form id="form" action="/websites/subcategories/add" method="POST" @submit.prevent="submitForm">
+        <form id="form" action="/websites/categories/subcategories/add" method="POST" @submit.prevent="submit">
             {{csrfField()}}
-            <input type="hidden" id="id" name="id" value="{{ (record && record.id) ? record.id : '' }}"  />
             <div class="row">
 
                         @!forms.inputField({
@@ -44,12 +44,12 @@
                                 value: "inactive",
                             })
                         </div>
-
+{{-- 
                         @!forms.selectField({
                             name: "categoryId",
                             label: "Parent Category",
                             menus: options
-                        })
+                        }) --}}
 
                     @!buttons.button({ 
                         label: "Submit",

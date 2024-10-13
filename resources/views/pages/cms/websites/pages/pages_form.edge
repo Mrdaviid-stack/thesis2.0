@@ -1,19 +1,25 @@
 @layout.cms.app({ title: "Page Form" })
 
-<div x-data="useForm({ 
+<div x-data="pages({ 
     redirect: '/websites/pages', 
-    form: {
+    formData: {
+        id: '{{ (record && record.id) ? record.id : '' }}',
         name: '{{ (record && record.name) ? record.name : '' }}',
-        content: '{{ (record && record.content) ? record.content : '' }}',
+        content: '{{ (record && record.name) ? record.name : '' }}',
         status: '{{ (record && record.status) ? record.status : 'draft' }}',
         files: '{{ (record && record.files) ? record.files : '' }}',
     } 
 })">
     <div class="modal-body">
-        <a href="/websites/pages" class="nav-link mb-2 text-lg"><i class="fa-solid fa-arrow-left-long"></i> back</a>
-        <form id="form" action="/websites/pages/add" method="POST" @submit.prevent="submitForm">
+        <form id="form" action="/websites/pages/add" method="POST" @submit.prevent="submit">
+            <div class="d-flex justify-content-between align-items-center">
+                <a href="/websites/pages" class="nav-link mb-2 text-lg"><i class="fa-solid fa-arrow-left-long"></i> {{ (record && record.name) ? record.name : '' }}</a>
+                @!buttons.button({ 
+                    label: "Submit",
+                    variant: "secondary",
+                })
+            </div>
             {{csrfField()}}
-            <input type="hidden" id="id" name="id" value="{{ (record && record.id) ? record.id : '' }}"  />
             <div class="row">
                 <div class="col-9">
                     <div class="card card-body mb-3">

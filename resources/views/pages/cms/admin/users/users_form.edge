@@ -1,6 +1,6 @@
 @layout.cms.app({ title: "Users" })
 
-<div x-data="useForm">
+<div>
     <div class="modal-body">
         <form id="form" action="/admin/groups/add" method="POST" @submit.prevent="submitForm">
             {{csrfField()}}
