@@ -3,6 +3,7 @@ import { BaseModel, beforeSave, column, hasMany } from '@adonisjs/lucid/orm'
 import string from '@adonisjs/core/helpers/string'
 import Subcategory from './subcategory.js'
 import type { HasMany } from '@adonisjs/lucid/types/relations'
+import Product from './product.js'
 
 export default class Category extends BaseModel {
   @column({ isPrimary: true })
@@ -25,6 +26,9 @@ export default class Category extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
+
+  @hasMany(() => Product)
+  declare products: HasMany<typeof Product>
 
   @hasMany(() => Subcategory)
   declare subcategories: HasMany<typeof Subcategory>

@@ -2,8 +2,8 @@ import router from "@adonisjs/core/services/router";
 import PagesController from "../controllers/pages_controller.js";
 import { middleware } from "#start/kernel";
 import CategoriesController from "../controllers/categories_controller.js";
-import SubcategoriesController from "../controllers/subcategories_controller.js";
 import ProductsController from "../controllers/products_controller.js";
+import BrandsController from "../controllers/brands_controller.js";
 
 export default function WebsiteRoutes() {
     router.group(() => {
@@ -22,14 +22,21 @@ export default function WebsiteRoutes() {
             router.post('/add', [CategoriesController, 'store']).as('categories.store')
             router.delete('/delete/:id?', [CategoriesController, 'delete']).as('categories.delete')
 
-            router.group(() => {
-                router.get('/:slug', [SubcategoriesController, 'index']).as('subcategories.index')
-                router.get('/add/form/:id?', [SubcategoriesController, 'form']).as('subcategories.form')
-                router.post('/add', [SubcategoriesController, 'store']).as('subcategories.store')
-                // router.delete('/delete/:id?', [SubcategoriesController, 'delete']).as('subcategories.delete')
-            }).prefix("subcategories")
+            // router.group(() => {
+            //     router.get('/:slug', [SubcategoriesController, 'index']).as('subcategories.index')
+            //     router.get('/add/form/:id?', [SubcategoriesController, 'form']).as('subcategories.form')
+            //     router.post('/add', [SubcategoriesController, 'store']).as('subcategories.store')
+            //     // router.delete('/delete/:id?', [SubcategoriesController, 'delete']).as('subcategories.delete')
+            // }).prefix("subcategories")
 
         }).prefix("categories")
+
+        router.group(() => {
+            router.get('/', [BrandsController, 'index']).as('brands.index')
+            router.get('/add/:id?', [BrandsController, 'form']).as('brands.form')
+            router.post('/add', [BrandsController, 'store']).as('brands.store')
+            router.delete('/delete/:id?', [BrandsController, 'delete']).as('brands.delete')
+        }).prefix("brands")
 
 
         router.group(() => {

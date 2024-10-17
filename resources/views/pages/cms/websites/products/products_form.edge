@@ -1,24 +1,23 @@
 @layout.cms.app({ title: "Product Form" })
 
 <div x-data="products({ 
-    redirect: '/websites/products', 
+    redirect: '/cms/websites/products', 
     form: {
         id: '{{ (record && record.id) ? record.id : '' }}', 
         name: '{{ (record && record.name) ? record.name : '' }}',
         modelNumber: '{{ (record && record.modelNumber) ? record.modelNumber : '' }}',
         content: '{{ (record && record.content) ? record.content : '' }}',
         categoryId: '{{ (record && record.categoryId) ? record.categoryId : '1' }}',
-        subcategoryId: '{{ (record && record.subcategoryId) ? record.subcategoryId : '1' }}',
-        files: '{{ (record && record.files) ? record.files : '' }}',
+        brandId: '{{ (record && record.brandId) ? record.brandId : '1' }}',
         status: '{{ (record && record.status) ? record.status : 'draft'}}',
         variants: {{JSON.stringify(record && record.productVariants ? record.productVariants : []) }}
     }, 
 })">
     <div class="modal-body">
  
-        <form id="form" action="/websites/products/add" method="POST" enctype="multipart/form-data"  @submit.prevent="submit">
+        <form id="form" action="/cms/websites/products/add" method="POST" enctype="multipart/form-data"  @submit.prevent="submit">
             <div class="d-flex justify-content-between align-items-center">
-                <a href="/websites/products" class="nav-link mb-2 text-lg"><i class="fa-solid fa-arrow-left-long"></i> <span x-text="form.name"></span></a>
+                <a href="/cms/websites/products" class="nav-link mb-2 text-lg"><i class="fa-solid fa-arrow-left-long"></i> <span x-text="form.name"></span></a>
          
                     @!buttons.button({ 
                         label: "save changed",
@@ -133,13 +132,7 @@
 
                     </div>
 
-                    <div x-data="{
-                        subcategories: {{JSON.stringify(options.subcategories)}},
-                        filteredSuncategories() {
-                            console.log(form.variants)
-                            return this.subcategories.filter(subcategory => subcategory.parentCategoryId == form.categoryId);
-                        }
-                    }"  class="card card-body mb-3">
+                    <div class="card card-body mb-3">
 
                         <div  class="mb-3">
                             <label>Parent category</label>
@@ -154,8 +147,8 @@
                         <div class="mb-3">
                             <label>Subcategory</label>
                             <select name="subcategoryId" class="form-select" x-model="form.subcategoryId">
-                                <template x-for="(option, i) in filteredSuncategories">
-                                    <option :value="option.value" x-bind:selected="option.value == form.subcategoryId"  x-text="option.label"></option>
+                                <template x-for="(option, i) in {{JSON.stringify(options.brands)}}">
+                                    <option :value="option.value" x-bind:selected="option.value == form.brandId"  x-text="option.label"></option>
                                 </template>
 
                             </select>

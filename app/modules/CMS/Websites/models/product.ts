@@ -1,10 +1,10 @@
 import { DateTime } from 'luxon'
 import { BaseModel, beforeSave, belongsTo, column, hasMany } from '@adonisjs/lucid/orm'
 import string from '@adonisjs/core/helpers/string'
-import Subcategory from './subcategory.js'
 import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
 import ProductVariant from './product_variant.js'
 import Category from './category.js'
+import Brand from './brand.js'
 
 export default class Product extends BaseModel {
   @column({ isPrimary: true })
@@ -14,7 +14,7 @@ export default class Product extends BaseModel {
   declare categoryId: number
 
   @column()
-  declare subcategoryId: number
+  declare brandId: number
 
   @column()
   declare name: string
@@ -43,8 +43,8 @@ export default class Product extends BaseModel {
   @belongsTo(() => Category)
   declare category: BelongsTo<typeof Category>
 
-  @belongsTo(() => Subcategory)
-  declare subcategory: BelongsTo<typeof Subcategory>
+  @belongsTo(() => Brand)
+  declare subcategory: BelongsTo<typeof Brand>
 
   @hasMany(() => ProductVariant)
   declare productVariants: HasMany<typeof ProductVariant>

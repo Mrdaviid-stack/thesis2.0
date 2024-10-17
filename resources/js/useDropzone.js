@@ -4,7 +4,7 @@ Dropzone.autoDiscover = false
 export default function useDropzone(dropzoneClass, cb) {
 
     const dropzone = new Dropzone(`${dropzoneClass}`, {
-        url: "/files/uploads",
+        url: "/cms/files/uploads",
         paramName: 'image',
         headers: {'X-CSRF-TOKEN': document.querySelector('input[name="_csrf"]').value},
         dictDefaultMessage: 'Drop files here or click to upload.',

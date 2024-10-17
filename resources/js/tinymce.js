@@ -14,7 +14,7 @@ tinymce.init({
     images_upload_handler: async (blobInfo) => new Promise((resolve, reject) => {
         const formData = new FormData()
         formData.append('image', blobInfo.blob(), blobInfo.filename())
-        axios.post('/files/uploads', formData)
+        axios.post('/cms/files/uploads', formData)
             .then((response) => {
                 resolve(response.data.location)
             })

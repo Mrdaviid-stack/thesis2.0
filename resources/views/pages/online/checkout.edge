@@ -1,0 +1,116 @@
+@layout.online.app({ title: "Checkout" })
+    @slot('meta')
+        <meta name="description" content="A welcome page made with EdgeJS">
+    @endslot
+    
+    <main class="mt-5" x-data="cart()">
+        <div class="row">
+            <div class="col col-lg-6">
+                <h5>Billing Details</h5>
+                <form id="form">
+                    <div class="row">
+                        <div class="col col-lg-6">
+                            <div class="mb-2">
+                                <label>First name*</label>
+                                <input type="text" class="form-control" x-model="orderDetails.firstName"/>
+                            </div>
+                        </div>
+                        <div class="col col-lg-6">
+                            <div class="mb-2">
+                                <label>Last name*</label>
+                                <input type="text" class="form-control" x-model="orderDetails.lastName"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-2">
+                            <label>Street address*</label>
+                            <input type="text" class="form-control" placeholder="House number and street name" x-model="orderDetails.address"/>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-2">
+                            <label>Town / City*</label>
+                            <select class="form-select" x-model="orderDetails.city">
+                                <template x-for="city in cities">
+                                    <option :value="city.city" x-text="city.city"></option>
+                                </template>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-2">
+                            <label>Phone*</label>
+                            <input type="text" class="form-control" x-model="orderDetails.phone"/>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-2">
+                            <label>Email address*</label>
+                            <input type="text" class="form-control" x-model="orderDetails.email"/>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="mb-2">
+                            <label>Oder notes (options)*</label>
+                            <textarea type="text" class="form-control" rows="5" x-model="orderDetails.notes"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="col col-lg-6 mt-1">
+
+                <h5>Your Order</h5>
+
+                <ul class="list-group mb-5" style="background-color: aliceblue!impotant;">
+                    <li class="list-group-item d-flex justify-content-between align-items-center py-3">
+                        <h6 class="text-muted mb-0">Product</h6>
+                        <h6 class="text-muted mb-0">Subtotal</h6>
+                    </li>
+                    <template x-for="cart in carts">
+                        <li class="list-group-item d-flex justify-content-between align-items-center py-3">
+                            <div>
+                                <div class="d-flex align-items-center">
+                                    <img :src="cart.image" width="70" :alt="cart.name" />
+                                    <h6 class="text-muted" x-text="cart.name"></h6>
+                                </div>
+                                <p class="mb-0">Color: <spa x-text="cart.color"></spa> | Internal Storage: <spa x-text="cart.storage"></spa></p>
+                            </div>
+                            <h6 class="fw-bolder">₱<span x-text="(cart.price * cart.qty).toLocaleString()"></span></h6>
+                        </li>
+                    </template>
+                </ul>
+
+                <h5>Payment Method (REF: 09123456789)</h5>
+                @let(paymentOptions = [{value: 'cod', label: 'COD'},{value: 'gcash', label: 'Gcash'},{value: 'paymaya', label: 'PayMaya'},{value: 'paypal', label: 'Paypal'}])
+                <ul class="list-group mb-2" style="background-color: aliceblue!impotant;">
+                    <template x-for="options in {{JSON.stringify(paymentOptions)}}">
+                        <li class="list-group-item d-flex justify-content-between align-items-center py-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" :value="options.value"  x-model="orderDetails.paymentMethod">
+                                <label class="form-check-label" x-text="options.label">
+                                </label>
+                              </div>
+                        </li>
+                    </template>
+                </ul>
+                <div class="col">
+                    <div class="mb-2">
+                        <label>Refereance*</label>
+                        <input type="text" class="form-control" x-model="orderDetails.reference"/>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="mb-2">
+                        <label>Downpayment*</label>
+                        <input type="number" class="form-control" x-model="orderDetails.downpayment" placeholder="1000 or 5000"/>
+                    </div>
+                </div>
+                <button @click="checkout" class="btn btn-warning mt-3 w-100">PLACED ORDER</button>
+   
+            </div>
+        </div>
+    </main>
+
+
+@end

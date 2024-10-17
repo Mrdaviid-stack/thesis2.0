@@ -4,7 +4,7 @@ export const ProductValidationSchema = vine.compile(
     vine.object({
         id: vine.number().optional(),
         categoryId: vine.number(),
-        subcategoryId: vine.number(),
+        brandId: vine.number(),
         name: vine.string().minLength(3).maxLength(100),
         modelNumber: vine.string(),
         content: vine.string().minLength(3),

@@ -7,7 +7,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body">
-        <form id="form" action="/admin/permissions/add/{{groupId}}" method="POST" @submit.prevent="submit">
+        <form id="form" action="/cms/admin/permissions/add/{{groupId}}" method="POST" @submit.prevent="submit">
             {{csrfField()}}
             @each((permission, index) in permissions)
                 <div class="accordion accordion-flush" id="accordionExample">

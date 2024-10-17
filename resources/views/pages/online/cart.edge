@@ -1,0 +1,70 @@
+@layout.online.app({ title: "Cart" })
+  @slot('meta')
+    <meta name="description" content="A welcome page made with EdgeJS">
+  @endslot
+
+  <main x-data="cart()">
+    <div>Carts</div>
+    <div class="row">
+        <div class="col col-lg-8">
+            <table class="table table-borderless border align-middle table-responsive">
+                <thead>
+                    <tr class="bg-info">
+                        <th class="text-muted">Product</th>
+                        <th class="text-muted">Price</th>
+                        <th class="text-muted">Quantity</th>
+                        <th class="text-muted">Total</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template x-for="cart in carts">
+                        <tr class="align-self-center">
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img :src="cart.image" width="70" :alt="cart.name" />
+                                    <p class="lh-sm text-sm">
+                                        <strong><span class="text-danger text-decoration-underline" x-text="cart.name"></span></strong>
+                                        <br/>
+                                        <span>Color: <span x-text="cart.color"></span></span>
+                                        <br/>
+                                        <span>Internal Storage: <br/> <span x-text="cart.storage"></span></span>
+                                    </p>
+                                </div>
+                            </td>
+                            <td><strong>₱</strong><strong x-text="cart.price.toLocaleString()"></strong></td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <button @click="subtractQty(cart.id)" :disabled="cart.qty <= 1" class="border px-2 py-1 mb-0">-</button>
+                                    <div class="border px-3 py-1" x-text="cart.qty"></div>
+                                    <button @click="addQty(cart.id)" :disabled="cart.qty == cart.stock" class="border px-2 py-1 mb-0">+</button>
+                                </div>
+                            </td>
+                            <td>
+                                <strong>₱</strong><strong x-text="(cart.price * cart.qty).toLocaleString()"></strong>
+                            </td>
+                            <td>
+                                <i @click="removeItem(cart.id)" class="fa-regular fa-trash-can" role="button"></i>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+        <div class="col col-lg-4">
+            <ul class="list-group" style="background-color: aliceblue!impotant;">
+                <li class="list-group-item">
+                    <h5 class="mb-3">Cart Totals</h5>
+                    <dl class="row mb-0">
+                        <dt class="col-8"><h6 class="text-muted">Total</h6></dt>
+                        <dd class="col-4"><strong x-text="total"></strong></dd>
+                    </dl>
+                </li>
+            </ul>
+            <a href="/checkout" class="btn btn-warning mt-3 w-100">PROCEED TO CHECKOUT</a>
+        </div>
+    </div>
+  </main>
+
+
+@end

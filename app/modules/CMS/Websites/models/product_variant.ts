@@ -3,6 +3,7 @@ import { BaseModel, belongsTo, column, hasMany } from '@adonisjs/lucid/orm'
 import Product from './product.js'
 import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations'
 import ProductVariantImage from './product_variant_image.js'
+import CartItem from './cart_item.js'
 
 export default class ProductVariant extends BaseModel {
   @column({ isPrimary: true })
@@ -43,6 +44,9 @@ export default class ProductVariant extends BaseModel {
 
   @belongsTo(() => Product)
   declare product: BelongsTo<typeof Product>
+
+  @hasMany(() => CartItem)
+  declare cartItems: HasMany<typeof CartItem>
 
   @hasMany(() => ProductVariantImage)
   declare productVariantImages: HasMany<typeof ProductVariantImage>

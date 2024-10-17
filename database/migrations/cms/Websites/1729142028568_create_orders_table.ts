@@ -1,26 +1,26 @@
 import { BaseSchema } from '@adonisjs/lucid/schema'
 
 export default class extends BaseSchema {
-  protected tableName = 'subcategories'
+  protected tableName = 'orders'
 
   async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
         .primary()
         .notNullable()
-      table.integer('category_id')
+      table.integer('user_id')
         .unsigned()
         .references('id')
-        .inTable('categories')
+        .inTable('users')
         .onUpdate('RESTRICT')
         .onDelete('CASCADE')
-      table.string('name')
-        .notNullable()
-      table.string('slug')
-        .unique()
-        .notNullable()
-      table.string('description')
-      table.enu('status', ['active', 'inactive'])
+      table.string('first_name')
+      table.string('last_name')
+      table.string('address')
+      table.string('city')
+      table.string('phone')
+      table.string('email')
+      table.text('note')
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()
     })

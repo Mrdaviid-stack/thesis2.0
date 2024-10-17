@@ -1,9 +1,9 @@
-@let(segment = request.url().split('/')[1])
-@let(sub_segment = request.url().split('/')[2])
+@let(segment = request.url().split('/')[2])
+@let(sub_segment = request.url().split('/')[3])
 @let(menus = [
     {
         permission: 'dashboard-dashboard-view',
-        route: '/',
+        route: '/cms',
         label: 'Dashboard',
         icon: 'fa-house',
         active: !segment && 'active'
@@ -17,21 +17,28 @@
         sub_menu: [
             {
                 permission: 'websites-pages-view',
-                route: '/websites/pages',
+                route: '/cms/websites/pages',
                 label: 'Pages',
                 icon: 'fa-house',
                 active: sub_segment == 'pages' && 'text-decoration-underline'
             },
             {
                 permission: 'websites-categories-view',
-                route: '/websites/categories',
+                route: '/cms/websites/categories',
                 label: 'Categories',
                 icon: 'fa-house',
                 active: sub_segment == 'categories' && 'text-decoration-underline'
+            }, 
+            {
+                permission: 'websites-brands-view',
+                route: '/cms/websites/brands',
+                label: 'Brands',
+                icon: 'fa-house',
+                active: sub_segment == 'brands' && 'text-decoration-underline'
             },         
             {
                 permission: 'websites-products-view',
-                route: '/websites/products',
+                route: '/cms/websites/products',
                 label: 'Products',
                 icon: 'fa-house',
                 active: sub_segment == 'products' && 'text-decoration-underline'
@@ -47,14 +54,14 @@
         sub_menu: [
             {
                 permission: 'admin-groups-view',
-                route: '/admin/groups',
+                route: '/cms/admin/groups',
                 label: 'Groups',
                 icon: 'fa-house',
                 active: sub_segment == 'groups' && 'text-decoration-underline'
             },
             {
                 permission: 'admin-users-view',
-                route: '/admin/users',
+                route: '/cms/admin/users',
                 label: 'Users',
                 icon: 'fa-house',
                 active: sub_segment == 'users' && 'text-decoration-underline'

@@ -1,7 +1,7 @@
 @layout.cms.app({ title: "Page Form" })
 
 <div x-data="pages({ 
-    redirect: '/websites/pages', 
+    redirect: '/cms/websites/pages', 
     formData: {
         id: '{{ (record && record.id) ? record.id : '' }}',
         name: '{{ (record && record.name) ? record.name : '' }}',
@@ -11,9 +11,9 @@
     } 
 })">
     <div class="modal-body">
-        <form id="form" action="/websites/pages/add" method="POST" @submit.prevent="submit">
+        <form id="form" action="/cms/websites/pages/add" method="POST" @submit.prevent="submit">
             <div class="d-flex justify-content-between align-items-center">
-                <a href="/websites/pages" class="nav-link mb-2 text-lg"><i class="fa-solid fa-arrow-left-long"></i> {{ (record && record.name) ? record.name : '' }}</a>
+                <a href="/cms/websites/pages" class="nav-link mb-2 text-lg"><i class="fa-solid fa-arrow-left-long"></i> {{ (record && record.name) ? record.name : '' }}</a>
                 @!buttons.button({ 
                     label: "Submit",
                     variant: "secondary",

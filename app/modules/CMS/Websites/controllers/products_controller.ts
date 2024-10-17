@@ -2,9 +2,9 @@ import type { HttpContext } from '@adonisjs/core/http'
 
 import Product from "../models/product.js";
 import Category from '../models/category.js';
-import Subcategory from '../models/subcategory.js';
 import { ProductValidationSchema } from '../validators/product.js';
 import ProductVariant from '../models/product_variant.js';
+import Brand from '../models/brand.js';
 
 export default class ProductsController {
 
@@ -20,11 +20,11 @@ export default class ProductsController {
 
     async form({ view, params }: HttpContext) {
         const categories = await Category.query().select('*').where('status', 'active')
-        const subcategories = await Subcategory.query().select('*').where('status', 'active')
+        const brands = await Brand.query().select('*').where('status', 'active')
 
         const options = {
             categories: categories.map((category) => ({value: category.id, label: category.name})),
-            subcategories: subcategories.map((subcategory) => ({parentCategoryId: subcategory.categoryId ,value: subcategory.id, label: subcategory.name}))
+            brands: brands.map((brand) => ({value: brand.id, label: brand.name}))
         }
 
         if (params.id) {
@@ -37,7 +37,7 @@ export default class ProductsController {
                 name: product.name,
                 modelNumber: product.modelNumber,
                 categoryId: product.categoryId,
-                subcategoryId: product.subcategoryId,
+                brandId: product.brandId,
                 content: product.content,
                 status: product.status,
                 productVariants: product.productVariants.map((variant) => ({
@@ -49,6 +49,7 @@ export default class ProductsController {
                     image: variant.image,
                     sku: variant.sku,
                     price: variant.price,
+                    productId: variant.productId,
                 }))
             }))
         
@@ -70,7 +71,7 @@ export default class ProductsController {
             {modelNumber:data.modelNumber},
             {
                 categoryId: data.categoryId,
-                subcategoryId: data.subcategoryId,
+                brandId: data.brandId,
                 name: data.name,
                 content: data.content,
                 status: data.status,

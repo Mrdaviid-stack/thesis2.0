@@ -10,6 +10,8 @@ import './tinymce'
 import './breadcrumb'
 
 import './cms/index'
+import './online/online'
+import './online/index'
 
 window.Alpine = Alpine
 

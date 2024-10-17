@@ -69,13 +69,6 @@
                     @if (module == "users")
                         <h6 class="card-title"><span x-text="record.firstname"> </span> <span x-text="record.lastname"> </span></h6> 
                         <small class="text-muted"><span x-text="record.email"></span> | <span x-text="record.status"></span> | </small>
-                    @elseif (module == "categories")
-                        <h6 class="card-title" x-text="record.name"></h6> 
-                        <small class="text-muted"><span x-text="record.description"></span> | <span x-text="record.status"></span> | 
-                        @can('hasAccess', canView) 
-                            <a :href="'/websites/categories/subcategories/' + record.slug">Subcategories</a> | 
-                        @end
-                        </small>
                     @elseif (module == "products")
                         <h6 class="card-title" x-text="record.name"></h6> 
                         <small class="text-muted"> <span x-text="record.modelNumber"></span> | <span x-text="record.status"></span> | </small>
@@ -96,7 +89,7 @@
 
           
                         @can('hasAccess', canEditPermission)
-                            <a data-bs-toggle="modal" data-bs-target="#modal" :href="'/admin/permissions/add/' + record.id" accesskey="n" style="color: #495057BF;">Permission <i class="fa-solid fa-pen-to-square"></i></a>
+                            <a data-bs-toggle="modal" data-bs-target="#modal" :href="'/cms/admin/permissions/add/' + record.id" accesskey="n" style="color: #495057BF;">Permission <i class="fa-solid fa-pen-to-square"></i></a>
                         @end
    
                     </small>
