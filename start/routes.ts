@@ -15,9 +15,10 @@ import { middleware } from './kernel.js'
 import FileRoutes from '../app/modules/CMS/Files/routes/routes.js'
 import HomeController from '../app/modules/Core/controllers/home_controller.js'
 import OnlineRoutes from '../app/modules/Online/routes/routes.js'
+import CashierRoutes from '../app/modules/Cashiers/routes/routes.js'
 
 OnlineRoutes()
-
+CashierRoutes()
 AuthRoutes()
 
 router.group(() => {

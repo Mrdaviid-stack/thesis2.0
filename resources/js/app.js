@@ -12,6 +12,7 @@ import './breadcrumb'
 import './cms/index'
 import './online/online'
 import './online/index'
+import './cahiers/index'
 
 window.Alpine = Alpine
 
