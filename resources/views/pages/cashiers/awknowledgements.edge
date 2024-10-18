@@ -1,0 +1,71 @@
+@layout.cahiers.app({ title: "Cashiers" })
+    @slot('meta')
+        <meta name="description" content="A welcome page made with EdgeJS">
+    @endslot
+    {{{console.log(orders)}}}
+    <div class="mt-5" x-data="acknowledgement({
+        orders: {{JSON.stringify(orders)}}
+    })">
+        <input class="form-control mb-3" placeholder="Search orders" x-model="searchQuery" />
+        @if(orders.length > 0)
+        <div class="row">
+            <template x-for="order in orders">
+                <div class="col col-lg-6">
+                    <div class="card mb-3" style="max-width: 540px;">
+                        <div class="row g-0">
+                          <div class="col-md-4">
+                            <img :src="order.orderProductImage" class="img-fluid rounded-start" :alt="order.orderProductName">
+                          </div>
+                          <div class="col-md-8">
+                            <div class="card-body">
+                              <h5 class="card-title" x-text="order.orderProductName"></h5>
+                              <p class="card-text">
+                                <small>Color: <span x-text="order.orderInvoice"></span>
+                                <br/>
+                                <small>Color: <span x-text="order.orderProductColor"></span> | Storage: <span x-text="order.orderProductStorage"></span></small>
+                                <br/>
+                                <small>Payment Reference: <span x-text="order.orderPaymentReference"></span></small>
+                                <br/>
+                                <small>Total Price: <span x-text="order.orderTotalAmount"></span></small>
+                                <br/>
+                                <small>Downpayment: <span x-text="order.orderDownpayment"></span></small>
+                                <br/>
+                                <small>Balance: <span x-text="order.orderBalance"></span></small>
+                              </p>
+                              <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                            </div>
+
+                                <button @click="acknowledge(order.orderTransactionId)" class="btn btn-warning">Acknowledge</button>
+
+                          </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+        @else
+            <div class="bg-secondary py-4 px-3 border-top border-warning border-5">
+                <p class="mb-0">No Orders</p>
+            </div>
+        @end
+
+    </div>
+@end
+
+{{-- [
+  {
+    orderTransactionId: 1,
+    orderInvoice: 'INV-QiDwie1YFL',
+    orderPaymentMethod: 'gcash',
+    orderPaymentReference: 'Sed ducimus quis ni',
+    orderDownpayment: '₱47.00',
+    orderTotalAmount: '₱70,000.00',
+    orderBalance: '₱69,953.00',
+    orderProductName: 'Galaxy S23',
+    orderProductSKU: 'SG23-PB-128',
+    orderProductColor: 'Green',
+    orderProductStorage: '8GB/128GB',
+    orderProductImage: '/uploads/2024/9/13/zhoukb9jeugv1byr2kit3jeq.png',
+    customerName: 'Mark David Bogayan'
+  }
+] --}}

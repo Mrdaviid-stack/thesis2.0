@@ -8,6 +8,7 @@ import AuthController from "../controllers/auth_controller.js";
 import MyAccountsController from "../controllers/my_accounts_controller.js";
 import OrdersController from "../controllers/orders_controller.js";
 import DetailsController from "../controllers/details_controller.js";
+import { middleware } from "#start/kernel";
 
 export default function OnlineRoutes() {
 
@@ -31,18 +32,18 @@ export default function OnlineRoutes() {
 
         router.get('/cart', [CartsController, 'index']).as('cart')
         router.get('/cart/items', [CartsController, 'getCartItems']).as('userCart')
-        router.post('/cart/add', [CartsController, 'addToCart']).as('addToCart')
+        router.post('/cart/add', [CartsController, 'addToCart']).as('addToCart').use(middleware.auth())
         router.put('/cart/:id/update', [CartsController, 'updateQuantityInCart']).as('updateQuantityInCart')
         router.delete('/cart/:id/remove', [CartsController, 'removeItemInCart']).as('cart.items.remove')
 
         router.get('/checkout', [CheckoutsController, 'index']).as('checkoutIndex')
-        router.post('/checkout', [CheckoutsController, 'checkout']).as('checkoutPost')
+        router.post('/checkout', [CheckoutsController, 'checkout']).as('checkoutPost').use(middleware.auth())
 
         router.get('/my-account', [MyAccountsController, 'index']).as('myAccount')
         router.get('/my-account/orders', [OrdersController, 'index']).as('orders')
         router.get('/my-account/details', [DetailsController, 'index']).as('details')
 
-        router.post('/my-account/details', [DetailsController, 'update']).as('details.update')
+        router.post('/my-account/details', [DetailsController, 'update']).as('details.update').use(middleware.auth())
     })
     
 }
