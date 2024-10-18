@@ -14,3 +14,14 @@ export const registerValidationSchema = vine.compile(
         lastname: vine.string().minLength(2).maxLength(100),
         email: vine.string().email(),
     }))
+
+export const UpdateAccountValidationSchema = vine.compile(
+    vine.object({
+        firstname: vine.string().minLength(2).maxLength(100),
+        lastname: vine.string().minLength(2).maxLength(100),
+        email: vine.string().email(),
+        address: vine.string(),
+        password: vine.string().optional(),
+        confirmPassword: vine.string().sameAs('password').optional(),
+    })
+)

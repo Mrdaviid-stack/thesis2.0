@@ -2,10 +2,12 @@ import router from "@adonisjs/core/services/router";
 import PagesController from "../controllers/pages_controller.js";
 import ProductsController from "../controllers/products_controller.js";
 import ShopsController from "../controllers/shops_controller.js";
-import { middleware } from "#start/kernel";
 import CartsController from "../controllers/carts_controller.js";
 import CheckoutsController from "../controllers/checkouts_controller.js";
 import AuthController from "../controllers/auth_controller.js";
+import MyAccountsController from "../controllers/my_accounts_controller.js";
+import OrdersController from "../controllers/orders_controller.js";
+import DetailsController from "../controllers/details_controller.js";
 
 export default function OnlineRoutes() {
 
@@ -27,15 +29,20 @@ export default function OnlineRoutes() {
     
         router.get('/shop/:categorySlug/:productSlug',[ShopsController, 'shop']).as('shop')
 
-        router.get('/cart', [CartsController, 'index']).as('cart').use(middleware.auth())
-        router.get('/cart/items', [CartsController, 'getCartItems']).as('userCart').use(middleware.auth())
-        router.post('/cart/add', [CartsController, 'addToCart']).as('addToCart').use(middleware.auth())
-        router.put('/cart/:id/update', [CartsController, 'updateQuantityInCart']).as('updateQuantityInCart').use(middleware.auth())
-        router.delete('/cart/:id/remove', [CartsController, 'removeItemInCart']).as('cart.items.remove').use(middleware.auth())
+        router.get('/cart', [CartsController, 'index']).as('cart')
+        router.get('/cart/items', [CartsController, 'getCartItems']).as('userCart')
+        router.post('/cart/add', [CartsController, 'addToCart']).as('addToCart')
+        router.put('/cart/:id/update', [CartsController, 'updateQuantityInCart']).as('updateQuantityInCart')
+        router.delete('/cart/:id/remove', [CartsController, 'removeItemInCart']).as('cart.items.remove')
 
-        router.get('/checkout', [CheckoutsController, 'index']).as('checkoutIndex').use(middleware.auth())
-        router.post('/checkout', [CheckoutsController, 'checkout']).as('checkoutPost').use(middleware.auth())
+        router.get('/checkout', [CheckoutsController, 'index']).as('checkoutIndex')
+        router.post('/checkout', [CheckoutsController, 'checkout']).as('checkoutPost')
 
+        router.get('/my-account', [MyAccountsController, 'index']).as('myAccount')
+        router.get('/my-account/orders', [OrdersController, 'index']).as('orders')
+        router.get('/my-account/details', [DetailsController, 'index']).as('details')
+
+        router.post('/my-account/details', [DetailsController, 'update']).as('details.update')
     })
     
 }

@@ -4,11 +4,18 @@ import Cart from '../../CMS/Websites/models/cart.js'
 
 export default class CartsController {
 
-    async index({ view }: HttpContext) {
+    async index({ view, response, auth }: HttpContext) {
+
+        if (!await auth.check()) {
+            return response.redirect('/login')
+        }
         return view.render('pages/online/cart')
     }
 
     async addToCart({ request, response, auth }: HttpContext) {
+        if (!await auth.check()) {
+            return response.redirect('/login')
+        }
         const { variantId } = request.body()
         // Add product to cart
         const userCart = await Cart.firstOrCreate(
@@ -31,6 +38,9 @@ export default class CartsController {
     }
 
     async getCartItems({ response, auth }: HttpContext) {
+        if (!await auth.check()) {
+            return response.status(409)
+        }
 
         const userCartWithItems = await Cart.query().where('userId', auth.user?.id!).preload('cartItems', (cartItem) => cartItem.preload('productVariant', (productVariant) => productVariant.preload('product')))
 

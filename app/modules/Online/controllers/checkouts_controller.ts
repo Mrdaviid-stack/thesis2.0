@@ -11,7 +11,10 @@ import moment from 'moment'
 const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 10)
 
 export default class CheckoutsController {
-    async index({ view }: HttpContext) {
+    async index({ view,response,auth }: HttpContext) {
+        if (!await auth.check()) {
+            return response.redirect('/login')
+        }
         return view.render('pages/online/checkout')
     }
 

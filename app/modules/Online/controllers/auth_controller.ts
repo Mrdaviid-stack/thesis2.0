@@ -4,7 +4,6 @@ import { loginValidationSchema, registerValidationSchema } from '../validators/a
 import { customAlphabet } from 'nanoid'
 import mail from '@adonisjs/mail/services/main'
 import User from '../../CMS/Admin/models/user.js'
-import Group from '../../CMS/Admin/models/group.js'
 const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 10)
 
 export default class AuthController {
@@ -53,11 +52,9 @@ export default class AuthController {
 
         const user = await User.verifyCredentials(email, password)
 
-        console.log(user)
-
         await auth.use('web').login(user, isRememberMe)
 
-        return response.status(200).json({success: true})
+        return response.status(200).json({success: true, message: `welcome ${user.firstname}`})
     }
 
     async forgotPassword({ view }: HttpContext) {

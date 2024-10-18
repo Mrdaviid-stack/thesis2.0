@@ -4,6 +4,12 @@
     @slot('meta')
         <meta name="description" content="A welcome page made with EdgeJS">
     @endslot
+
+    @if(!auth.use('web').isAuthenticated)
+        <div class="alert alert-warning text-center" role="alert">
+            Login is required!
+        </div>
+    @end
     
     <main x-data="shop({ product: {{ JSON.stringify(product) }} })" class="row mt-5">
         <div class="col">
@@ -59,14 +65,14 @@
                     <h6 class="text-warning fw-bolder" x-text="details.stock + ' in Stock'"></h6>
                 </div>
             </template>
-            <div class="d-flex justify-content-start gap-2">
-                <button @click="submit" class="btn btn-warning" :disabled="details === undefined">ADD TO CART</button>
-                <button @click="submit" class="btn btn-danger" :disabled="details === undefined">BUY NOW</button>
-            </div>
+            @if(auth.use('web').isAuthenticated) 
+                <div class="d-flex justify-content-start gap-2">
+                    <button @click="submit" class="btn btn-warning" :disabled="details === undefined">ADD TO CART</button>
+                    <button @click="submit" class="btn btn-danger" :disabled="details === undefined">BUY NOW</button>
+                </div>
+            @end
             <hr class="border"/>
             <span><strong>Category</strong> Smartphones</span>
         </div>
     </main>
-
-
 @end
