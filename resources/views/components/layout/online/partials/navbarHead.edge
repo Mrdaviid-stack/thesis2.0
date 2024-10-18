@@ -20,9 +20,16 @@
                     <li><a class="dropdown-item" href="#">Something else here</a></li>
                     </ul>
                 </li> --}}
-                <li class="nav-item">
-                    <a class="nav-link pt-1 fs-6" href="#"><i class="fa-solid fa-user"></i> Login or Register</a>
-                </li>
+                @if(!await auth.use('web').check())
+                    <li class="nav-item">
+                        <a class="nav-link pt-1 fs-6" href="/login"><i class="fa-solid fa-user"></i> Login or Register</a>
+                    </li>
+                @else
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">logout</a>
+                    </li>
+                @end
+                
                 <li class="nav-item fs-6" x-data="cart">
                     <a class="nav-link position-relative" href="/cart">
                         <i class="fa-solid fa-cart-shopping"></i>

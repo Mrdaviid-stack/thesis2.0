@@ -1,0 +1,41 @@
+@layout.online.app({ title: "Auth" })
+    @slot('meta')
+        <meta name="description" content="A welcome page made with EdgeJS">
+    @endslot
+
+    <main class="row mt-5" x-data="auth({
+        redirect: '/',
+        form: {
+            email:'',
+            password: '',
+            isRememberMe: '',
+        }
+    })">
+        <div class="col-3 offset-3">
+            <div class="card card-body position-relative" style="width: 700px;">
+                <p class="text-muted">Enter your email and password to login</p>
+                <form id="form" action="/login" method="post" @submit.prevent="submit">
+                    {{csrfField()}}
+                    <div class="mb-2">
+                        <input type="text" name="email" class="form-control" placeholder="Email" x-model="form.email"/>
+                        <div class="text-danger" x-text="errors.email"></div>
+                    </div>
+                    <div class="mb-2">
+                        <input type="password" name="password" class="form-control" placeholder="Password"x-model="form.password"/>
+                        <div class="text-danger" x-text="errors.password"></div>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" name="isRememberMe" value="true" x-model="form.isRememberMe">
+                        <label class="form-check-label" for="flexCheckDefault">
+                          Remember me
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-warning w-100">LOGIN</button>
+                </form>
+                <div class="d-flex justify-content-center">
+                    <a>Forgot Password?</a>  |  <a href="/register">Don't have account?</a>
+                </div>
+            </div>
+        </div>
+    </main>
+@end

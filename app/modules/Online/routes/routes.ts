@@ -5,12 +5,23 @@ import ShopsController from "../controllers/shops_controller.js";
 import { middleware } from "#start/kernel";
 import CartsController from "../controllers/carts_controller.js";
 import CheckoutsController from "../controllers/checkouts_controller.js";
+import AuthController from "../controllers/auth_controller.js";
 
 export default function OnlineRoutes() {
 
     router.group(() => {
 
         router.get('/', [PagesController, 'index']).as('landing')
+
+        router.get('/login', [AuthController, 'login']).as('login')
+        router.get('/register', [AuthController, 'register']).as('register')
+        router.get('/forgot-password', [AuthController, 'forgotPassword']).as('forgotPassword')
+
+        router.post('/login', [AuthController, 'loginUser']).as('loginUser')
+        router.post('/register', [AuthController, 'registerUser']).as('registerUser')
+        router.post('/forgot-password', [AuthController, 'forgotPasswordUser']).as('forgotPasswordUser')
+
+        router.get('/logout', [AuthController, 'logout']).as('logout')
 
         router.get('/product-category/:category', [ProductsController, 'ProductCategory']).as('product-category')
     

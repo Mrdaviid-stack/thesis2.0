@@ -5,6 +5,8 @@ import Transaction from '../../CMS/Websites/models/transaction.js'
 import Cart from '../../CMS/Websites/models/cart.js'
 import { customAlphabet } from 'nanoid'
 import ProductVariant from '../../CMS/Websites/models/product_variant.js'
+import mail from '@adonisjs/mail/services/main'
+import moment from 'moment'
 
 const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 10)
 
@@ -39,7 +41,7 @@ export default class CheckoutsController {
             price: cart.price,
         }))
         await OrderItem.createMany(carts)
-        await Transaction.create({
+        const transaction = await Transaction.create({
             orderId: order.id,
             invoice: `INV-${nanoid()}`,
             paymentMethod: data.paymentMethod,
@@ -50,5 +52,24 @@ export default class CheckoutsController {
             downpayment: data.downpayment,
         })
         await Cart.query().where('userId', auth.user!.id).delete()
+
+        const EMAIL = data.email ? data.email : auth.user!.email
+
+        await mail.send((message) => {
+            message
+               .to(EMAIL)
+               .from('admin@yourdomain.com')
+               .subject(`${transaction.invoice}`)
+               .htmlView('emails/order-confirmation', {
+                    invoice: transaction.invoice,
+                    date: moment(transaction.createdAt).format('MMM Do YY'),
+                    products: data.carts,
+                    totalAmount: data.total,
+                    downpayment: data.downpayment,
+                    paymentMethod: data.paymentMethod,
+                    reference: data.reference,
+                    lastname: data.lastName
+                })
+        })
     }
 }
