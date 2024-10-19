@@ -15,7 +15,7 @@ export default class CheckoutsController {
         if (!await auth.check()) {
             return response.redirect('/login')
         }
-        return view.render('pages/online/checkout')
+        return view.render('pages/online/checkout', { user: auth.user })
     }
 
     async checkout({ request, auth }: HttpContext) { 

@@ -1,0 +1,85 @@
+@layout.cahiers.app({ title: "Cashiers" })
+    @slot('meta')
+        <meta name="description" content="A welcome page made with EdgeJS">
+    @endslot
+
+    <div class="mt-5" x-data="orderTracking({
+        orders: {{JSON.stringify(orders)}}
+    })">
+        <input class="form-control mb-3" placeholder="Search order" x-model="searchQuery" />
+        @if(orders.length > 0)
+        <div class="table-responsive">
+            <table class="table table-borderless align-middle">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Invoice</th>
+                        <th>Cutomer Info</th>
+                        <th>Balance</th>
+                        <th colspan="2">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template x-for="order in orders">
+                        <tr>
+                            <td>
+                                <p>
+                                    <span  x-text="order.orderProductName"></span>
+                                    <br/>
+                                    <span  x-text="order.orderProductColor"></span> | 
+                                    <span  x-text="order.orderProductStorage"></span>
+                                </p>
+                            </td>
+                            <td x-text="order.orderInvoice"></td>
+                            <td>
+                                <p>
+                                    <span x-text="order.customerName"></span>
+                                    <br/>
+                                    <span x-text="order.customerAddress"></span>
+                                    <br/>
+                                    <span x-text="order.customerPhoneNumber"></span>
+                                </p>
+                            </td>
+                            <td x-text="order.orderBalance"></td>
+                            <td>
+                                <span class="badge text-bg-warning" x-text="order.orderDeliveryStatus"></span>
+                            </td>
+                            <td style="min-width: 220px;">
+                                <select class="form-select" x-on:change="changeDeliveryStatus($event, order.orderTransactionId)">
+                                    <option selected hidden>Select Delivery Status</option>
+                                    <option value="processing">processing</option>
+                                    <option value="in_transit">In Transit</option>
+                                    <option value="delivered">Delivered</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+        @else
+            <div class="bg-secondary py-4 px-3 border-top border-warning border-5">
+                <p class="mb-0">No Orders</p>
+            </div>
+        @end
+
+    </div>
+@end
+
+{{-- [
+  {
+    orderTransactionId: 1,
+    orderInvoice: 'INV-QiDwie1YFL',
+    orderPaymentMethod: 'gcash',
+    orderPaymentReference: 'Sed ducimus quis ni',
+    orderDownpayment: '₱47.00',
+    orderTotalAmount: '₱70,000.00',
+    orderBalance: '₱69,953.00',
+    orderProductName: 'Galaxy S23',
+    orderProductSKU: 'SG23-PB-128',
+    orderProductColor: 'Green',
+    orderProductStorage: '8GB/128GB',
+    orderProductImage: '/uploads/2024/9/13/zhoukb9jeugv1byr2kit3jeq.png',
+    customerName: 'Mark David Bogayan'
+  }
+] --}}

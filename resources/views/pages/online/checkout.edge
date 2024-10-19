@@ -3,7 +3,12 @@
         <meta name="description" content="A welcome page made with EdgeJS">
     @endslot
     
-    <main class="mt-5" x-data="cart()">
+    <main class="mt-5" x-data="cart({
+        firstname: '{{user.firstname}}',
+        lastname: '{{user.lastname}}',
+        email: '{{user.email}}',
+        address: '{{user.address}}'
+    })">
         <div class="row">
             <div class="col col-lg-6">
                 <h5>Billing Details</h5>

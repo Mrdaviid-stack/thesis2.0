@@ -6,15 +6,15 @@ import useForm from '../useForms'
 document.addEventListener("alpine:init", () => {
     Alpine.data('cart', (props) => ({
         carts: [],
-        cities: cities,
+        cities: cities.sort((a,b) => a.city.localeCompare(b.city)),
         total: 0,
         orderDetails: {
-            firstName: '',
-            lastName: '',
-            address: '',
+            firstName: props.firstname || '',
+            lastName: props.lastname || '',
+            address: props.address || '',
             city: '',
             phone: '',
-            email: '',
+            email: props.email || '',
             notes: '',
             total: '',
             downpayment: '',
