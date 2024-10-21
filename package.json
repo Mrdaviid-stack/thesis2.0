@@ -77,8 +77,8 @@
     "lodash": "^4.17.21",
     "luxon": "^3.5.0",
     "moment": "^2.30.1",
-    "mysql2": "^3.11.3",
     "nanoid": "^5.0.7",
+    "pg": "^8.13.0",
     "reflect-metadata": "^0.2.2",
     "sweetalert2": "^11.14.2",
     "tinymce": "^7.3.0"
