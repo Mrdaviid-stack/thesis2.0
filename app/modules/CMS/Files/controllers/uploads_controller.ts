@@ -3,7 +3,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import app from '@adonisjs/core/services/app'
 
 export default class UploadsController {
-    async tinymceUpload({ request, response }: HttpContext) {
+    async uploads({ request, response }: HttpContext) {
         const image = request.file('image')
         if(image) {
             const date = new Date()

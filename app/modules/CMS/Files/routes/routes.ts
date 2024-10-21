@@ -5,7 +5,7 @@ import UploadsController from "../controllers/uploads_controller.js";
 export default function FileRoutes() {
     router.group(() => {
         
-        router.post('/tinymce/uploads', [UploadsController, 'tinymceUpload']).as('files.upload')
+        router.post('/uploads', [UploadsController, 'uploads']).as('files.upload')
 
     }).prefix("files").use(middleware.auth());
 }

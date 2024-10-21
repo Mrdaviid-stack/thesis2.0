@@ -1,28 +1,30 @@
 @layout.cms.bare({ title: "Update" })
 
-<div x-data="useForm({})">
+<div x-data="groups({
+    formData: {
+        id: '{{ (record && record.id) ? record.id : '' }}',
+        name: '{{(record && record.name) ? record.name : ''}}',
+        description: '{{(record && record.description) ? record.description : ''}}',
+    }
+})">
     <div class="modal-header">
         <h5 class="modal-title">Groups</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
     </div>
     <div class="modal-body">
-        <form id="form" action="/admin/groups/add" method="POST" @submit.prevent="submitForm">
+        <form id="form" action="/admin/groups/add" method="POST" @submit.prevent="submit">
             {{csrfField()}}
-
-            <input type="hidden" id="name" name="id" value="{{ (record && record.id) ? record.id : '' }}"  />
 
             @!forms.inputField({
                 name: "name",
                 label: "Group name",
                 placeholder: "Name",
-                value: (record && record.name) ? record.name : '',
             })
 
             @!forms.textField({
                 name: "description",
                 label: "Group Description",
                 placeholder: "Description",
-                value: (record && record.description) ? record.description : ''
             })
             <div class="float-end mt-5">
                 @!buttons.button({ 
@@ -33,7 +35,6 @@
         </form>
     </div>
 </div>
-
 
 
 @end

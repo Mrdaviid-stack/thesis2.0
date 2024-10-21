@@ -1,0 +1,79 @@
+@layout.online.app({ title: "Account" })
+    @slot('meta')
+        <meta name="description" content="A welcome page made with EdgeJS">
+    @endslot
+    <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Home</button>
+    <main class="row mt-5">
+        <div class="row">
+            <div class="col-12 col-lg-4">
+                <ul class="list-group">
+                    <li class="list-group-item py-3">
+                        <a class="nav-link" href="/my-account">DASHBOARD</a>
+                    </li>
+                    <li class="list-group-item py-3">
+                        <a class="nav-link" href="/my-account/orders">ORDERS</a>
+                    </li>
+                    <li class="list-group-item py-3 bg-warning">
+                        <a class="nav-link" href="/my-account/details">ACCOUNT DETAILS</a>
+                    </li>
+                    <li class="list-group-item py-3">LOG OUT</li>
+                </ul>
+            </div>
+            <div class="col-12 col-lg-8" x-data="auth({
+                redirect: '/my-account',
+                form: {
+                    firstname: '{{user.firstname ? user.firstname : ''}}',
+                    lastname: '{{user.lastname ? user.lastname : ''}}',
+                    email: '{{user.email ? user.email : ''}}',
+                    address: '{{user.address ? user.address : ''}}',
+                    password: '',
+                    confirmPassword: '',
+                }
+            })">
+                <form id="form" action="/my-account/details" method="post" @submit.prevent="submit">
+                    {{csrfField()}}
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label>First name*</label>
+                                <input class="form-control form-control-lg" x-model="form.firstname"/>
+                                <p class="text-danger" x-text="errors.firstname"></p>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-3">
+                                <label>Last name*</label>
+                                <input class="form-control form-control-lg"x-model="form.lastname"/>
+                                <p class="text-danger" x-text="errors.lastname"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label>Email Address*</label>
+                        <input class="form-control form-control-lg" x-model="form.email"/>
+                        <p class="text-danger" x-text="errors.email"></p>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label>Email Address*</label>
+                        <textarea class="form-control form-control-lg" x-model="form.address"></textarea>
+                        <p class="text-danger" x-text="errors.address"></p>
+                    </div>
+
+                    <h4>Password Change</h4>
+                    <hr class="border border-2"/>
+                    <div class="col-12 mb-3">
+                        <label>New password (leave blank to leave unchange)</label>
+                        <input class="form-control form-control-lg" x-model="form.password"/>
+                        <p class="text-danger" x-text="errors.password"></p>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label>Confirm new password</label>
+                        <input class="form-control form-control-lg" x-model="form.confirmPassword"/>
+                        <p class="text-danger" x-text="errors.confirmPassword"></p>
+                    </div>
+                    <button class="btn btn-warning btn-lg">SAVE CHANGES</button>
+                </form>
+            </div>
+        </div>
+    </main>
+@end

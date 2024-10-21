@@ -1,7 +1,7 @@
 import axios from "axios"
 
 tinymce.init({
-    selector: '#editor',
+    selector: '.tinymce',
     license_key: 'awa70o85dsvanz62tuz4f8l7u3xtw3vt8dqtjjr5yjf4rgdu',
     menubar: "file edit view insert format tools table help",
     plugins: 'advlist autolink lists link image charmap preview anchor searchreplace visualblocks code fullscreen insertdatetime media table code help wordcount',
@@ -14,7 +14,7 @@ tinymce.init({
     images_upload_handler: async (blobInfo) => new Promise((resolve, reject) => {
         const formData = new FormData()
         formData.append('image', blobInfo.blob(), blobInfo.filename())
-        axios.post('/files/tinymce/uploads', formData)
+        axios.post('/cms/files/uploads', formData)
             .then((response) => {
                 resolve(response.data.location)
             })

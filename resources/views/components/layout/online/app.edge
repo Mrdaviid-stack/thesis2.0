@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="csrf-token" content="{{ csrfField() }}">
+        <title>
+        {{ title || 'AdonisJS - A fully featured web framework for Node.js'}}
+        </title>
+        @if ($slots.meta)
+            {{{ await $slots.meta() }}}
+        @endif
+
+        {{-- <link rel="preconnect" href="https://fonts.bunny.net" /> --}}
+        {{-- <link href="https://fonts.bunny.net/css?family=instrument-sans:400,400i,500,500i,600,600i,700,700i" rel="stylesheet"/> --}}
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    </head>
+    <body>
+        @let(test = 'test')
+        <div class=" h-100 border-radius-lg bg-white">
+            @include('components/layout/online/partials/navbarHead')
+            <div style="padding-top: 90px;">
+                @include('components/layout/online/partials/navbarMenu')
+            </div>
+
+            <main class="container-fluid  container-lg container-xl vh-100 " >
+                {{{ await $slots.main() }}}
+            </main>
+
+        </div>
+
+    </body>
+</html>

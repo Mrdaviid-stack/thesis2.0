@@ -9,12 +9,12 @@ document.addEventListener('alpine:init', () => {
             records: props.records || [],
             selectedItems: [],
             searchQuery: '',
-            sortColumn: 'name',
+            sortColumn: props.sortColumn || 'name',
             sortDirection: 'asc',
             selectAll: false,
             get filteredRecords() {
                 const filtered = this.records.filter(record => 
-                    record.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+                    record[this.sortColumn].toLowerCase().includes(this.searchQuery.toLowerCase())
                 );
                 return this.sort(filtered);
             },

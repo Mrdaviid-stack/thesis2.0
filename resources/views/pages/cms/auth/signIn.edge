@@ -1,6 +1,13 @@
 @layout.cms.bare({ title: "Sign in" })
 
-    <main x-data="useForm({redirect: '/'})" class="main-content  mt-0">
+    <main x-data="login({
+        redirect: '/cms',
+        formData: {
+            email: '',
+            password: '',
+            isRememberMe: '',
+        }
+    })" class="main-content  mt-0">
         <section>
             <div class="page-header min-vh-75">
                 <div class="container">
@@ -14,7 +21,7 @@
                                 <div class="card-body">
 
             
-                                    <form id="form" method="post" action="/auth/sign-in" @submit.prevent="submitForm">
+                                    <form id="form" method="post" action="/auth/sign-in" @submit.prevent="submit">
                                         {{csrfField()}}
                                         <label>Email</label>
                                         <div class="mb-3">
@@ -25,7 +32,7 @@
                                                 placeholder="Email" 
                                                 aria-label="Email" 
                                                 aria-describedby="email-addon"
-                                                v-model="formData.identity"
+                                                x-model="form.email"
                                             />
                                             <div class="text-danger" x-text="errors.email"></div>
                                         </div>
@@ -38,12 +45,12 @@
                                                 placeholder="Password" 
                                                 aria-label="Password" 
                                                 aria-describedby="password-addon"
-                                                v-model="formData.password"
+                                                x-model="form.password"
                                             />
                                             <div class="text-danger" x-text="errors.password"></div>
                                         </div>
                                         <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" id="isRememberMe" name="isRememberMe" />
+                                        <input class="form-check-input" type="checkbox" id="isRememberMe" name="isRememberMe" x-model="form.isRememberMe" />
                                         <label class="form-check-label" htmlFor="isRememberMe">Remember me</label>
                                         </div>
                                         <div class="text-center">

@@ -1,0 +1,14 @@
+@layout.cms.app({ title: "Categories" })
+
+    @!datatable({
+        records: records.data,
+        paginations: paginations,
+        path: '/cms/websites/brands/add/',
+        isModal: true,
+        canAdd: 'websites-brands-add',
+        canEdit: 'websites-brands-edit',
+        canDelete: 'websites-brands-delete',
+        canView: 'websites-subbrands-view'
+    })
+
+@end

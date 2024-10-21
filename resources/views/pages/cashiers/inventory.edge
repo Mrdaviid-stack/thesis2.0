@@ -1,0 +1,15 @@
+@layout.cahiers.app({ title: "Inventory" })
+    @slot('meta')
+        <meta name="description" content="A welcome page made with EdgeJS">
+    @endslot
+
+    <div class="mt-5">
+        @!datatable({
+            module: 'products',
+            records: records.data,
+            paginations: paginations,
+            isModal: false,
+        })
+    </div>
+
+@end

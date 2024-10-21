@@ -1,0 +1,32 @@
+
+Invoice Number: {{invoice}}
+<br/>
+Date: {{date}}
+
+<hr class="border" />
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Amount</th>
+        </tr>
+    </thead>
+    <tbody>
+        @each(product in products)
+            <tr>
+                <td><p>{{ product.name }}<br/>Color: {{ product.color }}<br/>Internal Storage: {{product.storage}}</p></td>
+                <td>{{ product.qty }}</td>
+                <td>{{ product.price * product.qty }}</td>
+            </tr>
+        @end
+    </tbody>
+</table>
+
+
+<hr class="border" />
+
+<p>Downpayment: {{downpayment}}</p>
+<br/>
+<p>Reference Number: {{reference}}</p>

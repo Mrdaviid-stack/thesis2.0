@@ -5,6 +5,7 @@ export const PageValidationSchema = vine.compile(
         id: vine.number().optional().nullable(),
         name: vine.string().minLength(3),
         content: vine.string(),
-        status: vine.string()
+        status: vine.string(),
+        files: vine.string(),
     })
 )

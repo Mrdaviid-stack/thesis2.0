@@ -1,0 +1,88 @@
+@layout.cahiers.app({ title: "Cashiers" })
+    @slot('meta')
+        <meta name="description" content="A welcome page made with EdgeJS">
+    @endslot
+
+    {{{console.log(products.data)}}}
+    <div class="row mt-5" x-data="walkInOrder({
+        products: {{JSON.stringify(products)}}
+    })">
+
+        <div class="col col-lg-9">
+
+            <div class="row">
+                <template x-for="product in products">
+                    <div class="col col-md-2 col-lg-3 mb-4">
+                        <div class="card" style="min-height: 200px; overflow: hidden">
+                            <img :src="product.productVariants[0].image" style="height: 100%; width: 100%; " alt="...">
+                            <div class="card-body text-center">
+                              <p class="card-title" x-text="product.name"></p>
+                              
+                              <button @click="selectProduct(product.id)" class="btn btn-primary">SELECT</button>
+                            </div>
+                          </div>
+                    </div>
+                </template>
+            </div>
+
+        </div>
+        <div class="col col-lg-3">
+            <div class="card card-body">
+                <h4 class="card-title fw-bolder" x-text="productToBuy?.name"></h4>
+                <hr class="border"/>
+
+                    <dl class="row d-flex align-items-center mb-0">
+                        <dt class="col-4">Color</dt>
+                        <dd class="col-8">
+                            <select class="form-select form-select-sm" x-model="productDetails.color">
+                                <option  selected hiddent>Select Color</option>
+                                <template x-for="variant in productToBuy.productVariants">
+                                    <option :value="variant.color" x-text="variant.color"></option>
+                                </template>
+                            </select>
+                        </dd>
+
+                        <dt class="col-4">Storage</dt>
+                        <dd class="col-8">
+                            <select class="form-select form-select-sm" x-model="productDetails.storage">
+                                <option  selected hiddent>Select Storage</option>
+                                <template x-for="variant in filteredStorageVariant">
+                                    <option :value="variant.storage" x-text="variant.storage"></option>
+                                </template>
+                            </select>
+                        </dd>
+
+                        <dt class="col-4">QTY</dt>
+                        <dd class="col-8">
+                            <div class="d-flex">
+                                <button @click="subtractQTY" :disabled="productDetails.qty <= 1" class="btn btn-sm shadow-none border">-</button>
+                                <p class="border px-2 "x-text="productDetails.qty"></p>
+                                <button @click="addQTY" :disabled="productDetails.qty >= productDetails.stock" class="btn btn-sm shadow-none border">+</button>
+                            </div>
+                        </dd>
+
+                        <dt class="col-4">Price</dt>
+                        <dd class="col-8" x-text="productDetails?.price?.toLocaleString()">
+                        </dd>
+
+                        <dt class="col-4">payment</dt>
+                        <dd class="col-8">
+                            <select class="form-select form-select-sm" x-model="productDetails.paymentType">
+                                <option  selected hidden>Select Payment Type</option>
+                   
+                                <option value="cash">CASH</option>
+                                <option value="cart">CARD</option>
+                                <option value="gcash">GCASH</option>
+                                <option value="paymaya">PAYMAYA</option>
+                       
+                            </select>
+                        </dd>
+                    </dl>
+                <button @click="buyNow" class="btn btn-warning mt-5">BUY NOW</button>
+            </div>
+        </div>
+
+    </div>
+    <h1>Cahiers</h1>
+
+    @end

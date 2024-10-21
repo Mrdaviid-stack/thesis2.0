@@ -1,0 +1,78 @@
+
+
+@layout.online.app({ title: product.name })
+    @slot('meta')
+        <meta name="description" content="A welcome page made with EdgeJS">
+    @endslot
+
+    @if(!auth.use('web').isAuthenticated)
+        <div class="alert alert-warning text-center" role="alert">
+            Login is required!
+        </div>
+    @end
+    
+    <main x-data="shop({ product: {{ JSON.stringify(product) }} })" class="row mt-5">
+        <div class="col">
+            <div class="d-flex justify-content-center flex-column">
+                <div class="align-self-center">
+                    <div 
+                        x-ref="imageContainer"
+                        x-show="viewImage"
+                        x-transition:enter="transition ease-out duration-1000"
+                        x-transition:enter-start="opacity-0 scale-90"
+                        x-transition:enter-end="opacity-100 scale-100"
+                        x-transition:leave="transition ease-in duration-1000"
+                        x-transition:leave-start="opacity-100 scale-100"
+                        x-transition:leave-end="opacity-0 scale-90"
+                    >
+                        <img :src="viewImage" class="flex-grow-1" width="500" alt="{{product.name}}" />
+                    </div>
+                </div>
+                <div class="align-self-center">
+                    <template x-for="variant in variants" :key="variant.id">
+                        <img :src="variant.image" width="90" @click="onShowImage(variant.image)" class="border" role="button" />
+                    </template>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <h3 x-text="product.name"></h3>
+            <h5 x-text="displayPrice"></h5>
+            <hr/>
+            <dl class="row mb-5">
+                <dt class="col-3"><p class="text-muted">Color</p></dt>
+                <dd class="col-9">
+                    <select class="form-select w-50" x-model="options.color">
+                        <option selected hidden>Choose a color</option>
+                        <template x-for="color in variants" :key="color.id">
+                            <option :value="color.color" x-text="color.color"></option>
+                        </template>
+                    </select>
+                </dd>
+                <dt class="col-3"><p class="text-muted">Internal Storage</p></dt>
+                <dd class="col-9">
+                    <select class="form-select w-50" x-bind:disabled="!options.color" x-model="options.storage">
+                        <option selected hidden>Choose a storage</option>
+                        <template x-for="storage in filterVariant">
+                            <option :value="storage.storage" x-text="storage.storage"></option>
+                        </template>
+                    </select>
+                </dd>
+            </dl>
+            <template x-if="details !== undefined">
+                <div class="mb-4">
+                    <h5 x-text="'₱' + details.price.toLocaleString()"></h5>
+                    <h6 class="text-warning fw-bolder" x-text="details.stock + ' in Stock'"></h6>
+                </div>
+            </template>
+            @if(auth.use('web').isAuthenticated) 
+                <div class="d-flex justify-content-start gap-2">
+                    <button @click="submit" class="btn btn-warning" :disabled="details === undefined">ADD TO CART</button>
+                    <button @click="submit" class="btn btn-danger" :disabled="details === undefined">BUY NOW</button>
+                </div>
+            @end
+            <hr class="border"/>
+            <span><strong>Category</strong> Smartphones</span>
+        </div>
+    </main>
+@end
