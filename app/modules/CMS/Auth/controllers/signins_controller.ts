@@ -15,7 +15,9 @@ export default class SigninsController {
 
         await auth.use('web').login(user, isRememberMe)
 
-        return response.status(200).json({success: true, message: `Welcome ${user.email}`})
+        const group = await user.related('groups').query()
+
+        return response.status(200).json({success: true, message: `Welcome ${user.email}`, data: group})
     }
 
     async signout({ response, auth }: HttpContext) {
