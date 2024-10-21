@@ -6,6 +6,7 @@ import Category from '../../app/modules/CMS/Websites/models/category.js'
 import Product from '../../app/modules/CMS/Websites/models/product.js'
 import ProductVariant from '../../app/modules/CMS/Websites/models/product_variant.js'
 import Brand from '../../app/modules/CMS/Websites/models/brand.js'
+import Page from '../../app/modules/CMS/Websites/models/page.js'
 
 export default class extends BaseSeeder {
   async run() {
@@ -164,5 +165,12 @@ export default class extends BaseSeeder {
         </ul>`, storage: '64GB/128GB', color: 'Ocean Wave', stock: '11', image: '/uploads/2024/9/16/p5pq24394w9h9p4gs9emezk5.jpg', sku: 'X682C', price: 6999, productId: 5
       },
     ])
+
+    await Page.create({
+      name: 'home',
+      content: '<p><strong>Home Page!</strong></p>',
+      status: 'publish',
+      files: '/uploads/2024/9/16/p5pq24394w9h9p4gs9emezk5.jpg',
+    })
   }
 }
