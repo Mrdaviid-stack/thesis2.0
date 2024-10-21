@@ -12,10 +12,12 @@ export default class UploadsController {
             })
         }
 
-        console.log(image?.filePath, 'file-path')
+        const index = image?.filePath?.indexOf('uploads/')
+        const extractedPath = image?.filePath?.slice(index)
+        console.log(extractedPath, 'image path')
         //default -4
         return response.status(200).json({
-            location: `uploads/${image?.filePath?.split('\\').slice(-10).join('/')}`
+            location: `${extractedPath}`
         })
     }
 }
