@@ -1,9 +1,11 @@
 @layout.cms.app({ title: "Users" })
 
 	@!datatable({
+		module: "users",
 		records: records.data,
 		paginations: paginations,
-		path: '/admin/users/add/',
+		path: '/cms/admin/users/add/',
+		sortColumn: 'firstname',
 		isModal: false,
 		canAdd: 'admin-users-add',
 		canEdit: 'admin-users-edit',

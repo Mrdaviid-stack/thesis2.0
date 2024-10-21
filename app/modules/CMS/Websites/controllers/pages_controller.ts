@@ -1,4 +1,4 @@
-// import type { HttpContext } from '@adonisjs/core/http'
+import type { HttpContext } from '@adonisjs/core/http'
 
 import BasesController from "../../../Core/controllers/bases_controller.js";
 import Page from "../models/page.js";
@@ -13,4 +13,6 @@ export default class PagesController extends BasesController {
             files: ['files']
         });
     }
+
+    async preview({}: HttpContext) {}
 }

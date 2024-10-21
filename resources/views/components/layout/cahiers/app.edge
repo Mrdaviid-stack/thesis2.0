@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="csrf-token" content="{{ csrfField() }}">
+        <title>
+        {{ title || 'AdonisJS - A fully featured web framework for Node.js'}}
+        </title>
+        @if ($slots.meta)
+            {{{ await $slots.meta() }}}
+        @endif
+
+        {{-- <link rel="preconnect" href="https://fonts.bunny.net" /> --}}
+        {{-- <link href="https://fonts.bunny.net/css?family=instrument-sans:400,400i,500,500i,600,600i,700,700i" rel="stylesheet"/> --}}
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg bg-body-tertiary">
+            <div class="container">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-4">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/cashiers">
+                                <i class="fa-solid fa-cash-register"></i>
+                                <span>Walk In Order</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/cashiers/acknowledgements">
+                                <i class="fa-solid fa-list"></i>
+                                <span>Order Acknowledgement</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/cashiers/order-tracking">
+                                <i class="fa-solid fa-truck-moving"></i>
+                                <span>Order Tracking</span>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/cashiers/inventory">
+                                <i class="fa-solid fa-warehouse"></i>
+                                <span>Inventory</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <main class="container">
+            {{{ await $slots.main() }}}
+        </main>
+
+
+    </body>
+</html>

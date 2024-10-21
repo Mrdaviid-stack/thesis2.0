@@ -1,5 +1,5 @@
 <div class="mb-3">
     <label for="{{name}}">{{ label }}</label>
-    <textarea name="{{ name || 'content' }}" id="editor">{{ value }}</textarea>
+    <textarea name="{{ name || 'content' }}" class="tinymce" id="{{name}}" x-model="form.{{name}}"></textarea>
     <div class="text-danger" x-text="errors.{{name}}"></div>
 </div>

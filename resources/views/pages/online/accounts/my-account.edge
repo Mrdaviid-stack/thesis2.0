@@ -1,0 +1,27 @@
+@layout.online.app({ title: "Account" })
+    @slot('meta')
+        <meta name="description" content="A welcome page made with EdgeJS">
+    @endslot
+    <button class="nav-link active" id="v-pills-home-tab" data-bs-toggle="pill" data-bs-target="#v-pills-home" type="button" role="tab" aria-controls="v-pills-home" aria-selected="true">Home</button>
+    <main class="row mt-5">
+        <div class="row">
+            <div class="col-12 col-lg-4">
+                <ul class="list-group">
+                    <li class="list-group-item py-3 bg-warning">
+                        <a class="nav-link" href="/my-account">DASHBOARD</a>
+                    </li>
+                    <li class="list-group-item py-3">
+                        <a class="nav-link" href="/my-account/orders">ORDERS</a>
+                    </li>
+                    <li class="list-group-item py-3">
+                        <a class="nav-link" href="/my-account/details">ACCOUNT DETAILS</a>
+                    </li>
+                    <li class="list-group-item py-3">LOG OUT</li>
+                </ul>
+            </div>
+            <div class="col-12 col-lg-8">
+                <p>From your account dashboard you can view your recent orders, manage your shipping and billing addresses, and edit your password and account details.</p>
+            </div>
+        </div>
+    </main>
+@end

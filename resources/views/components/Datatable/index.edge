@@ -1,11 +1,10 @@
 @let(data = records)
 @let(pagination = paginations)
+@let(column = sortColumn || 'name') 
 {{-- @let(isPermission = !hasPermission ? false : true) --}}
 @let(isStatus = !hasStatus ? false : true)
 
-<p x-text="isModal"></p>
-
-<section x-data="datatable({ records: {{JSON.stringify(data)}} })" class="shadow-md">
+<section x-data="datatable({ records: {{JSON.stringify(data)}}, sortColumn: {{JSON.stringify(column)}} })" class="shadow-md">
     <div class="border bg-light pt-3 pb-2 px-4">
         <div class="d-flex justify-content-start align-items-center gap-1 mb-1">
             <input type="text" class="form-control form-control-sm flex-grow-1" placeholder="Search" x-model="searchQuery" />
@@ -67,22 +66,52 @@
                     <input type="checkbox" class="form-check-input" :value="record.id" x-model="selectedItems" />
                 </div>
                 <div class="lh-sm">
-                    <h6 class="card-title" x-text="record.name"></h6> 
-                    <small class="text-muted"><span x-text="record.description"></span> | <span x-text="record.status"></span> |
+                    @if (module == "users")
+                        <h6 class="card-title"><span x-text="record.firstname"> </span> <span x-text="record.lastname"> </span></h6> 
+                        <small class="text-muted"><span x-text="record.email"></span> | <span x-text="record.status"></span> | </small>
+                    @elseif (module == "products")
+                        <h6 class="card-title" x-text="record.name"></h6> 
+                        <small class="text-muted"> <span x-text="record.modelNumber"></span> | <span x-text="record.status"></span> | </small>
+                    @else
+                        <h6 class="card-title" x-text="record.name"></h6> 
+                        <small class="text-muted"> <span x-text="record.description"></span> | <span x-text="record.status"></span> | </small>
+                    @end
+
+
+
                         @can('hasAccess', canEdit)
                             @if(isModal)
                                 <a data-bs-toggle="modal" data-bs-target="#modal" :href="'{{path}}' + record.id" accesskey="n" style="color: #495057BF;">Edit <i class="fa-solid fa-pen-to-square"></i></a> |
                             @else
-                                <a :href="'{{path}}' + record.id"">Edit <i class="fa-solid fa-pen-to-square"></i></a> |
+                                <a class="text-sm" :href="'{{path}}' + record.id"">Edit <i class="fa-solid fa-pen-to-square"></i></a> |
                             @end
                         @end
 
           
                         @can('hasAccess', canEditPermission)
-                            <a data-bs-toggle="modal" data-bs-target="#modal" :href="'/admin/permissions/add/' + record.id" accesskey="n" style="color: #495057BF;">Permission <i class="fa-solid fa-pen-to-square"></i></a>
+                            <a data-bs-toggle="modal" data-bs-target="#modal" :href="'/cms/admin/permissions/add/' + record.id" accesskey="n" style="color: #495057BF;">Permission <i class="fa-solid fa-pen-to-square"></i></a>
                         @end
    
                     </small>
+                    @if (module == "products")
+                        <ul class="navbar-nav">
+                            <template x-if="record.productVariants && record.productVariants.length">
+                                <template x-for="variant in record.productVariants" :key="variant.id">
+                                    <li class="nav-item">
+                                        <img :src="'http://cms-alpine.localhost:3333/' + variant.image" width="50" height="50" :alt="variant.sku" />
+                                        SKU: <small x-text="variant.sku"></small> | Color: <small x-text="variant.color"></small> | 
+                                        Stock: <span class="badge text-bg-danger" :class="variant.stock <= 5 ? 'text-bg-danger' : variant.stock <= 10 ? 'text-bg-warning' : 'text-bg-success'" x-text="variant.stock"></span>
+                                            {{-- <template x-if="variant.stock <= 5"><span class="badge text-bg-danger" x-text="variant.stock"></span></template>
+                                            <template x-if="variant.stock <= 10"><span class="badge text-bg-warning" x-text="variant.stock"></span></template>
+                                            <template x-if="variant.stock >= 10"><span class="badge text-bg-success" x-text="variant.stock"></span></template> --}}
+                                    </li> <!-- Replace 'color' with the appropriate property -->
+                                </template>
+                            </template>
+                            <template x-if="!record.productVariants || !record.productVariants.length">
+                                <li>No variants available.</li>
+                            </template>
+                        </ul>
+                    @end
                     <br/>
                     <small class="text-muted">Created at: <span x-text="formatDate(record.createdAt)"></span></small>
                 </div>
