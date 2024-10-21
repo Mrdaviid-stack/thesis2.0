@@ -13,9 +13,9 @@ export default class UploadsController {
         }
 
         console.log(image?.filePath, 'file-path')
-
+        //default -4
         return response.status(200).json({
-            location: `/uploads/${image?.filePath?.split('\\').slice(-4).join('/')}`
+            location: `uploads/${image?.filePath?.split('\\').slice(-10).join('/')}`
         })
     }
 }
