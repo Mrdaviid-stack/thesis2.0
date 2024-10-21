@@ -17,7 +17,7 @@ export default class UploadsController {
         console.log(extractedPath, 'image path')
         //default -4
         return response.status(200).json({
-            location: `${extractedPath}`
+            location: `/${extractedPath}`
         })
     }
 }
