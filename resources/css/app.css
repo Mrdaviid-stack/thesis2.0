@@ -47,6 +47,11 @@ html, body {
     overflow: hidden; /* Hide overflow */
 }
 
+.ql-container {
+    height: 300px!important;
+    width: 100%!important; 
+  }
+
 /* .custom-table > .custom-table-wrapper >  .custom-table-checkbox  {
     border: 1px solid black!important;
 } */

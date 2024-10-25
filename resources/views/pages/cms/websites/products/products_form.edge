@@ -43,11 +43,20 @@
                             placeholder: "Model Number",
                         })
 
-                        @!forms.richTextField({
+
+                        {{-- @!forms.richTextField({
                             name: "content",
                             label: "Description",
                             placeholder: "Description",
-                        })
+                        }) --}}
+                        {{-- @!forms.textField({
+                            name: "content",
+                            label: "Description",
+                            placeholder: "Description",
+                        }) --}}
+                        <div id="editor">
+                        </div>
+                          
 
                     </div>
 
@@ -96,7 +105,7 @@
 
                                 <div class="col mb-2">
                                     <label>Feature</label>
-                                    <textarea :id="'editor' + index" name="feature" class="tinymce" id="feature" x-model="variant.feature"></textarea>
+                                    <div :id="'editor' + index" name="feature" id="feature" x-model="variant.feature"></div>
                                 </div>
 
                                 <div :id="'dropzone_variant'+index"  :class="'dropzone _dropzone_variant'+index"></div>
