@@ -98,8 +98,8 @@
                             <template x-if="record.productVariants && record.productVariants.length">
                                 <template x-for="variant in record.productVariants" :key="variant.id">
                                     <li class="nav-item">
-                                        <img :src="'http://localhost:3333' + variant.image" width="50" height="50" :alt="variant.sku" />
-                                        {{--   <img :src="'https://bsd-international.onrender.com' + variant.image" width="50" height="50" :alt="variant.sku" /> --}}
+                                        {{-- <img :src="'http://localhost:3333' + variant.image" width="50" height="50" :alt="variant.sku" /> --}}
+                                          <img :src="'https://bsd-international.onrender.com' + variant.image" width="50" height="50" :alt="variant.sku" />
                                         SKU: <small x-text="variant.sku"></small> | Color: <small x-text="variant.color"></small> | 
                                         Stock: <span class="badge text-bg-danger" :class="variant.stock <= 5 ? 'text-bg-danger' : variant.stock <= 10 ? 'text-bg-warning' : 'text-bg-success'" x-text="variant.stock"></span>
                                             {{-- <template x-if="variant.stock <= 5"><span class="badge text-bg-danger" x-text="variant.stock"></span></template>
