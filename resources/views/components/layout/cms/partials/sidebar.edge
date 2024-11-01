@@ -68,6 +68,22 @@
             },
         ]
     },
+    {
+        permission: 'admin-admin-view',
+        route: 'reports',
+        label: 'Reports',
+        icon: 'fa-user-tie',
+        active: segment == 'reports' && 'active',
+        sub_menu: [
+            {
+                permission: 'admin-groups-view',
+                route: '/cms/reports/sales',
+                label: 'Sales',
+                icon: 'fa-house',
+                active: sub_segment == 'reports' && 'text-decoration-underline'
+            },
+        ]
+    },
 ])
 
 

@@ -9,3 +9,5 @@ import './websites/products'
 import './admin/groups'
 import './admin/permissions'
 import './admin/users'
+
+import './reports/sales'
