@@ -1,3 +1,5 @@
+import './home'
+
 import './auth/login'
 
 import './websites/pages'
