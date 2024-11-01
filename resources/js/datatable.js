@@ -29,6 +29,9 @@ document.addEventListener('alpine:init', () => {
                     if (this.sortColumn === 'createdAt') {
                         aValue = new Date(a[this.sortColumn]);
                         bValue = new Date(b[this.sortColumn]);
+                    } else if (this.sortColumn === 'stock') {
+                        aValue = parseInt(a.productVariants[0][this.sortColumn]);
+                        bValue = parseInt(b.productVariants[0][this.sortColumn]);
                     } else {
                         aValue = a[this.sortColumn].toString().toLowerCase();
                         bValue = b[this.sortColumn].toString().toLowerCase();
