@@ -6,5 +6,6 @@ export const UserValidationSchema = vine.compile(
         lastname: vine.string().minLength(3).maxLength(100),
         email: vine.string().email(),
         address: vine.string().minLength(3),
+        group: vine.number().optional()
     })
 )
