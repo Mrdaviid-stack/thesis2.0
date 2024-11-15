@@ -15,7 +15,8 @@ export default class extends BaseSeeder {
     await Group.createMany([
       { name: 'Superadmin', description: 'Superuser' },
       { name: 'Cashiers', description: 'Cashiers' },
-      { name: 'Customers', description: 'customers' },
+      { name: 'Customers', description: 'Customers' },
+      { name: 'Riders', description: 'Riders' },
     ])
 
     await Permission.createMany([
@@ -61,6 +62,18 @@ export default class extends BaseSeeder {
       { name: 'websites-brands-edit', description: 'brands edit'},
       { name: 'websites-brands-delete', description: 'brands delete'},
       //
+      { name: 'customers-details-view', description: 'details view'},
+      { name: 'customers-details-index', description: 'details index'},
+      { name: 'customers-details-add', description: 'details add'},
+      { name: 'customers-details-edit', description: 'details edit'},
+      { name: 'customers-details-delete', description: 'details delete'},
+      //
+      { name: 'customers-purchase-view', description: 'purchase view'},
+      { name: 'customers-purchase-index', description: 'purchase index'},
+      { name: 'customers-purchase-add', description: 'purchase add'},
+      { name: 'customers-purchase-edit', description: 'purchase edit'},
+      { name: 'customers-purchase-delete', description: 'purchase delete'},
+      //
       { name: 'cashiers-walk_in_order-view', description: 'walk_in_order view'},
       { name: 'cashiers-walk_in_order-index', description: 'walk_in_order index'},
       { name: 'cashiers-walk_in_order-add', description: 'walk_in_order add'},
@@ -104,7 +117,7 @@ export default class extends BaseSeeder {
     ])
 
     const groupSA = await Group.findBy('name','Superadmin')
-    await groupSA?.related('permissions').sync(Array.from({ length: 34}, (_, index) => index + 1))
+    await groupSA?.related('permissions').sync(Array.from({ length: 64}, (_, index) => index + 1))
     await groupSA?.related('users').sync([1])
 
 
