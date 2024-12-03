@@ -120,11 +120,9 @@ export default class extends BaseSeeder {
     await groupSA?.related('permissions').sync(Array.from({ length: 64}, (_, index) => index + 1))
     await groupSA?.related('users').sync([1])
 
-
     const groupCA = await Group.findBy('name','Cashiers')
     await groupCA?.related('permissions').sync(Array.from({ length: 34}, (_, index) => index + 1))
     await groupCA?.related('users').sync([2])
-
 
     await Category.createMany([
       { name: 'Smartphones', description: 'smartphone', status: 'active' },

@@ -3,7 +3,14 @@ import Order from '../../CMS/Websites/models/order.js'
 import Transaction from '../../CMS/Websites/models/transaction.js'
 
 export default class AcknowledgementsController {
-    async index({ view }: HttpContext) {
+    async index({ view, response, auth }: HttpContext) {
+
+        const guard = await auth.user?.related('groups').query()
+        if (guard![0].name === 'Riders') {
+            return response.redirect().toPath('/cashiers/order-tracking')
+        }
+
+
         const ordersQuery = await Order.query()
             .preload('orderItems', (orderItem) => 
                 orderItem.preload('productVariant', (productVariant) => 

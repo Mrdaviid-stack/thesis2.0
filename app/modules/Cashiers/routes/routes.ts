@@ -15,10 +15,10 @@ export default function CashierRoutes() {
         router.get('/acknowledgements', [AcknowledgementsController, 'index']).as('acknowledgements').use(middleware.auth())
         router.post('/acknowledgements/:transactionId', [AcknowledgementsController, 'acknowledge']).as('acknowledgements.acknowledge').use(middleware.auth())
 
-        router.get('/order-tracking', [OrderTrackingsController, 'index']).as('order-tracking')
-        router.post('/order-tracking/:id', [OrderTrackingsController, 'updateDeliveryStatus']).as('order-tracking.update')
+        router.get('/order-tracking', [OrderTrackingsController, 'index']).as('order-tracking').use(middleware.auth())
+        router.post('/order-tracking/:id', [OrderTrackingsController, 'updateDeliveryStatus']).as('order-tracking.update').use(middleware.auth())
 
-        router.get('/inventory', [InventoriesController, 'index']).as('inventory')
+        router.get('/inventory', [InventoriesController, 'index']).as('inventory').use(middleware.auth())
 
     }).prefix('/cashiers')
     

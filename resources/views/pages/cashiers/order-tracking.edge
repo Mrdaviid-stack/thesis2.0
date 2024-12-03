@@ -6,7 +6,18 @@
     <div class="mt-5" x-data="orderTracking({
         orders: {{JSON.stringify(orders)}}
     })">
-        <input class="form-control mb-3" placeholder="Search order" x-model="searchQuery" />
+        <div class="d-flex justify-content-between gap-5">
+            <input class="form-control mb-3" placeholder="Search order" x-model="searchQuery" />
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Filter by:
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a @click="filterStatus('delivered')" class="dropdown-item" href="#">Delivered</a></li>
+                  <li><a @click="filterStatus('in_transit')" class="dropdown-item" href="#">In-transit</a></li>
+                </ul>
+              </div>
+        </div>
         @if(orders.length > 0)
         <div class="table-responsive">
             <table class="table table-borderless align-middle">

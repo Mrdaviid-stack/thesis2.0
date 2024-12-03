@@ -17,6 +17,7 @@ export default class OrderTrackingsController {
                     
             )
             .preload('user')
+            .orderBy('created_at', 'desc')
 
         const orders = ordersQuery.flatMap((orders) => {
             return orders.orderItems.map((orderItem) => ({

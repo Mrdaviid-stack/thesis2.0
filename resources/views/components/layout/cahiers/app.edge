@@ -27,34 +27,48 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-4">
+
+                        @can('hasAccess', 'cashiers-walk_in_order-index')
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="/cashiers">
                                 <i class="fa-solid fa-cash-register"></i>
                                 <span>Walk In Order</span>
                             </a>
                         </li>
+                        @end
+
+                        @can('hasAccess', 'cashiers-acknowledgement-index')
                         <li class="nav-item">
                             <a class="nav-link" href="/cashiers/acknowledgements">
                                 <i class="fa-solid fa-list"></i>
                                 <span>Order Acknowledgement</span>
                             </a>
                         </li>
+                        @end
+
+                        @can('hasAccess', 'cashiers-tracking-index')
                         <li class="nav-item">
                             <a class="nav-link" href="/cashiers/order-tracking">
                                 <i class="fa-solid fa-truck-moving"></i>
                                 <span>Order Tracking</span>
                             </a>
                         </li>
+                        @end
+
+                        @can('hasAccess', 'cashiers-inventory-index')
                         <li class="nav-item">
                             <a class="nav-link" href="/cashiers/inventory">
                                 <i class="fa-solid fa-warehouse"></i>
                                 <span>Inventory</span>
                             </a>
                         </li>
+                        @end
+
                     </ul>
                 </div>
             </div>
         </nav>
+ 
         <main class="container">
             {{{ await $slots.main() }}}
         </main>

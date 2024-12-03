@@ -10,7 +10,13 @@ const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLM
 
 export default class WalkInOrdersController {
 
-    async index({ view, request }: HttpContext) {
+    async index({ view, request, response, auth }: HttpContext) {
+
+        const guard = await auth.user?.related('groups').query()
+        if (guard![0].name === 'Riders') {
+            return response.redirect().toPath('/cashiers/order-tracking')
+        }
+
         const page = request.input('page', 1)
         const products = await Product.query()
             .select('id', 'name')

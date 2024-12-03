@@ -8,6 +8,9 @@ document.addEventListener("alpine:init", () => {
         changeDeliveryStatus(event, orderTransactionId) {
             console.log(orderTransactionId)
             useForm(`/cashiers/order-tracking/${orderTransactionId}`, {deliveryStatus:event.target.value}, {}, )
+        },
+        filterStatus(status = 'in_transit') {
+            this.orders = props.orders.filter(order => order.orderDeliveryStatus === status)
         }
     }))
 })
