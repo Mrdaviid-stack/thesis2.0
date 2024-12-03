@@ -1,5 +1,29 @@
 @layout.cms.app({ title: "Purchase History" })
 
-    <h1>History</h1>
+    <h4 class="mb-4">Purchase History</h4>
+
+    <div class="card card-body">
+        <table class="table table-striped">
+            <thead>
+                <th>Name</th>
+                <th>Order Reference</th>
+                <th>Payment Method</th>
+                <th>Status</th>
+            </thead>
+            <tbody>
+                @each(history in histories)
+                    <tr>
+                        <td>{{ history.$preloaded.order.$extras.fullname }}</td>
+                        <td>{{ history.reference }}</td>
+                        <td>{{ history.paymentMethod }}</td>
+                        <td>{{ history.deliveryStatus }}</td>
+                    </tr>
+                @end
+            </tbody>
+        </table>
+    </div>
+    <div class="d-flex justify-content-end mt-3">
+        @!pagination({paginator: histories })
+    </div>
 
 @end
