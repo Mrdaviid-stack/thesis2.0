@@ -30,18 +30,22 @@ export default function OnlineRoutes() {
     
         router.get('/shop/:categorySlug/:productSlug',[ShopsController, 'shop']).as('shop')
 
-        router.get('/cart', [CartsController, 'index']).as('cart')
-        router.get('/cart/items', [CartsController, 'getCartItems']).as('userCart')
+        router.get('/cart', [CartsController, 'index']).as('cart').use(middleware.auth())
+        router.get('/cart/items', [CartsController, 'getCartItems']).as('userCart').use(middleware.auth())
         router.post('/cart/add', [CartsController, 'addToCart']).as('addToCart').use(middleware.auth())
-        router.put('/cart/:id/update', [CartsController, 'updateQuantityInCart']).as('updateQuantityInCart')
-        router.delete('/cart/:id/remove', [CartsController, 'removeItemInCart']).as('cart.items.remove')
+        router.put('/cart/:id/update', [CartsController, 'updateQuantityInCart']).as('updateQuantityInCart').use(middleware.auth())
+        router.delete('/cart/:id/remove', [CartsController, 'removeItemInCart']).as('cart.items.remove').use(middleware.auth())
 
-        router.get('/checkout', [CheckoutsController, 'index']).as('checkoutIndex')
+        router.get('/checkout', [CheckoutsController, 'index']).as('checkoutIndex').use(middleware.auth())
         router.post('/checkout', [CheckoutsController, 'checkout']).as('checkoutPost').use(middleware.auth())
 
-        router.get('/my-account', [MyAccountsController, 'index']).as('myAccount')
-        router.get('/my-account/orders', [OrdersController, 'index']).as('orders')
-        router.get('/my-account/details', [DetailsController, 'index']).as('details')
+        router.get('/my-account', [MyAccountsController, 'index']).as('myAccount').use(middleware.auth())
+        
+        router.get('/my-account/orders', [OrdersController, 'index']).as('orders').use(middleware.auth())
+        router.patch('/my-account/orders/:id/cancel-request', [OrdersController, 'cancelOrder']).as('order-cancel-request').use(middleware.auth())
+        router.patch('/my-account/orders/:id/cancel-confirm', [OrdersController, 'cancledConfirm']).as('order-cancel-confirm').use(middleware.auth())
+
+        router.get('/my-account/details', [DetailsController, 'index']).as('details').use(middleware.auth())
 
         router.post('/my-account/details', [DetailsController, 'update']).as('details.update').use(middleware.auth())
     })

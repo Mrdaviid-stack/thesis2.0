@@ -1,5 +1,6 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Order from '../../CMS/Websites/models/order.js'
+import Transaction from '../../CMS/Websites/models/transaction.js'
 
 export default class OrdersController {
 
@@ -19,11 +20,31 @@ export default class OrdersController {
                 productColor: orderItem.productVariant.color,
                 productStorage: orderItem.productVariant.storage,
                 quantity: orderItem.quantity,
-                price: orderItem.price
+                price: orderItem.price,
+                status: orders.transaction.status,
             }))
         })
 
-        return view.render('pages/online/accounts/orders', { orders })
+        return view.render('pages/online/accounts/orders', { orders: orders.filter(order => order.status !== 'cancelled') })
+    }
+
+    async cancelOrder({ response, params }: HttpContext) {
+
+        const TransactionQuery = await Transaction.find(params.id)
+
+        TransactionQuery?.merge({ status: 'request_cancel' }).save();
+
+        return response.status(200).json({ message: 'Cancel Requested!' })
+    }
+
+    async cancledConfirm({ response, params }: HttpContext) {
+
+        const TransactionQuery = await Transaction.find(params.id)
+
+        TransactionQuery?.merge({ status: 'cancelled' }).save();
+
+        return response.status(200).json({ message: 'Cancel Requested!' })
+
     }
 
 }

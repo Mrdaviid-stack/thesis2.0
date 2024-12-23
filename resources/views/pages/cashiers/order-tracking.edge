@@ -14,7 +14,7 @@
                 </button>
                 <ul class="dropdown-menu">
                   <li><a @click="filterStatus('delivered')" class="dropdown-item" href="#">Delivered</a></li>
-                  <li><a @click="filterStatus('in_transit')" class="dropdown-item" href="#">In-transit</a></li>
+                  <li><a @click="filterStatus('to_ship')" class="dropdown-item" href="#">To Ship</a></li>
                 </ul>
               </div>
         </div>
@@ -59,8 +59,11 @@
                                 <select class="form-select" x-on:change="changeDeliveryStatus($event, order.orderTransactionId)">
                                     <option selected hidden>Select Delivery Status</option>
                                     <option value="processing">processing</option>
-                                    <option value="in_transit">In Transit</option>
+                                    <option value="to_ship">To Ship</option>
+                                    <option value="to_receive">To Receive</option>
+                                    <option value="receive">Received</option>
                                     <option value="delivered">Delivered</option>
+                                    <option value="returned">Returned</option>
                                 </select>
                             </td>
                         </tr>

@@ -40,11 +40,12 @@ export default class AcknowledgementsController {
                 orderProductColor: orderItem.productVariant?.color,
                 orderProductStorage: orderItem.productVariant?.storage,
                 orderProductImage: orderItem.productVariant?.image,
-                customerName: `${orders.user.firstname} ${orders.user.lastname}`
+                customerName: `${orders.user.firstname} ${orders.user.lastname}`,
+                orderTransactionStatus: orders.transaction?.status,
             }))
         })
 
-        return view.render('pages/cashiers/awknowledgements', { orders: orders.filter(order => order.orderDeliveryStatus == 'pending') })
+        return view.render('pages/cashiers/awknowledgements', { orders: orders.filter(order => order.orderDeliveryStatus == 'pending' && order.orderTransactionStatus !== 'cancelled') })
     }
 
     async acknowledge({ response, params }: HttpContext) {

@@ -43,7 +43,14 @@
                                         <p class="mb-0"><strong>Amount:</strong> <span x-text="order.price.toLocaleString()"></span></p>
                                     </div>
                                 </div>
-                                <button class="btn btn-warning" disabled x-text="order.deliveryStatus"></button>
+                                <div class="d-flex gap-2">
+                                    <template x-if="order.status !== 'request_cancel'">
+                                        <button class="btn btn-warning" disabled x-text="order.deliveryStatus"></button>
+                                    </template>
+                                    <template x-if="order.deliveryStatus === 'pending'">
+                                        <button class="btn btn-danger" :disabled="order.status === 'request_cancel'" @click="onCancelOrder(order.transactionId)">Cancel Request</button>
+                                    </template>
+                                </div>
                             </li>
                         </template>
                     </ul>

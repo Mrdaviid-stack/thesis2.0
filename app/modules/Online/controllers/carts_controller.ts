@@ -68,8 +68,9 @@ export default class CartsController {
     }
 
     async removeItemInCart({ response, params }: HttpContext) {
-        const cartItem = await CartItem.findOrFail(params.id)
-        await cartItem.delete()
+        console.log(params.id)
+        const cartItem = await CartItem.findBy('product_variant_id', params.id)
+        await cartItem?.delete()
         return response.status(201).json({success:true})
     }
 

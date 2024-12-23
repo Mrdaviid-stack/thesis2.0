@@ -1,4 +1,5 @@
 import Alpine from "alpinejs";
+import axios from "axios";
 import ImageZoom from "js-image-zoom";
 import useForm from "../useForms"
 document.addEventListener("alpine:init", () => {
@@ -12,8 +13,18 @@ document.addEventListener("alpine:init", () => {
                 (order.customerName.toLowerCase().includes(this.searchQuery.toLowerCase())
             ))))
         },
+        
         acknowledge(transactionId) {
             useForm(`/cashiers/acknowledgements/${transactionId}`, {}, {}, '/cashiers/acknowledgements')
+        },
+
+        onCancelled(id) {
+            console.log('cancel')
+            axios.patch(`/my-account/orders/${id}/cancel-confirm`)
+                .then(() => {
+                    location.reload()
+                })
+                .catch(error => console.log(error))
         }
     }))
 })
