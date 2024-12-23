@@ -147,7 +147,7 @@
                 @else
                     @can('hasAccess', menu.permission)
                         <li class="nav-item" >
-                            <a class="nav-link {{ menu.active }}" href="/">
+                            <a class="nav-link {{ menu.active }}" href="{{ menu.route }}">
                                 <div class="icon icon-shape icon-sm shadow-md border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                                     <i class="fa-solid {{ menu.icon }} {{ menu.active ? 'text-white' : 'text-dark' }} fa-lg"></i>
                                 </div>

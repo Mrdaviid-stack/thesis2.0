@@ -55,3 +55,17 @@ html, body {
 /* .custom-table > .custom-table-wrapper >  .custom-table-checkbox  {
     border: 1px solid black!important;
 } */
+
+/* Banner */
+.banner__container {
+    border: 1px solid black;
+    min-height: 350px;
+}
+
+.banner__container, .banner__img {
+    width: 100%;
+    height: auto;
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+}
