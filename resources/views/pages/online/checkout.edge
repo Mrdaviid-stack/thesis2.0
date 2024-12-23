@@ -9,6 +9,13 @@
         email: '{{user.email}}',
         address: '{{user.address}}'
     })">
+        <template x-if="isProcessing">
+            <div class="loading__state">
+                <div class="spinner-grow" style="width: 5rem; height: 5rem;" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </template>
         <div class="row">
             <div class="col-12 col-lg-6">
                 <h5>Billing Details</h5>

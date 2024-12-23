@@ -42,9 +42,7 @@ export default class AuthController {
                 })
         })
 
-        //await auth.use('web').login(newUser)
-
-        return response.redirect('/login')
+        return response.status(200).json({ message: 'Account successfully created, checked your email for temporary password!'})
     }
 
     async loginUser({ request, response, auth }: HttpContext) {

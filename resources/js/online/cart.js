@@ -22,6 +22,8 @@ document.addEventListener("alpine:init", () => {
             paymentMethod: '',
             carts: [],
         },
+        isProcessing: false,
+
         init() {
             this.$watch('carts', () =>  console.log('watching carts'))
             this.initializeCart()
@@ -64,7 +66,9 @@ document.addEventListener("alpine:init", () => {
                 .then(() => console.log('updated quantity'))
         },
         checkout() {
+            this.isProcessing = true;
             useForm("/checkout", this.orderDetails, this.errors, '/')
+            
         }
     }))
 })

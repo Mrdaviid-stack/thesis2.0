@@ -125,8 +125,10 @@ export default class extends BaseSeeder {
     await groupCA?.related('users').sync([2])
 
     await Category.createMany([
-      { name: 'Smartphones', description: 'smartphone', status: 'active' },
-      { name: 'Tablets', description: 'tablets', status: 'active' },
+      { name: 'Smartphones', description: 'Smartphone', status: 'active' },
+      { name: 'Tablets', description: 'Tablets', status: 'active' },
+      { name: 'Foldables', description: 'Foldables', status: 'active' },
+      { name: 'Accessories & Wearables', description: 'Accessories & Wearables', status: 'active' },
     ])
 
     await Brand.createMany([

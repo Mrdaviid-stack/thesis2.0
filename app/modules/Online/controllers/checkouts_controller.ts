@@ -18,7 +18,7 @@ export default class CheckoutsController {
         return view.render('pages/online/checkout', { user: auth.user })
     }
 
-    async checkout({ request, auth }: HttpContext) { 
+    async checkout({ request, response, auth }: HttpContext) { 
         const data = request.body()
         const order = await Order.create({
             userId: auth.user?.id,
@@ -73,6 +73,8 @@ export default class CheckoutsController {
                     reference: data.reference,
                     lastname: data.lastName
                 })
-        })
+        });
+
+        return response.status(200).json({ message: 'Purchased successfully.' })
     }
 }
