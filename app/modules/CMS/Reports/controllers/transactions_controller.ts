@@ -27,9 +27,10 @@ export default class TransactionsController {
                 fullname: `${query.firstName}, ${query.lastName}`,
                 invoice: query.transaction.invoice,
                 reference: query.transaction.reference,
-                status: query.transaction.deliveryStatus,
+                status: (!query.transaction.status) ? query.transaction.deliveryStatus : query.transaction.status,
                 amount: query.transaction.totalAmount,
-                product: query.orderItems.map(item => item.productVariant.product.name)
+                product: query.orderItems.map(item => item.productVariant.product.name),
+
             }))
     
             return response.status(200).json(transaction)

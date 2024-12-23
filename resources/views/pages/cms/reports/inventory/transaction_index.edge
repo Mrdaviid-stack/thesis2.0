@@ -1,8 +1,7 @@
 @layout.cms.app({ title: "Transaction History" })
 
-    <main x-data="transaction()">
-        <h1>Transaction History</h1>
-
+    <h1>Transaction History</h1>
+    <main class="card card-body" x-data="transaction()">
         <section>
             <div class="d-flex flex-row card card-body align-items-center gap-3">
                 <div class=" w-75">
@@ -21,20 +20,18 @@
 
         <div class="card card-body mt-5">
 
-            <input class="form-control" placeholder="Search by invoice." x-model="invoiceQuery" @input="invoiceSearch($event)"/>
+            {{-- <input class="form-control" placeholder="Search by invoice." x-model="invoiceQuery" @input="invoiceSearch($event)"/> --}}
 
-            {{-- <div class="dropdown">
+            <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Filter
                 </button>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" @click="filteredTransaction('pending')">Pending</a></li>
-                  <li><a class="dropdown-item" @click="filteredTransaction('processing')">Processing</a></li>
-                  <li><a class="dropdown-item" @click="filteredTransaction('in_transit')">In Transit</a></li>
-                  <li><a class="dropdown-item" @click="filteredTransaction('delivered')">Delivered</a></li>
-                  <li><a class="dropdown-item" @click="filteredTransaction('returned')">Returned</a></li>
+                    <li><a class="dropdown-item" @click="filteredTransaction('all')">All Transaction</a></li>
+                    <li><a class="dropdown-item" @click="filteredTransaction('cancelled')">Cancelled</a></li>
+                    <li><a class="dropdown-item" @click="filteredTransaction('returned')">Exchange</a></li>
                 </ul>
-              </div> --}}
+              </div>
 
             <div class="table-responsive">
                 <table class="table table-borderless">
@@ -55,7 +52,7 @@
                                 <td x-text="trns.product"></td>
                                 <td x-text="trns.fullname"></td>
                                 <td x-text="trns.reference"></td>
-                                <td x-text="trns.amount"></td>
+                                <td x-text="new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP'}).format(trns.amount)"></td>
                                 <td x-text="trns.status"></td>
                             </tr>
                         </template>

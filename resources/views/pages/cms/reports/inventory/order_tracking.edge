@@ -1,8 +1,7 @@
 @layout.cms.app({ title: "Order Tracking" })
 
-    <main x-data="tracking()">
-        <h1>Order tracking</h1>
-
+    <h1>Order tracking</h1>
+    <main class="card card-body" x-data="tracking()">
         <section>
             <div class="d-flex flex-row card card-body align-items-center gap-3">
                 <div class=" w-75">
@@ -26,11 +25,14 @@
                   Filter
                 </button>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" @click="filteredTracking('pending')">Pending</a></li>
-                  <li><a class="dropdown-item" @click="filteredTracking('processing')">Processing</a></li>
-                  <li><a class="dropdown-item" @click="filteredTracking('in_transit')">In Transit</a></li>
-                  <li><a class="dropdown-item" @click="filteredTracking('delivered')">Delivered</a></li>
-                  <li><a class="dropdown-item" @click="filteredTracking('returned')">Returned</a></li>
+                    <li><a class="dropdown-item" @click="filteredTracking('all')">All</a></li>
+                    <li><a class="dropdown-item" @click="filteredTracking('pending')">Pending</a></li>
+                    <li><a class="dropdown-item" @click="filteredTracking('processing')">Processing</a></li>
+                    <li><a class="dropdown-item" @click="filteredTracking('to_ship')">In Transit</a></li>
+                    <li><a class="dropdown-item" @click="filteredTracking('to_receive')">Delivered</a></li>
+                    <li><a class="dropdown-item" @click="filteredTracking('received')">Returned</a></li>
+                    <li><a class="dropdown-item" @click="filteredTracking('delivered')">Delivered</a></li>
+                    <li><a class="dropdown-item" @click="filteredTracking('returned')">Returned</a></li>
                 </ul>
               </div>
 
@@ -43,6 +45,7 @@
                             <th>Invoice</th>
                             <th>Reference</th>
                             <th>Amount</th>
+                            <th>Delivery Status</th>
                         </tr>
                     </thead>
                     <tbody>

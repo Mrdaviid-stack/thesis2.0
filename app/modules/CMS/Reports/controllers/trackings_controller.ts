@@ -30,10 +30,11 @@ export default class TrackingsController {
             reference: query.transaction.reference,
             status: query.transaction.deliveryStatus,
             amount: query.transaction.totalAmount,
-            product: query.orderItems.map(item => item.productVariant.product.name)
+            product: query.orderItems.map(item => item.productVariant.product.name),
+            transactionStatus: query.transaction.status,
         }))
 
-        return response.status(200).json(tracking)
+        return response.status(200).json({ tracking: tracking.filter(trk => trk.transactionStatus !== 'cancelled') })
     }
 
 }

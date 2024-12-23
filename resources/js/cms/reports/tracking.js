@@ -16,7 +16,9 @@ document.addEventListener("alpine:init", () => {
         },
 
         filteredTracking(filter = 'all') {
-            this.generateTracking()
+            if (filter === 'all') {
+                this.generateTracking()
+            }
             this.tracking = this.initialData.filter(trk => trk.status === filter)
         },
 
@@ -24,7 +26,8 @@ document.addEventListener("alpine:init", () => {
             axios.get('/cms/reports/tracking/generate', { params: { start: this.date.start, end: this.date.end } })
                 .then((response) => {
                     console.log(response.data, 'data')
-                    this.initialData = response.data
+                    this.initialData = response.data.tracking
+                    this.tracking = this.initialData
                 })
         }
     }))

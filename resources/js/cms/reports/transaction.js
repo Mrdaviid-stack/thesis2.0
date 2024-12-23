@@ -16,8 +16,10 @@ document.addEventListener("alpine:init", () => {
             this.generateTransaction()
         },
 
-        filteredTransaction(filter = 'all') {
-            this.generateTransaction()
+        filteredTransaction(filter) {
+            if (filter === 'all') {
+                this.generateTransaction()
+            }
             this.transactions = this.initialData.filter(trk => trk.status === filter)
         },
 
@@ -30,6 +32,7 @@ document.addEventListener("alpine:init", () => {
                 .then((response) => {
                     console.log(response.data, 'data')
                     this.initialData = response.data
+                    this.transactions = this.initialData
                 })
         }
     }))
