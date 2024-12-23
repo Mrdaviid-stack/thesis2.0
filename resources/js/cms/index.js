@@ -10,4 +10,5 @@ import './admin/groups'
 import './admin/permissions'
 import './admin/users'
 
+import './reports/tracking'
 import './reports/sales'
