@@ -1,0 +1,68 @@
+@layout.cms.app({ title: "Transaction History" })
+
+    <main x-data="transaction()">
+        <h1>Transaction History</h1>
+
+        <section>
+            <div class="d-flex flex-row card card-body align-items-center gap-3">
+                <div class=" w-75">
+                    <label>Starting Date</label>
+                    <input type="date" class="form-control" id="startDate" x-model="date.start">
+                </div>
+
+                <div class=" w-75">
+                    <label>Ending Date</label>
+                    <input type="date" class="form-control" id="startDate" x-model="date.end">
+                </div>
+
+                <button class="btn btn-secondary w-50 mt-4 mb-0" @click="generateTransaction">Submit</button>
+            </div>
+        </section>
+
+        <div class="card card-body mt-5">
+
+            <input class="form-control" placeholder="Search by invoice." x-model="invoiceQuery" @input="invoiceSearch($event)"/>
+
+            {{-- <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Filter
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" @click="filteredTransaction('pending')">Pending</a></li>
+                  <li><a class="dropdown-item" @click="filteredTransaction('processing')">Processing</a></li>
+                  <li><a class="dropdown-item" @click="filteredTransaction('in_transit')">In Transit</a></li>
+                  <li><a class="dropdown-item" @click="filteredTransaction('delivered')">Delivered</a></li>
+                  <li><a class="dropdown-item" @click="filteredTransaction('returned')">Returned</a></li>
+                </ul>
+              </div> --}}
+
+            <div class="table-responsive">
+                <table class="table table-borderless">
+                    <thead>
+                        <tr>
+                            <th>Invoice</th>
+                            <th>Products</th>
+                            <th>Cutomer name</th>
+                            <th>Reference</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template x-for="trns in transactions">
+                            <tr>
+                                <td x-text="trns.invoice"></td>
+                                <td x-text="trns.product"></td>
+                                <td x-text="trns.fullname"></td>
+                                <td x-text="trns.reference"></td>
+                                <td x-text="trns.amount"></td>
+                                <td x-text="trns.status"></td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+@end

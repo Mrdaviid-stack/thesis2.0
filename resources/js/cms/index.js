@@ -11,4 +11,5 @@ import './admin/permissions'
 import './admin/users'
 
 import './reports/tracking'
+import './reports/transaction'
 import './reports/sales'
