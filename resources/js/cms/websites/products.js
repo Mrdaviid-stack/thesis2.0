@@ -102,7 +102,6 @@ document.addEventListener('alpine:init', () => {
         },
 
         async removeVariant(index,variantId) {
-            tinymce.get('editor' + index).remove()
             console.log(index)
             this.form.variants.splice(index, 1);
             console.log(variantId)
