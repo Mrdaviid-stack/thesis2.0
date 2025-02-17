@@ -55,6 +55,7 @@ export default class CartsController {
                 stock: item.productVariant.stock,
                 qty: item.quantity,
                 totalAmount: item.productVariant.price,
+                sale: item.productVariant.product.sale,
             })))
 
         return response.status(200).json({ cartItems: serializedItems })

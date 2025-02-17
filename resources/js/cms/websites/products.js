@@ -80,6 +80,7 @@ document.addEventListener('alpine:init', () => {
                     const mockFile = { name: 'edit', size: 123456 };
                     dropzone.emit("addedfile", mockFile);
                     dropzone.emit("thumbnail", mockFile, `https://bsd-international.onrender.com/${this.form.variants[index].image}`);
+                    //dropzone.emit("thumbnail", mockFile, `http://localhost:3333/${this.form.variants[index].image}`);
                     dropzone.emit("complete", mockFile);
                     dropzone.files.push(mockFile);
                 }

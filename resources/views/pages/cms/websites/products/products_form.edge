@@ -10,6 +10,7 @@
         categoryId: '{{ (record && record.categoryId) ? record.categoryId : '1' }}',
         brandId: '{{ (record && record.brandId) ? record.brandId : '1' }}',
         status: '{{ (record && record.status) ? record.status : 'draft'}}',
+        sale: '{{ (record && record.sale) ? record.sale : '0' }}',
         variants: {{JSON.stringify(record && record.productVariants ? record.productVariants : []) }}
     }, 
 })">
@@ -136,6 +137,18 @@
                                 name: "status",
                                 label: "Draft",
                                 value: "draft",
+                            })
+                        </div>
+
+                    </div>
+
+                    <div class="card card-body mb-3">
+                        <div class="">
+                            @!forms.inputField({
+                                type: "number",
+                                name: "sale",
+                                label: "Product Sales %",
+                                placeholder: "Product Sale",
                             })
                         </div>
 

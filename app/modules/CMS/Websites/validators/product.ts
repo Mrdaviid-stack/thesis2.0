@@ -9,6 +9,7 @@ export const ProductValidationSchema = vine.compile(
         modelNumber: vine.string(),
         content: vine.string().minLength(3),
         status: vine.enum(['publish','draft']),
+        sale: vine.number(),
         variants: vine.array(vine.object({
             id: vine.number().optional(),
             color: vine.string().nullable(),

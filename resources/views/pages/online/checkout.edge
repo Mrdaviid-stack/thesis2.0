@@ -89,7 +89,7 @@
                                 </div>
                                 <p class="mb-0">Color: <spa x-text="cart.color"></spa> | Internal Storage: <spa x-text="cart.storage"></spa></p>
                             </div>
-                            <h6 class="fw-bolder">₱<span x-text="(cart.price * cart.qty).toLocaleString()"></span></h6>
+                            <h6 class="fw-bolder">₱<span x-text="(disCountedPrice(cart.price, cart.sale) * cart.qty).toLocaleString()"></span></h6>
                         </li>
                     </template>
                 </ul>

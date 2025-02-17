@@ -8,6 +8,7 @@ document.addEventListener("alpine:init", () => {
         carts: [],
         cities: cities.sort((a,b) => a.city.localeCompare(b.city)),
         total: 0,
+        discount: 0,
         orderDetails: {
             firstName: props.firstname || '',
             lastName: props.lastname || '',
@@ -34,9 +35,12 @@ document.addEventListener("alpine:init", () => {
                 .then((response) => {
                     this.carts.push(...response.data.cartItems);
                 })
+            console.log(this.carts)
             this.$watch('carts', () => {
                 this.total = `₱${this.carts.reduce((sum, item) => sum + item.price * item.qty, 0).toLocaleString()}`
-                this.orderDetails.total = this.carts.reduce((sum, item) => sum + item.price * item.qty, 0)
+                this.discount = `₱${this.carts.reduce((sum, item) => sum + this.disCountedPrice(item.price, item.sale) * item.qty, 0).toLocaleString()}`
+                this.discountAmount = this.carts.reduce((sum, item) => sum + item.sale * item.qty, 0)
+                this.orderDetails.total = this.carts.reduce((sum, item) => sum + this.disCountedPrice(item.price, item.sale) * item.qty, 0)
                 this.orderDetails.carts = this.carts
             })
         },
@@ -70,6 +74,11 @@ document.addEventListener("alpine:init", () => {
             this.isProcessing = true;
             useForm("/checkout", this.orderDetails, this.errors, '/')
             
+        },
+        disCountedPrice(original, discount) {
+            const discountAmount = original * discount / 100;
+            const discountedPrice = original - discountAmount;
+            return discountedPrice
         }
     }))
 })

@@ -40,6 +40,7 @@ export default class ProductsController {
                 brandId: product.brandId,
                 content: product.content,
                 status: product.status,
+                sale: product.sale,
                 productVariants: product.productVariants.map((variant) => ({
                     id: variant.id,
                     feature: variant.feature,
@@ -76,6 +77,7 @@ export default class ProductsController {
                 content: data.content,
                 status: data.status,
                 modelNumber: data.modelNumber,
+                sale: data.sale,
             }
         )
         const variants: any = data.variants.map((variant) => ({

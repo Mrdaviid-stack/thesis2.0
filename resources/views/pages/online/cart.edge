@@ -42,7 +42,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <strong>₱</strong><strong x-text="(cart.price * cart.qty).toLocaleString()"></strong>
+                                    <strong>₱</strong><strong x-text="(disCountedPrice(cart.price, cart.sale) * cart.qty).toLocaleString()"></strong>
                                 </td>
                                 <td>
                                     <i @click="removeItem(cart.id)" class="fa-regular fa-trash-can" role="button"></i>
@@ -60,6 +60,10 @@
                     <dl class="row mb-0">
                         <dt class="col-8"><h6 class="text-muted">Total</h6></dt>
                         <dd class="col-4"><strong x-text="total"></strong></dd>
+
+                        <dt class="col-8" if="discountAmount > 0"><h6 class="text-muted">Discount</h6></dt>
+                        <dd class="col-4" if="discountAmount > 0"><strong x-text="discount"></strong></dd>
+         
                     </dl>
                 </li>
             </ul>

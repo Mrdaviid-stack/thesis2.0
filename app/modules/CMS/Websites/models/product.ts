@@ -29,6 +29,9 @@ export default class Product extends BaseModel {
   declare content: string
 
   @column()
+  declare sale: number
+
+  @column()
   declare status: 'publish' | 'draft'
 
   @column.dateTime({ autoCreate: true })

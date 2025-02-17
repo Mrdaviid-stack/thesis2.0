@@ -114,3 +114,20 @@ html, body {
 .mission-vision .card.card-body.vision {
     border-right: 20px solid blue!important;
 }
+
+/* SALE */
+.sale {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: red;
+    padding: 20px;
+    border-radius: 80%;
+    color: white;
+    font-weight: bolder;
+}
+
+.product .sale:hover {
+    display: none;
+}
