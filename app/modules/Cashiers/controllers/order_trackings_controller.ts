@@ -1,9 +1,10 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Order from '../../CMS/Websites/models/order.js'
 import Transaction from '../../CMS/Websites/models/transaction.js'
+import User from '../../CMS/Admin/models/user.js';
   
 export default class OrderTrackingsController {
-    async index({ view }: HttpContext) {
+    async index({ view, auth }: HttpContext) {
         const ordersQuery = await Order.query()
             .preload('orderItems', (orderItem) => 
                 orderItem.preload('productVariant', (productVariant) => 
@@ -37,9 +38,11 @@ export default class OrderTrackingsController {
                 customerAddress: orders.address,
                 customerPhoneNumber: orders.phone 
             }))
-        })
+        });
 
-        return view.render('pages/cashiers/order-tracking', { orders: orders.filter(order => order.orderDeliveryStatus != 'pending') })
+        const userQuery = await User.query().where('id', auth.user?.id!).preload('groups');
+
+        return view.render('pages/cashiers/order-tracking', { orders: orders.filter(order => order.orderDeliveryStatus != 'pending'), userType: await userQuery[0].groups[0].name })
     }
 
     async updateDeliveryStatus({ request, response,params }: HttpContext) {

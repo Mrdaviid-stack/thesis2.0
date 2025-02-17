@@ -19,6 +19,7 @@ document.addEventListener("alpine:init", () => {
             total: '',
             downpayment: '',
             reference: '',
+            number: props.number || '',
             paymentMethod: '',
             carts: [],
         },

@@ -7,6 +7,7 @@
         firstname: '{{user.firstname}}',
         lastname: '{{user.lastname}}',
         email: '{{user.email}}',
+        number: '{{user.number}}',
         address: '{{user.address}}'
     })">
         <template x-if="isProcessing">
@@ -53,7 +54,7 @@
                     <div class="col">
                         <div class="mb-2">
                             <label>Phone*</label>
-                            <input type="text" class="form-control" x-model="orderDetails.phone"/>
+                            <input type="text" class="form-control" x-model="orderDetails.number"/>
                         </div>
                     </div>
                     <div class="col">

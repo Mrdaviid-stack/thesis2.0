@@ -23,6 +23,7 @@ export default class DetailsController {
             user.firstname = data.firstname;
             user.lastname = data.lastname;
             user.email = data.email;
+            user.number = data.number;
             user.address = data.address;
             user.password = data.password;
             user.save()
@@ -30,6 +31,7 @@ export default class DetailsController {
             user.firstname = data.firstname;
             user.lastname = data.lastname;
             user.email = data.email;
+            user.number = data.number;
             user.address = data.address;
             user.save()
         }

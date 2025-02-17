@@ -25,6 +25,7 @@
                     firstname: '{{user.firstname ? user.firstname : ''}}',
                     lastname: '{{user.lastname ? user.lastname : ''}}',
                     email: '{{user.email ? user.email : ''}}',
+                    number: '{{user.number ? user.number : ''}}',
                     address: '{{user.address ? user.address : ''}}',
                     password: '',
                     confirmPassword: '',
@@ -54,7 +55,12 @@
                         <p class="text-danger" x-text="errors.email"></p>
                     </div>
                     <div class="col-12 mb-3">
-                        <label>Email Address*</label>
+                        <label>Phone Number*</label>
+                        <input class="form-control form-control-lg" x-model="form.number"/>
+                        <p class="text-danger" x-text="errors.number"></p>
+                    </div>
+                    <div class="col-12 mb-3">
+                        <label>Address*</label>
                         <textarea class="form-control form-control-lg" x-model="form.address"></textarea>
                         <p class="text-danger" x-text="errors.address"></p>
                     </div>

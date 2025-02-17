@@ -26,7 +26,7 @@ export default class CheckoutsController {
             lastName: data.lastName,
             address: data.address,
             city: data.city,
-            phone: data.phone,
+            phone: data.number,
             email: data.email ? data.email : auth.user?.email,
             note: data.note,
         })

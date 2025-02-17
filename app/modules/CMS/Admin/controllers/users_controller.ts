@@ -39,6 +39,7 @@ export default class UsersController {
                 firstname: user.firstname,
                 lastname: user.lastname,
                 email: user.email,
+                number: user.number,
                 address: user.address,
                 group: user.groups.map(grp => grp.id)[0]
             }))[0]
@@ -56,6 +57,7 @@ export default class UsersController {
                 firstname: data.firstname,
                 lastname: data.lastname,
                 email: data.email,
+                number: data.number,
                 address: data.address,
             }).save()
             user?.related('groups').sync([data.group])
@@ -67,6 +69,7 @@ export default class UsersController {
             firstname: result.firstname,
             lastname: result.lastname,
             email: result.email,
+            number: result.number,
             address: result.address,
             password:result.lastname,
         })

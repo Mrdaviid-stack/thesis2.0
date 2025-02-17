@@ -8,7 +8,7 @@ export default class DetailsController {
 
         const page = request.input('page', 1)
 
-        const customers = await User.query().select('id','email','address',
+        const customers = await User.query().select('id','email','address','number',
             db.raw('CONCAT(firstname, \' \', lastname) AS fullname')
         ).whereHas('groups', (groupQuery) => groupQuery.where('name', 'Customers')).paginate(page, 10)
 

@@ -58,12 +58,19 @@
                             <td style="min-width: 220px;">
                                 <select class="form-select" x-on:change="changeDeliveryStatus($event, order.orderTransactionId)">
                                     <option selected hidden>Select Delivery Status</option>
-                                    <option value="processing">processing</option>
+                                    @if (userType === 'Cashiers')
+                                     <option value="processing">processing</option> 
+                                     <option value="returned">Returned</option>
+                                    @end
                                     <option value="to_ship">To Ship</option>
                                     <option value="to_receive">To Receive</option>
-                                    <option value="receive">Received</option>
+
+                                    @if (userType !== 'Cashiers' && userType !== 'Riders')
+                                        <option value="receive">Received</option>
+                                    @end
+
                                     <option value="delivered">Delivered</option>
-                                    <option value="returned">Returned</option>
+
                                 </select>
                             </td>
                         </tr>
