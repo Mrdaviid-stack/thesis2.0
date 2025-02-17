@@ -81,3 +81,36 @@ html, body {
     z-index: 1000;
     margin: auto;
 }
+
+/* Footer */
+.footer {
+    width: 100%;
+    height: 150px;
+    padding: 10px 50px 10px 50px;
+    text-align: center;
+    background-color: whitesmoke;
+}
+
+
+
+/* Mission and Vision block */
+.mission-vision {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 50px;
+}
+
+@media only screen and (max-width: 600px) {
+    .mission-vision {
+        flex-direction: column;
+    }
+  }
+
+.mission-vision .card.card-body.mission {
+    border-right: 20px solid orange!important;
+}
+
+.mission-vision .card.card-body.vision {
+    border-right: 20px solid blue!important;
+}
