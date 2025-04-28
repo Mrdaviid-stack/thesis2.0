@@ -26,6 +26,7 @@ document.addEventListener("alpine:init", () => {
         },
         isProcessing: false,
 
+        isDownpaymentError: '',
         init() {
             this.$watch('carts', () =>  console.log('watching carts'))
             this.initializeCart()
@@ -72,6 +73,17 @@ document.addEventListener("alpine:init", () => {
         },
         checkout() {
             this.isProcessing = true;
+            // check if downapyment is equal or greater done 50% of total price.
+            if (this.orderDetails.paymentMethod === 'cod') {
+                const downpayment = (this.orderDetails.total / 2);
+
+                if (parseFloat(this.orderDetails.downpayment) < downpayment) {
+                    this.isDownpaymentError = true;
+                    return;
+                }
+
+            }
+            
             useForm("/checkout", this.orderDetails, this.errors, '/')
             
         },

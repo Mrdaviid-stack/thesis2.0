@@ -117,6 +117,7 @@
                     <div class="mb-2">
                         <label>Downpayment*</label>
                         <input type="number" class="form-control" x-model="orderDetails.downpayment" placeholder="1000 or 5000"/>
+                        <template x-if="isDownpaymentError"><span>Downpayment should be 50%</span></template>
                     </div>
                 </div>
                 <button @click="checkout" class="btn btn-warning mt-3 w-100">PLACED ORDER</button>
