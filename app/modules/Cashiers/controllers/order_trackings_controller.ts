@@ -49,7 +49,12 @@ export default class OrderTrackingsController {
         const data = request.body()
         console.log(data)
         const transaction = await Transaction.findOrFail(params.id)
-        await transaction.merge({ deliveryStatus: data.deliveryStatus }).save()
+
+        transaction.deliveryStatus = data.deliveryStatus;
+
+        transaction.save()
+
+        //await transaction.merge({ deliveryStatus: data.deliveryStatus }).save()
         return response.status(200).json({ message: 'Delivery status updated successfully!' })
     }
 
