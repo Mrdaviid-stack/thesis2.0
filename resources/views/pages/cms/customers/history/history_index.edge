@@ -6,6 +6,7 @@
         <table class="table table-striped">
             <thead>
                 <th>Name</th>
+                <th>items</th>
                 <th>Order Reference</th>
                 <th>Payment Method</th>
                 <th>Status</th>
@@ -14,6 +15,15 @@
                 @each(history in histories)
                     <tr>
                         <td>{{ history.$preloaded.order.$extras.fullname }}</td>
+                        <td>
+                            @each(item in history.$preloaded.order.$preloaded.orderItems)
+                                <p>
+                                    <span>{{ item.$preloaded.productVariant.product.name  }}</span> /
+                                    <span>{{ item.$preloaded.productVariant.product.modelNumber  }}</span>
+                                </p>
+                                <hr/>
+                            @end
+                        </td>
                         <td>{{ history.reference }}</td>
                         <td>{{ history.paymentMethod }}</td>
                         <td>{{ history.deliveryStatus }}</td>
