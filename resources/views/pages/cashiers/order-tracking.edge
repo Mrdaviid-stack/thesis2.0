@@ -4,7 +4,8 @@
     @endslot
 
     <div class="mt-5" x-data="orderTracking({
-        orders: {{JSON.stringify(orders)}}
+        orders: {{JSON.stringify(orders)}},
+        riders: {{JSON.stringify(riders)}}
     })">
         <div class="d-flex justify-content-between gap-5">
             <input class="form-control mb-3" placeholder="Search order" x-model="searchQuery" />
@@ -28,6 +29,7 @@
                         <th>Cutomer Info</th>
                         <th>Balance</th>
                         <th colspan="2">Status</th>
+                        <th>Rider</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -71,6 +73,16 @@
 
                                     <option value="delivered">Delivered</option>
 
+                                </select>
+                            </td>
+                            <td>
+                                <select class="form-select" x-on:change="changeRider($event, order.orderTransactionId)">
+                                    <option default>Select rider</option>
+                                    <template x-for="rider in riders">
+                                        <option :value="rider.id">
+                                            <p x-text="rider.firstname"></p>, <p x-text="rider.lastname"></p>
+                                        </option>
+                                    </template>
                                 </select>
                             </td>
                         </tr>

@@ -22,6 +22,7 @@ export default class OrdersController {
                 quantity: orderItem.quantity,
                 price: orderItem.price,
                 status: orders.transaction.status,
+                rider: orders.transaction.riderName,
             }))
         })
 

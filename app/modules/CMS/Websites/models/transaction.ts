@@ -34,6 +34,9 @@ export default class Transaction extends BaseModel {
   @column()
   declare status: 'request_cancel' | 'cancelled' | 'exchange' | 'returned'
 
+  @column()
+  declare riderName: string;
+
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
 

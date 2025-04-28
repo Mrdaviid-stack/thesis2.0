@@ -17,6 +17,7 @@ export default function CashierRoutes() {
 
         router.get('/order-tracking', [OrderTrackingsController, 'index']).as('order-tracking').use(middleware.auth())
         router.post('/order-tracking/:id', [OrderTrackingsController, 'updateDeliveryStatus']).as('order-tracking.update').use(middleware.auth())
+        router.post('/order-tracking/rider/:id', [OrderTrackingsController, 'updateRider']).as('order-tracking-rider.update').use(middleware.auth())
 
         router.get('/inventory', [InventoriesController, 'index']).as('inventory').use(middleware.auth())
 

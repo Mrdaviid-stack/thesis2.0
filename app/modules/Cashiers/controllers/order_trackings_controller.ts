@@ -36,13 +36,15 @@ export default class OrderTrackingsController {
                 orderProductImage: orderItem.productVariant?.image,
                 customerName: `${orders.firstName} ${orders.lastName}`,
                 customerAddress: orders.address,
-                customerPhoneNumber: orders.phone 
+                customerPhoneNumber: orders.phone,
             }))
         });
 
         const userQuery = await User.query().where('id', auth.user?.id!).preload('groups');
 
-        return view.render('pages/cashiers/order-tracking', { orders: orders.filter(order => order.orderDeliveryStatus != 'pending'), userType: await userQuery[0].groups[0].name })
+        const ridersQuery = await User.query().preload('groups');
+
+        return view.render('pages/cashiers/order-tracking', { orders: orders.filter(order => order.orderDeliveryStatus != 'pending'), userType: await userQuery[0].groups[0].name, riders: ridersQuery })
     }
 
     async updateDeliveryStatus({ request, response,params }: HttpContext) {
@@ -56,6 +58,25 @@ export default class OrderTrackingsController {
 
         //await transaction.merge({ deliveryStatus: data.deliveryStatus }).save()
         return response.status(200).json({ message: 'Delivery status updated successfully!' })
+    }
+
+    async updateRider({ request, response, params }: HttpContext) {
+
+        const data = request.body()
+
+        const transaction = await Transaction.findOrFail(params.id)
+
+        const userQuery = await User.query().where('id',data.riderId)
+
+        const fullname = userQuery[0].firstname + ', ' + userQuery[0].lastname;
+
+        transaction.riderName = fullname
+
+        transaction.save()
+
+        //await transaction.merge({ deliveryStatus: data.deliveryStatus }).save()
+        return response.status(200).json({ message: 'Delivery status updated successfully!' })
+
     }
 
     private CurrencyFormatter(number: number) {
