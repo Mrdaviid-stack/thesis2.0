@@ -49,7 +49,7 @@
                                         <button class="btn btn-warning" disabled x-text="order.deliveryStatus"></button>
                                     </template>
                                     <template x-if="order.deliveryStatus === 'pending'">
-                                        <button class="btn btn-danger" :disabled="order.status === 'request_cancel'" @click="onCancelOrder(order.transactionId)">Cancel Request</button>
+                                        <button class="btn btn-danger" :disabled="order.status === 'request_cancel'" @click="onCancelOrder(order.transactionId)">Cancel Order</button>
                                     </template>
                                 </div>
                             </li>

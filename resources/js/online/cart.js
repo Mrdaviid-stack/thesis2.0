@@ -27,8 +27,15 @@ document.addEventListener("alpine:init", () => {
         isProcessing: false,
 
         isDownpaymentError: '',
+        isDownpymentErrorMemssage: '',
+
+        isDisbled: true,
         init() {
             this.$watch('carts', () =>  console.log('watching carts'))
+            this.$watch('orderDetails.paymentMethod', () => {
+                this.isDisbled = (this.orderDetails.paymentMethod !== '') ? false : true
+            })
+
             this.initializeCart()
         },
         initializeCart() {
@@ -77,12 +84,13 @@ document.addEventListener("alpine:init", () => {
             if (this.orderDetails.paymentMethod === 'cod') {
                 const downpayment = (this.orderDetails.total / 2);
 
-                if (parseFloat(this.orderDetails.downpayment) < downpayment) {
+                if (! parseFloat(this.orderDetails.downpayment) < downpayment) {
                     this.isDownpaymentError = true;
+                    this.isProcessing = false;
+                    this.isDownpymentErrorMemssage = 'Settle atleast ' + downpayment.toLocaleString();
                     return;
                 }
-
-            }
+            } 
             
             useForm("/checkout", this.orderDetails, this.errors, '/')
             
