@@ -1,8 +1,7 @@
-@layout.cahiers.app({ title: "Cashiers" })
+@layout.cahiers.app({ title: "Order Acknowledgement | Cashiers" })
     @slot('meta')
         <meta name="description" content="A welcome page made with EdgeJS">
     @endslot
-    {{{console.log(orders)}}}
     <div class="mt-5" x-data="acknowledgement({
         orders: {{JSON.stringify(orders)}}
     })">
