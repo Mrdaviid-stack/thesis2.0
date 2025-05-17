@@ -25,7 +25,7 @@ export default class UploadsController {
 
     const basePath = '/opt/render/project/src/build/public'
     const relativePath = image?.filePath?.replace(basePath, '')
-
+    console.log(relativePath)
     return response.status(200).json({
       //location: `\\${extractedPath}`
       location: `${relativePath}`,
