@@ -37,6 +37,8 @@ document.addEventListener("alpine:init", () => {
             })
 
             this.initializeCart()
+
+            console.log(this.orderDetails.number)
         },
         initializeCart() {
             axios.get('/cart/items')
