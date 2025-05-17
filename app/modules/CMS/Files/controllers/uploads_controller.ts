@@ -15,16 +15,20 @@ export default class UploadsController {
       )
     }
 
-    console.log(image?.filePath)
-    //const index = image?.filePath?.indexOf('uploads\\')
-    //const extractedPath = image?.filePath?.slice(index)
-    //console.log(/uploads/${image?.filePath?.split('\\').slice(-4).join('/'), 'image path')
-    //default -4
-    const path = `/uploads/${image?.filePath?.split('\\').slice(-4).join('/')}`
-    console.log(path)
+    // console.log(image?.filePath)
+    // const index = image?.filePath?.indexOf('uploads\\')
+    // const extractedPath = image?.filePath?.slice(index)
+    // //console.log(/uploads/${image?.filePath?.split('\\').slice(-4).join('/'), 'image path')
+    // //default -4
+    // //const path = `/uploads/${image?.filePath?.split('\\').slice(-4).join('/')}`
+    // console.log(image?.filePath)
+
+    const basePath = '/opt/render/project/src/build/public'
+    const relativePath = image?.filePath?.replace(basePath, '')
+
     return response.status(200).json({
       //location: `\\${extractedPath}`
-      location: `/uploads/${image?.filePath?.split('\\').slice(-4).join('/')}`,
+      location: `${relativePath}`,
     })
   }
 }
