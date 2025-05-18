@@ -2,6 +2,7 @@ import Alpine from "alpinejs";
 import axios from "axios";
 import ImageZoom from "js-image-zoom";
 import useForm from "../useForms"
+import printJS from "print-js";
 document.addEventListener("alpine:init", () => {
     Alpine.data("acknowledgement", (props) => ({
         orders: props.orders || [],
@@ -14,7 +15,10 @@ document.addEventListener("alpine:init", () => {
             ))))
         },
         
-        acknowledge(transactionId) {
+        acknowledge(transactionId, orders) {
+
+            printJS({printable: 'printable', type: 'html'})
+
             useForm(`/cashiers/acknowledgements/${transactionId}`, {}, {}, '/cashiers/acknowledgements')
         },
 
