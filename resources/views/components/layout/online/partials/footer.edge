@@ -1,4 +1,4 @@
-<div class="footer mt-5">
+<div class="footer mt-5" x-data="landing">
     <footer class="py-3 my-4">
         <ul class="nav justify-content-center border-bottom pb-3 mb-3">
             <li class="nav-item">
@@ -16,6 +16,15 @@
             <li class="nav-item">
                 <a href="/product-category/tablets" class="nav-link px-2 text-body-secondary">Tablets</a>
             </li>
+        </ul>
+        <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+            <template x-for="custom in customPage">
+                <template x-if="custom.slug !== 'home'">
+                    <li class="nav-item">
+                        <a :href="`/bsd/${custom.slug}`" class="nav-link px-2 text-body-secondary" x-text="custom.slug"></a>
+                    </li>
+                </template>
+            </template>
         </ul>
         <p class="text-center text-body-secondary">@ 2025 BSD International.</p>
     </footer>
