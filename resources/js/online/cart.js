@@ -36,9 +36,24 @@ document.addEventListener("alpine:init", () => {
                 this.isDisbled = (this.orderDetails.paymentMethod !== '') ? false : true
             })
 
-            this.initializeCart()
+            this.$watch('orderDetails', () => {
+                if (this.orderDetails.firstName === '' || 
+                    this.orderDetails.lastName === '' || 
+                    this.orderDetails.address === '' || 
+                    this.orderDetails.city === '' ||
+                    (this.orderDetails.number.includes('XXX') || this.orderDetails.number === '') || 
+                    this.orderDetails.email === '' || 
+                    this.paymentMethod === '' ||
+                    this.reference === '' ||
+                    this.downpayment === ''
+                ) {
+                    this.isDisbled = true
+                } else {
+                    this.isDisbled = false
+                }
+            })
 
-            console.log(this.orderDetails.number)
+            this.initializeCart()
         },
         initializeCart() {
             axios.get('/cart/items')

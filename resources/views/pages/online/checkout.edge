@@ -45,6 +45,7 @@
                         <div class="mb-2">
                             <label>Town / City*</label>
                             <select class="form-select" x-model="orderDetails.city">
+                                <option hidden selected>Select City</option>
                                 <template x-for="city in cities">
                                     <option :value="city.city" x-text="city.city"></option>
                                 </template>
