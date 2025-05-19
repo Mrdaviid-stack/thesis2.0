@@ -17,9 +17,13 @@ document.addEventListener("alpine:init", () => {
         
         acknowledge(transactionId, orders) {
 
-            printJS({printable: 'printable', type: 'html'})
+            if (confirm('Are you sure?')) {
+                printJS({printable: 'printable', type: 'html'})
 
-            useForm(`/cashiers/acknowledgements/${transactionId}`, {}, {}, '/cashiers/acknowledgements')
+                useForm(`/cashiers/acknowledgements/${transactionId}`, {}, {}, '/cashiers/acknowledgements')
+            } else {
+                return;
+            }
         },
 
         onCancelled(id) {
