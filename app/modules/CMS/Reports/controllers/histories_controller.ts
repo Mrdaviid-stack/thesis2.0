@@ -20,8 +20,9 @@ export default class HistoriesController {
         const histories = query.map((history) => ({
             user: history.user,
             action: history.action,
-            date: moment(history.createdAt).format("dddd, MMMM Do YYYY, h:mm:ss a")
+            date:  moment.parseZone(history.createdAt.toISO()).utcOffset(8).format("dddd, MMMM Do YYYY, h:mm:ss a")
         }))
+
         await historyService(auth.user?.firstname!, `Generate History log`)
         return response.status(200).json({data: histories})
     }
