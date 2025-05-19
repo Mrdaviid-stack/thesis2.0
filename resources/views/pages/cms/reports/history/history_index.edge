@@ -36,6 +36,14 @@
                 </template>
             </tbody>
         </table>
+
+        <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <template x-for="(chunk, index) in chunkSize">
+                <li class="page-item"><a class="page-link" href="#" x-text="index + 1" @click="setPage(index)"></a></li>
+            </template>
+        </ul>
+        </nav>
     </div>
 
 

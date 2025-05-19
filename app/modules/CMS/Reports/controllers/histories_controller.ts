@@ -8,7 +8,7 @@ export default class HistoriesController {
         //await historyService(auth.user?.firstname!, `View History Reports Page`)
         return view.render('pages/cms/reports/history/history_index')
     }
-    async generate({ request, response }: HttpContext) {
+    async generate({ request, response, auth }: HttpContext) {
 
         let { start, end } = request.qs()
 
@@ -22,7 +22,7 @@ export default class HistoriesController {
             action: history.action,
             date: moment(history.createdAt).format("dddd, MMMM Do YYYY, h:mm:ss a")
         }))
-
+        await historyService(auth.user?.firstname!, `Generate History log`)
         return response.status(200).json({data: histories})
     }
 }
