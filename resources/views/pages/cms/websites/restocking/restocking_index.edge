@@ -1,0 +1,16 @@
+@layout.cms.app({ title: "Restocking" })
+
+	@!datatable({
+		module: 'restocking',
+		records: records.data,
+		paginations: paginations,
+		path: '/cms/websites/restocking/add/',
+		isModal: true,
+		canAdd: 'websites-restocking-add',
+		canEdit: 'websites-restocking-edit',
+		canDelete: 'websites-restocking-delete',
+        sortColumn: 'sku'
+		//column: 'stock'
+	})
+ 
+@end

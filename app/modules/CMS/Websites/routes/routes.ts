@@ -4,6 +4,7 @@ import { middleware } from "#start/kernel";
 import CategoriesController from "../controllers/categories_controller.js";
 import ProductsController from "../controllers/products_controller.js";
 import BrandsController from "../controllers/brands_controller.js";
+import RestockingsController from "../controllers/restockings_controller.js";
 
 export default function WebsiteRoutes() {
     router.group(() => {
@@ -46,6 +47,12 @@ export default function WebsiteRoutes() {
             router.delete('/variant/:id/delete', [ProductsController, 'deleteVariant']).as('products.delete_variant')
             router.delete('/delete/:id?', [ProductsController, 'delete']).as('products.delete')
         }).prefix("products")
+
+        router.group(() => {
+            router.get('/', [RestockingsController, 'index']).as('restocking.index')
+            router.get('/add/:id?', [RestockingsController, 'form']).as('restocking.form')
+            router.post('/add', [RestockingsController, 'store']).as('restocking.store')
+        }).prefix("restocking")
 
     }).prefix("/websites").use(middleware.auth());
 }
