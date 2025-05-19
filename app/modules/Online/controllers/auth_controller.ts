@@ -4,6 +4,7 @@ import { loginValidationSchema, registerValidationSchema } from '../validators/a
 import { customAlphabet } from 'nanoid'
 import mail from '@adonisjs/mail/services/main'
 import User from '../../CMS/Admin/models/user.js'
+import historyService from '../../CMS/Reports/services/historyServices.js'
 const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 10)
 
 export default class AuthController {
@@ -42,6 +43,8 @@ export default class AuthController {
                 })
         })
 
+        await historyService(data.lastname, `Register new user.`)
+
         return response.status(200).json({ message: 'Account successfully created, checked your email for temporary password!'})
     }
 
@@ -52,6 +55,8 @@ export default class AuthController {
 
         await auth.use('web').login(user, isRememberMe)
 
+        await historyService(auth.user?.lastname!, `Login online`)
+
         return response.status(200).json({success: true, message: `welcome ${user.firstname}`})
     }
 
@@ -59,7 +64,7 @@ export default class AuthController {
         return view.render('pages/online/forgot-password')
     }
 
-    async forgotPasswordUser({ request, response }: HttpContext) {
+    async forgotPasswordUser({ request, response, auth }: HttpContext) {
         const data = request.body()
 
         const password = nanoid()
@@ -79,11 +84,14 @@ export default class AuthController {
                 })
         })
 
+        await historyService(auth.user?.lastname!, `Change password online`)
+
         return response.status(200).json({success: true})
     }
 
     async logout({ response, auth }: HttpContext) {
         await auth.use('web').logout()
+        await historyService(auth.user?.lastname!, `Logout online`)
         return response.redirect('/')
     }
 

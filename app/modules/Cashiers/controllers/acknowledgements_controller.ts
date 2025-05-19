@@ -1,6 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Order from '../../CMS/Websites/models/order.js'
 import Transaction from '../../CMS/Websites/models/transaction.js'
+import historyService from '../../CMS/Reports/services/historyServices.js'
 
 export default class AcknowledgementsController {
     async index({ view, response, auth }: HttpContext) {
@@ -48,9 +49,10 @@ export default class AcknowledgementsController {
         return view.render('pages/cashiers/awknowledgements', { orders: orders.filter(order => order.orderDeliveryStatus == 'pending' && order.orderTransactionStatus !== 'cancelled') })
     }
 
-    async acknowledge({ response, params }: HttpContext) {
+    async acknowledge({ response, params, auth }: HttpContext) {
         const transaction = await Transaction.findOrFail(params.transactionId)
         await transaction.merge({ deliveryStatus: 'processing' }).save()
+        await historyService(auth.user?.firstname!, `Acknowledge Order`)
         return response.status(201).json({message: 'Order acknowledge successfully' })
     }
 

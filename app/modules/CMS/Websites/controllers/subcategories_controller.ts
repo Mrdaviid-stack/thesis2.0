@@ -3,10 +3,11 @@ import type { HttpContext } from '@adonisjs/core/http'
 import Subcategory from "../models/subcategory.js";
 import { SubcategoryValidationSchema } from "../validators/subcategory.js";
 import Category from '../models/category.js';
+import historyService from '../../Reports/services/historyServices.js';
 
 export default class SubcategoriesController {
 
-    async index({ view, request, params, session }: HttpContext) {
+    async index({ view, request, params, session, auth }: HttpContext) {
 
         const page = request.input('page', 1)
         const category = await Category.findByOrFail('slug', params.slug)
@@ -16,6 +17,8 @@ export default class SubcategoriesController {
 
         const baseUrl = request.url().split('?',1)[0]
         records?.baseUrl(baseUrl)
+
+        await historyService(auth.user?.firstname!, 'Visit Sub-Categories Page')
         
         return view.render('pages/cms/websites/categories/subcategories_index', { records: records?.serialize(), paginations: records })
     }

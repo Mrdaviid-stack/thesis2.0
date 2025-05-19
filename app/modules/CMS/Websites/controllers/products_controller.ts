@@ -15,7 +15,7 @@ export default class ProductsController {
         const baseUrl = request.url().split('?',1)[0]
         records?.baseUrl(baseUrl)
         
-        return view.render('pages/cms/websites/products/products_index', { records: records?.serialize(), paginations: records })
+        return view.render('pages/cms/websites/products/products_index', { records: records?.serialize(), paginations: records})
     }
 
     async form({ view, params }: HttpContext) {

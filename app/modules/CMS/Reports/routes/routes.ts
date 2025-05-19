@@ -3,6 +3,7 @@ import SalesController from "../controllers/sales_controller.js";
 import { middleware } from "#start/kernel";
 import TrackingsController from "../controllers/trackings_controller.js";
 import TransactionsController from "../controllers/transactions_controller.js";
+import HistoriesController from "../controllers/histories_controller.js";
 export default function ReportRoutes() {
 
     router.group(() => {
@@ -24,6 +25,11 @@ export default function ReportRoutes() {
 
             router.get('/generate', [TransactionsController, 'generate']).as('transaction-reports.generate')
         }).prefix("transaction")
+
+        router.group(() => {
+            router.get('/', [HistoriesController, 'index']).as('history.index')
+            router.get('/generate', [HistoriesController, 'generate']).as('history.generate')
+        }).prefix("history")
 
     }).prefix('reports').use(middleware.auth());
 

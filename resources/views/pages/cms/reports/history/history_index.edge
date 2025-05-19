@@ -1,0 +1,50 @@
+@layout.cms.app({ title: "History logs" })
+
+    <h1>History Logs</h1>
+    <div class="card card-body" x-data="histories">
+        <section>
+            <div class="d-flex flex-row card card-body align-items-center gap-3">
+                <div class=" w-75">
+                    <label>Starting Date</label>
+                    <input type="date" class="form-control" id="startDate" x-model="date.start">
+                </div>
+
+                <div class=" w-75">
+                    <label>Ending Date</label>
+                    <input type="date" class="form-control" id="startDate" x-model="date.end">
+                </div>
+
+                <button class="btn btn-secondary w-50 mt-4 mb-0" @click="generateHistories">Submit</button>
+            </div>
+        </section>
+
+        <table class="table table-bordered mt-5">
+            <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Action</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template x-for="history in histories">
+                    <tr>
+                        <td x-text="history.user"></td>
+                        <td x-text="history.action"></td>
+                        <td x-text="history.date"></td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+
+        <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <template x-for="(chunk, index) in chunkSize">
+                <li class="page-item"><a class="page-link" href="#" x-text="index + 1" @click="setPage(index)"></a></li>
+            </template>
+        </ul>
+        </nav>
+    </div>
+
+
+@end

@@ -38,8 +38,9 @@
                                         </div>
                                         <label>Password</label>
                                         <div class="mb-3">
+                                            <div>
                                             <input 
-                                                type="password"
+                                                :type="!isShowPassword ? 'password' : 'text'"
                                                 name="password" 
                                                 class="form-control" 
                                                 placeholder="Password" 
@@ -47,6 +48,7 @@
                                                 aria-describedby="password-addon"
                                                 x-model="form.password"
                                             />
+                                            <i @click="showPassword" :class="!isShowPassword ? 'fas fa-eye-slash' : 'fas fa-eye'" style="position: absolute; top: 52%; left: 85%"></i>
                                             <div class="text-danger" x-text="errors.password"></div>
                                         </div>
                                         <div class="form-check form-switch">

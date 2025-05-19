@@ -1,0 +1,36 @@
+@layout.cms.bare({ title: "Categories Form" })
+
+    <div x-data="restocking({ 
+        formData: {
+            id: '{{ (record && record.id) ? record.id : ''  }}',
+            stock: '{{ (record && record.stock) ? record.stock : '' }}'
+        },
+    })">
+        <div class="modal-header">
+            <h5 class="modal-title">Restocking</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form id="form" action="/cms/websites/restocking/add" method="POST" @submit.prevent="submit">
+                {{csrfField()}}
+                <input type="hidden" id="id" name="id" value="{{ (record && record.id) ? record.id : '' }}"  />
+                <div class="row">
+
+                    @!forms.inputField({
+                        name: "stock",
+                        label: "Stock",
+                        placeholder: "Product Stock",
+                    })
+            
+                    @!buttons.button({ 
+                        label: "Submit",
+                        variant: "secondary",
+                    })
+            
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+@end
