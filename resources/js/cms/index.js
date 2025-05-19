@@ -15,3 +15,5 @@ import './reports/tracking'
 import './reports/transaction'
 import './reports/sales'
 import './reports/histories'
+
+import './customers/purchaseHistory'
