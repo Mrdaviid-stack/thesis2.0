@@ -59,7 +59,12 @@
                             </td>
                             <td x-text="order.orderBalance"></td>
                             <td>
-                                <span class="badge text-bg-warning" x-text="order.orderDeliveryStatus"></span>
+                                <template x-if="order.orderDeliveryStatus !== 'to_ship'">
+                                    <span class="badge text-bg-warning" x-text="order.orderDeliveryStatus"></span>
+                                </template>
+                                <template x-if="order.orderDeliveryStatus === 'to_ship'">
+                                    <span class="badge text-bg-warning">Out for delivery</span>
+                                </template>
                             </td>
                             <td style="min-width: 220px;">
                                 <select class="form-select" x-on:change="changeDeliveryStatus($event, order.orderTransactionId)">

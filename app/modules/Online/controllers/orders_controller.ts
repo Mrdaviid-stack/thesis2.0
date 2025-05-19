@@ -4,53 +4,57 @@ import Transaction from '../../CMS/Websites/models/transaction.js'
 import historyService from '../../CMS/Reports/services/historyServices.js'
 
 export default class OrdersController {
-
-    async index({ view, response, auth }: HttpContext) {
-        if (!await auth.check()) {
-            return response.redirect('/login')
-        }
-        const ordersQuery = await Order.query().where('userId', auth.user?.id!).preload('orderItems', (orderItem) => orderItem.preload('productVariant', (productVariant) => productVariant.preload('product'))).preload('transaction')
-
-        const orders = ordersQuery.flatMap((orders) => {
-            return orders.orderItems.map((orderItem) => ({
-                transactionId: orders.transaction.id,
-                transactionInvoice: orders.transaction.invoice,
-                deliveryStatus: orders.transaction.deliveryStatus,
-                productName: orderItem.productVariant.product.name,
-                productImage: orderItem.productVariant.image,
-                productColor: orderItem.productVariant.color,
-                productStorage: orderItem.productVariant.storage,
-                quantity: orderItem.quantity,
-                price: orderItem.price,
-                status: orders.transaction.status,
-                rider: orders.transaction.riderName,
-            }))
-        })
-
-        return view.render('pages/online/accounts/orders', { orders: orders.filter(order => order.status !== 'cancelled') })
+  async index({ view, response, auth }: HttpContext) {
+    if (!(await auth.check())) {
+      return response.redirect('/login')
     }
+    console.log(auth.user, 'auth')
+    const ordersQuery = await Order.query()
+      .where('userId', auth.user?.id!)
+      .preload('orderItems', (orderItem) =>
+        orderItem.preload('productVariant', (productVariant) => productVariant.preload('product'))
+      )
+      .preload('transaction')
 
-    async cancelOrder({ response, params, auth }: HttpContext) {
+    // eslint-disable-next-line @typescript-eslint/no-shadow
+    const orders = ordersQuery.flatMap((orders) => {
+      return orders.orderItems.map((orderItem) => ({
+        transactionId: orders.transaction.id,
+        transactionInvoice: orders.transaction.invoice,
+        deliveryStatus: orders.transaction.deliveryStatus,
+        productName: orderItem.productVariant.product.name,
+        productImage: orderItem.productVariant.image,
+        productColor: orderItem.productVariant.color,
+        productStorage: orderItem.productVariant.storage,
+        quantity: orderItem.quantity,
+        price: orderItem.price,
+        status: orders.transaction.status,
+        rider: orders.transaction.riderName,
+      }))
+    })
 
-        const TransactionQuery = await Transaction.find(params.id)
+    return view.render('pages/online/accounts/orders', {
+      orders: orders.filter((order) => order.status !== 'cancelled'),
+    })
+  }
 
-        TransactionQuery?.merge({ status: 'request_cancel' }).save();
+  async cancelOrder({ response, params, auth }: HttpContext) {
+    const TransactionQuery = await Transaction.find(params.id)
 
-        await historyService(auth.user?.lastname!, `Cancel Order`)
+    TransactionQuery?.merge({ status: 'request_cancel' }).save()
 
-        return response.status(200).json({ message: 'Cancel Requested!' })
-    }
+    await historyService(auth.user?.lastname!, `Cancel Order`)
 
-    async cancledConfirm({ response, params, auth }: HttpContext) {
+    return response.status(200).json({ message: 'Cancel Requested!' })
+  }
 
-        const TransactionQuery = await Transaction.find(params.id)
+  async cancledConfirm({ response, params, auth }: HttpContext) {
+    const TransactionQuery = await Transaction.find(params.id)
 
-        TransactionQuery?.merge({ status: 'cancelled' }).save();
+    TransactionQuery?.merge({ status: 'cancelled' }).save()
 
-        await historyService(auth.user?.lastname!, `Cancel Confirm`)
+    await historyService(auth.user?.lastname!, `Cancel Confirm`)
 
-        return response.status(200).json({ message: 'Cancel Requested!' })
-
-    }
-
+    return response.status(200).json({ message: 'Cancel Requested!' })
+  }
 }
