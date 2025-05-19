@@ -21,6 +21,7 @@ export const UpdateAccountValidationSchema = vine.compile(
         lastname: vine.string().minLength(2).maxLength(100),
         email: vine.string().email(),
         address: vine.string(),
+        number: vine.string(),
         password: vine.string().optional(),
         confirmPassword: vine.string().sameAs('password').optional(),
     })

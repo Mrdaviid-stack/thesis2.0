@@ -10,7 +10,7 @@
                     <li class="list-group-item py-3">
                         <a class="nav-link" href="/my-account">DASHBOARD</a>
                     </li>
-                    <li class="list-group-item py-3 bg-warning">
+                    <li class="list-group-item py-3 bg-danger text-white">
                         <a class="nav-link" href="/my-account/orders">ORDERS</a>
                     </li>
                     <li class="list-group-item py-3">
@@ -41,9 +41,17 @@
                                         <p class="mb-0"><strong>Storage:</strong> <span x-text="order.productStorage"></span></p>
                                         <p class="mb-0"><strong>Quantity:</strong> <span x-text="order.quantity"></span></p>
                                         <p class="mb-0"><strong>Amount:</strong> <span x-text="order.price.toLocaleString()"></span></p>
+                                        <p class="mb-0"><strong>Rider:</strong> <span x-text="order.rider"></span></p>
                                     </div>
                                 </div>
-                                <button class="btn btn-warning" disabled x-text="order.deliveryStatus"></button>
+                                <div class="d-flex gap-2">
+                                    <template x-if="order.status !== 'request_cancel'">
+                                        <button class="btn btn-warning" disabled x-text="order.deliveryStatus"></button>
+                                    </template>
+                                    <template x-if="order.deliveryStatus === 'pending'">
+                                        <button class="btn btn-danger" :disabled="order.status === 'request_cancel'" @click="onCancelOrder(order.transactionId)">Cancel Order</button>
+                                    </template>
+                                </div>
                             </li>
                         </template>
                     </ul>

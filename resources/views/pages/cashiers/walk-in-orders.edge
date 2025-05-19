@@ -1,13 +1,12 @@
-@layout.cahiers.app({ title: "Cashiers" })
+@layout.cahiers.app({ title: "On-site POS | Cashiers" })
     @slot('meta')
         <meta name="description" content="A welcome page made with EdgeJS">
     @endslot
-
-    {{{console.log(products.data)}}}
     <div class="row mt-5" x-data="walkInOrder({
         products: {{JSON.stringify(products)}}
     })">
 
+    <h1>Cahiers</h1>
         <div class="col col-lg-9">
 
             <div class="row">
@@ -71,18 +70,17 @@
                                 <option  selected hidden>Select Payment Type</option>
                    
                                 <option value="cash">CASH</option>
-                                <option value="cart">CARD</option>
                                 <option value="gcash">GCASH</option>
                                 <option value="paymaya">PAYMAYA</option>
                        
                             </select>
                         </dd>
                     </dl>
-                <button @click="buyNow" class="btn btn-warning mt-5">BUY NOW</button>
+                <button @click="buyNow" class="btn btn-danger mt-5">BUY NOW</button>
             </div>
         </div>
 
     </div>
-    <h1>Cahiers</h1>
+    
 
     @end

@@ -25,6 +25,7 @@ export default class extends BaseSchema {
       table.string('slug')
       table.text('content')
       table.enu('status', ['publish','draft']).defaultTo('draft')
+      table.integer('sale').defaultTo(0)
       table.timestamp('created_at').notNullable()
       table.timestamp('updated_at').nullable()
       table.timestamp('deleted_at').nullable()

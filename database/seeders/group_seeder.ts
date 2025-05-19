@@ -14,8 +14,9 @@ export default class extends BaseSeeder {
 
     await Group.createMany([
       { name: 'Superadmin', description: 'Superuser' },
-      { name: 'Admin', description: 'admin' },
-      { name: 'Customers', description: 'customers' },
+      { name: 'Cashiers', description: 'Cashiers' },
+      { name: 'Customers', description: 'Customers' },
+      { name: 'Riders', description: 'Riders' },
     ])
 
     await Permission.createMany([
@@ -61,23 +62,79 @@ export default class extends BaseSeeder {
       { name: 'websites-brands-edit', description: 'brands edit'},
       { name: 'websites-brands-delete', description: 'brands delete'},
       //
+      { name: 'websites-restocking-view', description: 'restocking view'},
+      { name: 'websites-restocking-index', description: 'restocking index'},
+      { name: 'websites-restocking-add', description: 'restocking add'},
+      { name: 'websites-restocking-edit', description: 'restocking edit'},
+      { name: 'websites-restocking-delete', description: 'restocking delete'},
+      //
+      { name: 'customers-details-view', description: 'details view'},
+      { name: 'customers-details-index', description: 'details index'},
+      { name: 'customers-details-add', description: 'details add'},
+      { name: 'customers-details-edit', description: 'details edit'},
+      { name: 'customers-details-delete', description: 'details delete'},
+      //
+      { name: 'customers-purchase-view', description: 'purchase view'},
+      { name: 'customers-purchase-index', description: 'purchase index'},
+      { name: 'customers-purchase-add', description: 'purchase add'},
+      { name: 'customers-purchase-edit', description: 'purchase edit'},
+      { name: 'customers-purchase-delete', description: 'purchase delete'},
+      //
+      { name: 'cashiers-walk_in_order-view', description: 'walk_in_order view'},
+      { name: 'cashiers-walk_in_order-index', description: 'walk_in_order index'},
+      { name: 'cashiers-walk_in_order-add', description: 'walk_in_order add'},
+      { name: 'cashiers-walk_in_order-edit', description: 'walk_in_order edit'},
+      { name: 'cashiers-walk_in_order-delete', description: 'walk_in_order delete'},
+      //
+      { name: 'cashiers-acknowledgement-view', description: 'acknowledgement view'},
+      { name: 'cashiers-acknowledgement-index', description: 'acknowledgement index'},
+      { name: 'cashiers-acknowledgement-add', description: 'acknowledgement add'},
+      { name: 'cashiers-acknowledgement-edit', description: 'acknowledgement edit'},
+      { name: 'cashiers-acknowledgement-delete', description: 'acknowledgement delete'},
+      //
+      { name: 'cashiers-tracking-view', description: 'tracking view'},
+      { name: 'cashiers-tracking-index', description: 'tracking index'},
+      { name: 'cashiers-tracking-add', description: 'tracking add'},
+      { name: 'cashiers-tracking-edit', description: 'tracking edit'},
+      { name: 'cashiers-tracking-delete', description: 'tracking delete'},
+      //
+      { name: 'cashiers-inventory-view', description: 'inventory view'},
+      { name: 'cashiers-inventory-index', description: 'inventory index'},
+      { name: 'cashiers-inventory-add', description: 'inventory add'},
+      { name: 'cashiers-inventory-edit', description: 'inventory edit'},
+      { name: 'cashiers-inventory-delete', description: 'inventory delete'},
     ])
 
-    await User.create({
-      lastname: 'admin',
-      firstname: 'super',
-      email: 'superadmin@noreply.com',
-      address: 'Admin Address',
-      password: 'password1234'
-    })
+    await User.createMany([
+      {
+        lastname: 'admin',
+        firstname: 'super',
+        email: 'superadmin@noreply.com',
+        address: 'Admin Address',
+        password: 'password1234'
+      },
+      {
+        lastname: 'Cashier',
+        firstname: 'Cashier',
+        email: 'Cashier@noreply.com',
+        address: 'Cashier Address',
+        password: 'password1234'
+      }
+    ])
 
-    const group = await Group.findBy('name','Superadmin')
-    await group?.related('permissions').sync(Array.from({ length: 34}, (_, index) => index + 1))
-    await group?.related('users').sync([1])
+    const groupSA = await Group.findBy('name','Superadmin')
+    await groupSA?.related('permissions').sync(Array.from({ length: 64}, (_, index) => index + 1))
+    await groupSA?.related('users').sync([1])
+
+    const groupCA = await Group.findBy('name','Cashiers')
+    await groupCA?.related('permissions').sync(Array.from({ length: 34}, (_, index) => index + 1))
+    await groupCA?.related('users').sync([2])
 
     await Category.createMany([
-      { name: 'Smartphones', description: 'smartphone', status: 'active' },
-      { name: 'Tablets', description: 'tablets', status: 'active' },
+      { name: 'Smartphones', description: 'Smartphone', status: 'active' },
+      { name: 'Tablets', description: 'Tablets', status: 'active' },
+      { name: 'Foldables', description: 'Foldables', status: 'active' },
+      { name: 'Accessories & Wearables', description: 'Accessories & Wearables', status: 'active' },
     ])
 
     await Brand.createMany([
@@ -174,3 +231,4 @@ export default class extends BaseSeeder {
     })
   }
 }
+

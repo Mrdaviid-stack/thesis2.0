@@ -26,10 +26,16 @@ export default class Transaction extends BaseModel {
   declare paymentMethod: 'cod' | 'gcash' | 'paymaya' | 'cash' | 'card'
 
   @column()
-  declare deliveryStatus: 'pending' | 'processing' | 'in_transit' | 'delivered' | 'returned'
+  declare deliveryStatus: 'pending' | 'processing' | 'to_ship' | 'to_receive' | 'received' | 'delivered' | 'returned'
 
   @column()
   declare orderType: 'online' | 'onsite'
+
+  @column()
+  declare status: 'request_cancel' | 'cancelled' | 'exchange' | 'returned'
+
+  @column()
+  declare riderName: string;
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

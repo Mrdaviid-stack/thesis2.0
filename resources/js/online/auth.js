@@ -6,11 +6,16 @@ document.addEventListener("alpine:init", () => {
         form: {...props.form},
         redirect: props.redirect,
         errors: {},
+        isShowPassword: false,
 
         async submit() {
             const form = document.getElementById("form");
             console.log(this.form)
             useForm(form.action, this.form, this.errors, this.redirect)
+        },
+
+        showPassword() {
+            this.isShowPassword = !this.isShowPassword;
         }
     }))
 })

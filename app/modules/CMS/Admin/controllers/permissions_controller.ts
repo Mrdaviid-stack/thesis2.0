@@ -2,9 +2,10 @@ import type { HttpContext } from '@adonisjs/core/http'
 import Permission from '../models/permission.js'
 import Group from '../models/group.js'
 import _ from 'lodash'
+import historyService from '../../Reports/services/historyServices.js';
 
 export default class PermissionsController {
-    async form({view, params}: HttpContext) {
+    async form({view, params, auth}: HttpContext) {
         const permissions = await Permission.all();
         const group = await Group.findOrFail(params.id)
 
@@ -17,13 +18,15 @@ export default class PermissionsController {
             isChecked: groupPermissions.find(groupPermission => groupPermission.id === permission.id)?.id ? 'checked' : ''
         }))
 
+        await historyService(auth.user?.firstname!, `View Permissions List`)
+
         return view.render('pages/cms/admin/permissions/permissions_form', {
             permissions: _.groupBy(sync_permissions, item => item.name.split('-')[1]),
             groupId:group.id
         })
     }
 
-    async store({ request, response, params }: HttpContext) {
+    async store({ request, response, params, auth }: HttpContext) {
         let { permissions } = request.body()
         const group = await Group.findOrFail(params.id)
 
@@ -34,6 +37,8 @@ export default class PermissionsController {
         await group.related('permissions').sync(
             permissions.map((permission: string) => parseInt(permission))
         )
+
+        await historyService(auth.user?.firstname!, `Update Permissions List`)
 
         return response.status(200).json({ message: 'Permissions updated successfully!' })
     }

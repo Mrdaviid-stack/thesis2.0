@@ -1,0 +1,55 @@
+@layout.cms.app({ title: "Sales" })
+
+    <h1>Sales</h1>
+	<main class="card card-body" x-data="sales()">
+        <section>
+            <div class="d-flex flex-row card card-body align-items-center gap-3">
+                <div class=" w-75">
+                    <label>Starting Date</label>
+                    <input type="date" class="form-control" id="startDate" x-model="date.start">
+                </div>
+
+                <div class=" w-75">
+                    <label>Ending Date</label>
+                    <input type="date" class="form-control" id="startDate" x-model="date.end">
+                </div>
+
+                <button class="btn btn-secondary w-50 mt-4 mb-0" @click="generateSales">Submit</button>
+            </div>
+        </section>
+
+        <section class="mt-5">
+            <div class="card card-body">
+                <h5 class="card-title">Overall Sales</h5>
+
+                <h2 class="text-center" x-text="totalSales"></h2>
+
+            </div>
+        </section>
+
+        <section class="mt-5">
+            <div class="table-responsive">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Invoice</th>
+                            <th>Payment Mehod</th>
+                            <th>Total Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template x-for="transaction in transactions">
+                            <tr>
+                                <td x-text="transaction.invoice"></td>
+                                <td x-text="transaction.paymentMethod.toUpperCase()"></td>
+                                <td x-text="new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP'}).format(transaction.totalAmount)"></td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+ 
+@end

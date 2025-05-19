@@ -1,6 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import CartItem from '../../CMS/Websites/models/cart_item.js'
 import Cart from '../../CMS/Websites/models/cart.js'
+import historyService from '../../CMS/Reports/services/historyServices.js'
 
 export default class CartsController {
 
@@ -32,7 +33,7 @@ export default class CartsController {
                 productVariantId: variantId,
             })
         }
-
+        await historyService(auth.user?.lastname!, `Add to cart`)
         return response.status(200).json({ message: 'Added to cart successfully!' })
         
     }
@@ -55,21 +56,25 @@ export default class CartsController {
                 stock: item.productVariant.stock,
                 qty: item.quantity,
                 totalAmount: item.productVariant.price,
+                sale: item.productVariant.product.sale,
             })))
 
         return response.status(200).json({ cartItems: serializedItems })
     }
 
-    async updateQuantityInCart({ response, params, request }: HttpContext) {
+    async updateQuantityInCart({ response, params, request, auth }: HttpContext) {
         const data = request.body()
         const cartItem = await CartItem.find(params.id)
         await cartItem?.merge({quantity: Number(Object.keys(data)[0])}).save()
+        await historyService(auth.user?.lastname!, `Update quantity`)
         return response.status(200).json({ message: 'Quantity updated successfully!' })
     }
 
-    async removeItemInCart({ response, params }: HttpContext) {
-        const cartItem = await CartItem.findOrFail(params.id)
-        await cartItem.delete()
+    async removeItemInCart({ response, params, auth }: HttpContext) {
+        console.log(params.id)
+        const cartItem = await CartItem.findBy('product_variant_id', params.id)
+        await cartItem?.delete()
+        await historyService(auth.user?.lastname!, `Removed item in cart`)
         return response.status(201).json({success:true})
     }
 

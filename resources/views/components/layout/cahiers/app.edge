@@ -13,6 +13,8 @@
 
         {{-- <link rel="preconnect" href="https://fonts.bunny.net" /> --}}
         {{-- <link href="https://fonts.bunny.net/css?family=instrument-sans:400,400i,500,500i,600,600i,700,700i" rel="stylesheet"/> --}}
+        <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -25,34 +27,52 @@
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0 gap-4">
+
+                        @can('hasAccess', 'cashiers-walk_in_order-index')
                         <li class="nav-item">
                             <a class="nav-link active" aria-current="page" href="/cashiers">
                                 <i class="fa-solid fa-cash-register"></i>
                                 <span>Walk In Order</span>
                             </a>
                         </li>
+                        @end
+
+                        @can('hasAccess', 'cashiers-acknowledgement-index')
                         <li class="nav-item">
                             <a class="nav-link" href="/cashiers/acknowledgements">
                                 <i class="fa-solid fa-list"></i>
                                 <span>Order Acknowledgement</span>
                             </a>
                         </li>
+                        @end
+
+                        @can('hasAccess', 'cashiers-tracking-index')
                         <li class="nav-item">
                             <a class="nav-link" href="/cashiers/order-tracking">
                                 <i class="fa-solid fa-truck-moving"></i>
                                 <span>Order Tracking</span>
                             </a>
                         </li>
+                        @end
+
+                        @can('hasAccess', 'cashiers-inventory-index')
                         <li class="nav-item">
                             <a class="nav-link" href="/cashiers/inventory">
                                 <i class="fa-solid fa-warehouse"></i>
                                 <span>Inventory</span>
                             </a>
                         </li>
+                        @end
+
                     </ul>
+                    <form action="/auth/sign-out" method="post">
+                        {{csrfField()}}
+                        <button type="submit" class="btn btn-secondary border shadow-md mt-3 w-100" >Signout</button>
+                    </form>
                 </div>
             </div>
         </nav>
+ 
         <main class="container">
             {{{ await $slots.main() }}}
         </main>

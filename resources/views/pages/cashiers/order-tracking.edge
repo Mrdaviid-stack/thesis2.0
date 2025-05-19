@@ -1,12 +1,26 @@
-@layout.cahiers.app({ title: "Cashiers" })
+@layout.cahiers.app({ title: "Order Tracking" })
     @slot('meta')
         <meta name="description" content="A welcome page made with EdgeJS">
     @endslot
 
+    {{{ console.log(userType) }}}
+
     <div class="mt-5" x-data="orderTracking({
-        orders: {{JSON.stringify(orders)}}
+        orders: {{JSON.stringify(orders)}},
+        riders: {{JSON.stringify(riders)}}
     })">
-        <input class="form-control mb-3" placeholder="Search order" x-model="searchQuery" />
+        <div class="d-flex justify-content-between gap-5">
+            <input class="form-control mb-3" placeholder="Search order" x-model="searchQuery" />
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                  Filter by:
+                </button>
+                <ul class="dropdown-menu">
+                  <li><a @click="filterStatus('delivered')" class="dropdown-item" href="#">Delivered</a></li>
+                  <li><a @click="filterStatus('to_ship')" class="dropdown-item" href="#">To Ship</a></li>
+                </ul>
+              </div>
+        </div>
         @if(orders.length > 0)
         <div class="table-responsive">
             <table class="table table-borderless align-middle">
@@ -17,6 +31,9 @@
                         <th>Cutomer Info</th>
                         <th>Balance</th>
                         <th colspan="2">Status</th>
+                        @if (userType !== 'Riders')
+                            <th>Rider</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -42,16 +59,43 @@
                             </td>
                             <td x-text="order.orderBalance"></td>
                             <td>
-                                <span class="badge text-bg-warning" x-text="order.orderDeliveryStatus"></span>
+                                <template x-if="order.orderDeliveryStatus !== 'to_ship'">
+                                    <span class="badge text-bg-warning" x-text="order.orderDeliveryStatus"></span>
+                                </template>
+                                <template x-if="order.orderDeliveryStatus === 'to_ship'">
+                                    <span class="badge text-bg-warning">Out for delivery</span>
+                                </template>
                             </td>
                             <td style="min-width: 220px;">
                                 <select class="form-select" x-on:change="changeDeliveryStatus($event, order.orderTransactionId)">
                                     <option selected hidden>Select Delivery Status</option>
-                                    <option value="processing">processing</option>
-                                    <option value="in_transit">In Transit</option>
+                                    @if (userType === 'Cashiers')
+                                     <option value="processing">processing</option> 
+                                     <option value="returned">Returned</option>
+                                    @end
+                                    <option value="to_ship">Out for Delivery</option>
+                                    <option value="to_receive">To Receive</option>
+
+                                    @if (userType !== 'Cashiers' && userType !== 'Riders')
+                                        <option value="received">Received</option>
+                                    @end
+
                                     <option value="delivered">Delivered</option>
+
                                 </select>
                             </td>
+                            @if (userType !== 'Riders')
+                            <td>
+                                <select class="form-select" x-on:change="changeRider($event, order.orderTransactionId)">
+                                    <option default>Select rider</option>
+                                    <template x-for="rider in riders">
+                                        <option :value="rider.id">
+                                            <p x-text="rider.firstname"></p>, <p x-text="rider.lastname"></p>
+                                        </option>
+                                    </template>
+                                </select>
+                            </td>
+                            @endif
                         </tr>
                     </template>
                 </tbody>

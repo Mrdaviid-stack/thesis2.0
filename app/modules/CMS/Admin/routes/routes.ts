@@ -22,7 +22,7 @@ export default function AdminRoutes() {
         router.group(() => {
             router.get('/', [UsersController, 'index']).as('users.index')
             router.get('/add/:id?', [UsersController, 'form']).as('users.form')
-            // router.post('/add', [GroupsController, 'store']).as('groups.store')
+            router.post('/add', [UsersController, 'store']).as('users.store')
             // router.delete('/delete/:id?', [GroupsController, 'delete']).as('groups.delete')
         }).prefix("users")
 

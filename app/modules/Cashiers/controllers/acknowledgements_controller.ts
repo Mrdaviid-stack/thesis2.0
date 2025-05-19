@@ -1,9 +1,17 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Order from '../../CMS/Websites/models/order.js'
 import Transaction from '../../CMS/Websites/models/transaction.js'
+import historyService from '../../CMS/Reports/services/historyServices.js'
 
 export default class AcknowledgementsController {
-    async index({ view }: HttpContext) {
+    async index({ view, response, auth }: HttpContext) {
+
+        const guard = await auth.user?.related('groups').query()
+        if (guard![0].name === 'Riders') {
+            return response.redirect().toPath('/cashiers/order-tracking')
+        }
+
+
         const ordersQuery = await Order.query()
             .preload('orderItems', (orderItem) => 
                 orderItem.preload('productVariant', (productVariant) => 
@@ -33,16 +41,18 @@ export default class AcknowledgementsController {
                 orderProductColor: orderItem.productVariant?.color,
                 orderProductStorage: orderItem.productVariant?.storage,
                 orderProductImage: orderItem.productVariant?.image,
-                customerName: `${orders.user.firstname} ${orders.user.lastname}`
+                customerName: `${orders.user.firstname} ${orders.user.lastname}`,
+                orderTransactionStatus: orders.transaction?.status,
             }))
         })
 
-        return view.render('pages/cashiers/awknowledgements', { orders: orders.filter(order => order.orderDeliveryStatus == 'pending') })
+        return view.render('pages/cashiers/awknowledgements', { orders: orders.filter(order => order.orderDeliveryStatus == 'pending' && order.orderTransactionStatus !== 'cancelled') })
     }
 
-    async acknowledge({ response, params }: HttpContext) {
+    async acknowledge({ response, params, auth }: HttpContext) {
         const transaction = await Transaction.findOrFail(params.transactionId)
         await transaction.merge({ deliveryStatus: 'processing' }).save()
+        await historyService(auth.user?.firstname!, `Acknowledge Order`)
         return response.status(201).json({message: 'Order acknowledge successfully' })
     }
 

@@ -5,7 +5,7 @@
     formData: {
         id: '{{ (record && record.id) ? record.id : '' }}',
         name: '{{ (record && record.name) ? record.name : '' }}',
-        content: '{{ (record && record.name) ? record.name : '' }}',
+        content: '{{ (record && record.content) ? record.content : '' }}',
         status: '{{ (record && record.status) ? record.status : 'draft' }}',
         files: '{{ (record && record.files) ? record.files : '' }}',
     } 
@@ -30,11 +30,16 @@
                             placeholder: "Page Name",
                         })
                         
-                        @!forms.richTextField({
-                            id: "content",
+                        {{-- @!forms.richTextField({
+                            id: "page_content",
                             name: "content",
                             label: "Content",
-                        })
+                        }) --}}
+
+                        <div class="col mb-2">
+                            <label>Content</label>
+                            <div id="content" name="content"></div>
+                        </div>
 
                     </div>
 

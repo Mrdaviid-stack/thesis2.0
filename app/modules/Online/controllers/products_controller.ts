@@ -12,7 +12,7 @@ export default class ProductsController {
         const products = await Product.query()
             .where('categoryId',  category.id)
             .andWhere('status', 'publish')
-            .select('id', 'name', 'slug')
+            .select('id', 'name', 'slug', 'sale')
             .preload('productVariants', (productVariant) => 
                 productVariant.select('price','image')
             )

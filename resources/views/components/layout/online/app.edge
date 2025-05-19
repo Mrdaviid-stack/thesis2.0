@@ -18,17 +18,16 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body>
-        @let(test = 'test')
-        <div class=" h-100 border-radius-lg bg-white">
+        <div class=" bg-white">
             @include('components/layout/online/partials/navbarHead')
             <div style="padding-top: 90px;">
                 @include('components/layout/online/partials/navbarMenu')
             </div>
 
-            <main class="container-fluid  container-lg container-xl vh-100 " >
+            <div class="container-fluid  container-lg container-xl " >
                 {{{ await $slots.main() }}}
-            </main>
-
+            </div>
+            @include('components/layout/online/partials/footer')
         </div>
 
     </body>

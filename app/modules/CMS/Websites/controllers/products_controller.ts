@@ -15,7 +15,7 @@ export default class ProductsController {
         const baseUrl = request.url().split('?',1)[0]
         records?.baseUrl(baseUrl)
         
-        return view.render('pages/cms/websites/products/products_index', { records: records?.serialize(), paginations: records })
+        return view.render('pages/cms/websites/products/products_index', { records: records?.serialize(), paginations: records})
     }
 
     async form({ view, params }: HttpContext) {
@@ -40,6 +40,7 @@ export default class ProductsController {
                 brandId: product.brandId,
                 content: product.content,
                 status: product.status,
+                sale: product.sale,
                 productVariants: product.productVariants.map((variant) => ({
                     id: variant.id,
                     feature: variant.feature,
@@ -76,6 +77,7 @@ export default class ProductsController {
                 content: data.content,
                 status: data.status,
                 modelNumber: data.modelNumber,
+                sale: data.sale,
             }
         )
         const variants: any = data.variants.map((variant) => ({

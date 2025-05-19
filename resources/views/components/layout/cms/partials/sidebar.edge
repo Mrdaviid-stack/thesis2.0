@@ -43,12 +43,42 @@
                 icon: 'fa-house',
                 active: sub_segment == 'products' && 'text-decoration-underline'
             },
+            {
+                permission: 'websites-restocking-view',
+                route: '/cms/websites/restocking',
+                label: 'Restocking',
+                icon: 'fa-house',
+                active: sub_segment == 'restocking' && 'text-decoration-underline'
+            },
+        ]
+    },
+    {
+        permission: 'customers-details-view',
+        route: 'customers',
+        label: 'Customers',
+        icon: 'fa-user-tie',
+        active: segment == 'customers' && 'active',
+        sub_menu: [
+            {
+                permission: 'customers-details-view',
+                route: '/cms/customers/details',
+                label: 'Customers Information',
+                icon: 'fa-house',
+                active: sub_segment == 'details' && 'text-decoration-underline'
+            },
+            {
+                permission: 'customers-purchase-view',
+                route: '/cms/customers/history',
+                label: 'Purchases History',
+                icon: 'fa-house',
+                active: sub_segment == 'history' && 'text-decoration-underline'
+            },
         ]
     },
     {
         permission: 'admin-admin-view',
         route: 'admin',
-        label: 'Admin',
+        label: 'Maintenance',
         icon: 'fa-user-tie',
         active: segment == 'admin' && 'active',
         sub_menu: [
@@ -68,6 +98,43 @@
             },
         ]
     },
+    {
+        permission: 'admin-admin-view',
+        route: 'reports',
+        label: 'Reports',
+        icon: 'fa-user-tie',
+        active: segment == 'reports' && 'active',
+        sub_menu: [
+            {
+                permission: 'admin-groups-view',
+                route: '/cms/reports/sales',
+                label: 'Sales',
+                icon: 'fa-house',
+                active: sub_segment == 'reports' && 'text-decoration-underline'
+            },
+            {
+                permission: 'admin-groups-view',
+                route: '/cms/reports/tracking',
+                label: 'Tracking',
+                icon: 'fa-house',
+                active: sub_segment == 'reports' && 'text-decoration-underline'
+            },
+            {
+                permission: 'admin-groups-view',
+                route: '/cms/reports/transaction',
+                label: 'Transaction',
+                icon: 'fa-house',
+                active: sub_segment == 'reports' && 'text-decoration-underline'
+            },
+            {
+                permission: 'admin-groups-view',
+                route: '/cms/reports/history',
+                label: 'History',
+                icon: 'fa-house',
+                active: sub_segment == 'reports' && 'text-decoration-underline'
+            },
+        ]
+    },
 ])
 
 
@@ -76,7 +143,7 @@
     <div class="sidenav-header">
         <i class="fas fa-times p-3 cursor-pointer text-secondary opacity-5 position-absolute end-0 top-0 d-none d-xl-none" aria-hidden="true" id="iconSidenav"></i>
         <a class="navbar-brand m-0" href=" https://demos.creative-tim.com/soft-ui-dashboard/pages/dashboard.html " target="_blank">
-            <span class="ms-1 font-weight-bold">Soft UI Dashboard</span>
+            <span class="ms-1 font-weight-bold text-danger">BSD International</span>
         </a>
     </div>
     <hr class="horizontal dark mt-0"/>
@@ -108,7 +175,7 @@
                 @else
                     @can('hasAccess', menu.permission)
                         <li class="nav-item" >
-                            <a class="nav-link {{ menu.active }}" href="/">
+                            <a class="nav-link {{ menu.active }}" href="{{ menu.route }}">
                                 <div class="icon icon-shape icon-sm shadow-md border-radius-md bg-white text-center me-2 d-flex align-items-center justify-content-center">
                                     <i class="fa-solid {{ menu.icon }} {{ menu.active ? 'text-white' : 'text-dark' }} fa-lg"></i>
                                 </div>

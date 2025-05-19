@@ -1,38 +1,21 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary w-100 py-4 fixed-top">
+<nav class="navbar navbar-expand bg-body-tertiary w-100 py-4 fixed-top">
     <div class="container">
-        <a class="navbar-brand" href="/">Navbar</a>
+        <a class="navbar-brand text-danger" href="/">BSD International</a>
 
             <ul class="navbar-nav d-flex ms-auto mb-2 mb-lg-0">
-                {{-- <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        Page
-                    </a>
-                    <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Action</a></li>
-                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                    </ul>
-                </li> --}}
                 @if(!await auth.use('web').check())
                     <li class="nav-item">
                         <a class="nav-link pt-1 fs-6" href="/login"><i class="fa-solid fa-user"></i> Login or Register</a>
                     </li>
                 @else
-            
      
-                    <li class="nav-item dropdown d-flex align-items-center">
+                    <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <a class="nav-link"><i class="fa-solid fa-user"></i></a> Account
+                             Account
                         </a>
                         <ul class="dropdown-menu">
-                        <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                            <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                            <li><a class="dropdown-item" href="/my-account">My account</a></li>
                         </ul>
                     </li>
                  

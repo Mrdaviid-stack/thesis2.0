@@ -1,0 +1,73 @@
+@layout.cms.app({ title: "Purchase History" })
+
+    <h4 class="mb-4">Purchase History</h4>
+
+    <div class="card card-body" x-data="purchaseHistory">
+        <section>
+            <div class="d-flex flex-row card card-body align-items-center gap-3">
+                <div class=" w-75">
+                    <label>Starting Date</label>
+                    <input type="date" class="form-control" id="startDate" x-model="date.start">
+                </div>
+
+                <div class=" w-75">
+                    <label>Ending Date</label>
+                    <input type="date" class="form-control" id="startDate" x-model="date.end">
+                </div>
+
+                <button class="btn btn-secondary w-50 mt-4 mb-0" @click="generatePurchaseHistory">Submit</button>
+            </div>
+        </section>
+        <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <th>Name</th>
+                <th>items</th>
+                <th>Order Reference</th>
+                <th>Payment Method</th>
+                <th>Total Amount</th>
+                <th>Status</th>
+                <th>Date</th>
+            </thead>
+            <tbody>
+                <template x-for="purchase in purchaseHistories">
+                    <tr>
+                        <td x-text="purchase.fullname"></td>
+                        <td>
+                            <template x-for="order in purchase.order.orderItems">
+                                <span x-text="order.productVariant.product.name"></span> | 
+                                <span x-text="order.productVariant.product.modelNumber"></span>
+                            </template>
+                        </td>
+                        <td x-text="purchase.reference"></td>
+                        <td x-text="purchase.paymentMethod"></td>
+                        <td x-text="purchase.totalAmount.toLocaleString()"></td>
+                        <td x-text="purchase.deliveryStatus"></td>
+                        <td x-text="purchase.updatedAt"></td>
+                    </tr>
+                </template>
+                {{-- @each(history in histories)
+                    <tr>
+                        <td>{{ history.$preloaded.order.$extras.fullname }}</td>
+                        <td>
+                            @each(item in history.$preloaded.order.$preloaded.orderItems)
+                                <p>
+                                    <span>{{ item.$preloaded.productVariant.product.name  }}</span> /
+                                    <span>{{ item.$preloaded.productVariant.product.modelNumber  }}</span>
+                                </p>
+                                <hr/>
+                            @end
+                        </td>
+                        <td>{{ history.reference }}</td>
+                        <td>{{ history.paymentMethod }}</td>
+                        <td>{{ history.totalAmount.toLocaleString() }}</td>
+                        <td>{{ history.deliveryStatus }}</td>
+                        <td>{{ history.updatedAt }}</td>
+                    </tr>
+                @end --}}
+            </tbody>
+        </table>
+        </div>
+    </div>
+
+@end

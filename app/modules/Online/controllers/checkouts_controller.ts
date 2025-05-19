@@ -7,6 +7,7 @@ import { customAlphabet } from 'nanoid'
 import ProductVariant from '../../CMS/Websites/models/product_variant.js'
 import mail from '@adonisjs/mail/services/main'
 import moment from 'moment'
+import historyService from '../../CMS/Reports/services/historyServices.js'
 
 const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 10)
 
@@ -18,7 +19,7 @@ export default class CheckoutsController {
         return view.render('pages/online/checkout', { user: auth.user })
     }
 
-    async checkout({ request, auth }: HttpContext) { 
+    async checkout({ request, response, auth }: HttpContext) { 
         const data = request.body()
         const order = await Order.create({
             userId: auth.user?.id,
@@ -26,7 +27,7 @@ export default class CheckoutsController {
             lastName: data.lastName,
             address: data.address,
             city: data.city,
-            phone: data.phone,
+            phone: data.number,
             email: data.email ? data.email : auth.user?.email,
             note: data.note,
         })
@@ -73,6 +74,8 @@ export default class CheckoutsController {
                     reference: data.reference,
                     lastname: data.lastName
                 })
-        })
+        });
+        await historyService(auth.user?.lastname!, `Checkout order`)
+        return response.status(200).json({ message: 'Purchased successfully.' })
     }
 }

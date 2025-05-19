@@ -16,6 +16,8 @@ import FileRoutes from '../app/modules/CMS/Files/routes/routes.js'
 import HomeController from '../app/modules/Core/controllers/home_controller.js'
 import OnlineRoutes from '../app/modules/Online/routes/routes.js'
 import CashierRoutes from '../app/modules/Cashiers/routes/routes.js'
+import ReportRoutes from '../app/modules/CMS/Reports/routes/routes.js'
+import CustomerRoutes from '../app/modules/CMS/Customers/routes/routes.js'
 
 OnlineRoutes()
 CashierRoutes()
@@ -26,4 +28,6 @@ router.group(() => {
     AdminRoutes()
     WebsiteRoutes()
     FileRoutes()
+    ReportRoutes()
+    CustomerRoutes()
 }).prefix('cms')

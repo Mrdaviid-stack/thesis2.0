@@ -1,8 +1,7 @@
-@layout.cahiers.app({ title: "Cashiers" })
+@layout.cahiers.app({ title: "Order Acknowledgement | Cashiers" })
     @slot('meta')
         <meta name="description" content="A welcome page made with EdgeJS">
     @endslot
-    {{{console.log(orders)}}}
     <div class="mt-5" x-data="acknowledgement({
         orders: {{JSON.stringify(orders)}}
     })">
@@ -17,7 +16,7 @@
                             <img :src="order.orderProductImage" class="img-fluid rounded-start" :alt="order.orderProductName">
                           </div>
                           <div class="col-md-8">
-                            <div class="card-body">
+                            <div class="card-body" id="printable">
                               <h5 class="card-title" x-text="order.orderProductName"></h5>
                               <p class="card-text">
                                 <small>Color: <span x-text="order.orderInvoice"></span>
@@ -35,7 +34,12 @@
                               <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
                             </div>
 
-                                <button @click="acknowledge(order.orderTransactionId)" class="btn btn-warning">Acknowledge</button>
+                            <template x-if="order.orderTransactionStatus === 'request_cancel'">
+                              <button @click="onCancelled(order.orderTransactionId)" class="btn btn-danger">Requesting to cancel</button>
+                            </template>
+                            <template x-if="order.orderTransactionStatus !== 'request_cancel'"">
+                              <button @click="acknowledge(order.orderTransactionId, order)" class="btn btn-warning">Acknowledge</button>
+                            </template>
 
                           </div>
                         </div>

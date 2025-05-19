@@ -21,7 +21,8 @@
                         <div class="text-danger" x-text="errors.email"></div>
                     </div>
                     <div class="mb-2">
-                        <input type="password" name="password" class="form-control" placeholder="Password"x-model="form.password"/>
+                        <input :type="!isShowPassword ? 'password' : 'text'" name="password" class="form-control" placeholder="Password"x-model="form.password"/>
+                        <i @click="showPassword" :class="!isShowPassword ? 'fas fa-eye-slash' : 'fas fa-eye'" style="position: absolute; top: 42%; left: 90%"></i>
                         <div class="text-danger" x-text="errors.password"></div>
                     </div>
                     <div class="form-check">
@@ -30,7 +31,7 @@
                           Remember me
                         </label>
                     </div>
-                    <button type="submit" class="btn btn-warning w-100">LOGIN</button>
+                    <button type="submit" class="btn btn-danger w-100">LOGIN</button>
                 </form>
                 <div class="d-flex justify-content-center">
                     <a>Forgot Password?</a>  |  <a href="/register">Don't have account?</a>

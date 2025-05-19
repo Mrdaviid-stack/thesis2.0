@@ -1,6 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import { UpdateAccountValidationSchema } from '../validators/auth.js'
 import User from '../../CMS/Admin/models/user.js'
+import historyService from '../../CMS/Reports/services/historyServices.js'
 
 export default class DetailsController {
 
@@ -23,6 +24,7 @@ export default class DetailsController {
             user.firstname = data.firstname;
             user.lastname = data.lastname;
             user.email = data.email;
+            user.number = data.number;
             user.address = data.address;
             user.password = data.password;
             user.save()
@@ -30,10 +32,12 @@ export default class DetailsController {
             user.firstname = data.firstname;
             user.lastname = data.lastname;
             user.email = data.email;
+            user.number = data.number;
             user.address = data.address;
             user.save()
         }
 
+        await historyService(auth.user?.lastname!, `Update details`)
         return response.status(201).send({message: 'Account updated successfully'})
     }
 
