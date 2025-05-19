@@ -2,6 +2,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import Order from '../../CMS/Websites/models/order.js'
 import Transaction from '../../CMS/Websites/models/transaction.js'
 import User from '../../CMS/Admin/models/user.js'
+import historyService from '../../CMS/Reports/services/historyServices.js'
 
 export default class OrderTrackingsController {
   async index({ view, auth }: HttpContext) {
@@ -46,7 +47,7 @@ export default class OrderTrackingsController {
     })
   }
 
-  async updateDeliveryStatus({ request, response, params }: HttpContext) {
+  async updateDeliveryStatus({ request, response, params, auth }: HttpContext) {
     const data = request.body()
     console.log(data)
     const transaction = await Transaction.findOrFail(params.id)
@@ -56,10 +57,11 @@ export default class OrderTrackingsController {
     transaction.save()
 
     //await transaction.merge({ deliveryStatus: data.deliveryStatus }).save()
+    await historyService(auth.user?.firstname!, `Update Delivery Status`)
     return response.status(200).json({ message: 'Delivery status updated successfully!' })
   }
 
-  async updateRider({ request, response, params }: HttpContext) {
+  async updateRider({ request, response, params, auth }: HttpContext) {
     const data = request.body()
 
     const transaction = await Transaction.findOrFail(params.id)
@@ -73,6 +75,7 @@ export default class OrderTrackingsController {
     transaction.save()
 
     //await transaction.merge({ deliveryStatus: data.deliveryStatus }).save()
+    await historyService(auth.user?.firstname!, `Update assign rider`)
     return response.status(200).json({ message: 'Delivery status updated successfully!' })
   }
 

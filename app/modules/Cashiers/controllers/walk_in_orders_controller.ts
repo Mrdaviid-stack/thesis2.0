@@ -6,6 +6,7 @@ import OrderItem from '../../CMS/Websites/models/order_item.js'
 import Transaction from '../../CMS/Websites/models/transaction.js'
 
 import { customAlphabet } from 'nanoid'
+import historyService from '../../CMS/Reports/services/historyServices.js'
 const nanoid = customAlphabet('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', 10)
 
 export default class WalkInOrdersController {
@@ -62,7 +63,7 @@ export default class WalkInOrdersController {
             deliveryStatus: 'delivered',
             orderType: 'onsite',
         })
-
+        await historyService(auth.user?.firstname!, `Transact Walk-in order`)
         return response.status(200).json({message: 'Transaction created successfully'})
     }
 

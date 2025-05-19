@@ -1,6 +1,7 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Order from '../../CMS/Websites/models/order.js'
 import Transaction from '../../CMS/Websites/models/transaction.js'
+import historyService from '../../CMS/Reports/services/historyServices.js'
 
 export default class OrdersController {
 
@@ -29,20 +30,24 @@ export default class OrdersController {
         return view.render('pages/online/accounts/orders', { orders: orders.filter(order => order.status !== 'cancelled') })
     }
 
-    async cancelOrder({ response, params }: HttpContext) {
+    async cancelOrder({ response, params, auth }: HttpContext) {
 
         const TransactionQuery = await Transaction.find(params.id)
 
         TransactionQuery?.merge({ status: 'request_cancel' }).save();
 
+        await historyService(auth.user?.lastname!, `Cancel Order`)
+
         return response.status(200).json({ message: 'Cancel Requested!' })
     }
 
-    async cancledConfirm({ response, params }: HttpContext) {
+    async cancledConfirm({ response, params, auth }: HttpContext) {
 
         const TransactionQuery = await Transaction.find(params.id)
 
         TransactionQuery?.merge({ status: 'cancelled' }).save();
+
+        await historyService(auth.user?.lastname!, `Cancel Confirm`)
 
         return response.status(200).json({ message: 'Cancel Requested!' })
 

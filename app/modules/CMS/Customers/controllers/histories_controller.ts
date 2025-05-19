@@ -1,10 +1,11 @@
 import type { HttpContext } from '@adonisjs/core/http'
 import Transaction from '../../Websites/models/transaction.js'
 import db from '@adonisjs/lucid/services/db'
+import historyService from '../../Reports/services/historyServices.js'
 
 export default class HistoriesController {
 
-    async index({ view, request }: HttpContext) {
+    async index({ view, request, auth }: HttpContext) {
         
         const page = request.input('page', 1)
 
@@ -21,6 +22,8 @@ export default class HistoriesController {
 
         const baseUrl = request.url().split('?',1)[0]
         histories?.baseUrl(baseUrl)
+
+        await historyService(auth.user?.firstname!, `View Customer History Page`)
 
         return view.render('pages/cms/customers/history/history_index', { histories })
     }
