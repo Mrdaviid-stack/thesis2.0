@@ -12,6 +12,7 @@ export default function CustomerRoutes() {
 
         router.group(() => {
             router.get('/', [HistoriesController, 'index'])
+            router.get('/generate', [HistoriesController, 'generate'])
         }).prefix('history')
 
     }).prefix("/customers").use(middleware.auth());

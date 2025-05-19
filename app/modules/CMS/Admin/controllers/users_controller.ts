@@ -3,6 +3,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import User from "../models/user.js"
 import { UserValidationSchema } from "../validators/user.js"
 import Group from '../models/group.js'
+import historyService from '../../Reports/services/historyServices.js'
 
 export default class UsersController {
     // constructor() {
@@ -24,13 +25,15 @@ export default class UsersController {
         return view.render('pages/cms/admin/users/users_index', { records: records?.serialize(), paginations: records })
     }
 
-    async form({ view, params }: HttpContext) {
+    async form({ view, params, auth }: HttpContext) {
         const groupQuery = await Group.all()
 
         const groupOptions = groupQuery.map(group => ({
             value: group.id,
             label: group.name
         }))
+
+        await historyService(auth.user?.firstname!, `View Users Form`)
 
         if (params.id) {
             const userQuery = await User.query().where('id',params.id).preload('groups')
@@ -48,7 +51,7 @@ export default class UsersController {
         return view.render('pages/cms/admin/users/users_form', { groupOptions })
     }
 
-    async store({request, response}: HttpContext) {
+    async store({request, response, auth}: HttpContext) {
         const data = request.body()
         console.log(data)
         if (data.id) {
@@ -61,6 +64,7 @@ export default class UsersController {
                 address: data.address,
             }).save()
             user?.related('groups').sync([data.group])
+            await historyService(auth.user?.firstname!, `Update Users`)
             return response.status(200).json({ message: 'Updated Successfully!', data: user })
         }
 
@@ -73,7 +77,9 @@ export default class UsersController {
             address: result.address,
             password:result.lastname,
         })
+
         await user.related('groups').sync([result.group!])
+        await historyService(auth.user?.firstname!, `Add User`)
         return response.status(200).json({ message: 'Added Successfully!', data: user })
     }
 }

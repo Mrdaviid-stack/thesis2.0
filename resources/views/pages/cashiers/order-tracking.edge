@@ -3,6 +3,8 @@
         <meta name="description" content="A welcome page made with EdgeJS">
     @endslot
 
+    {{{ console.log(userType) }}}
+
     <div class="mt-5" x-data="orderTracking({
         orders: {{JSON.stringify(orders)}},
         riders: {{JSON.stringify(riders)}}
@@ -29,7 +31,9 @@
                         <th>Cutomer Info</th>
                         <th>Balance</th>
                         <th colspan="2">Status</th>
-                        <th>Rider</th>
+                        @if (userType !== 'Riders')
+                            <th>Rider</th>
+                        @endif
                     </tr>
                 </thead>
                 <tbody>
@@ -55,7 +59,12 @@
                             </td>
                             <td x-text="order.orderBalance"></td>
                             <td>
-                                <span class="badge text-bg-warning" x-text="order.orderDeliveryStatus"></span>
+                                <template x-if="order.orderDeliveryStatus !== 'to_ship'">
+                                    <span class="badge text-bg-warning" x-text="order.orderDeliveryStatus"></span>
+                                </template>
+                                <template x-if="order.orderDeliveryStatus === 'to_ship'">
+                                    <span class="badge text-bg-warning">Out for delivery</span>
+                                </template>
                             </td>
                             <td style="min-width: 220px;">
                                 <select class="form-select" x-on:change="changeDeliveryStatus($event, order.orderTransactionId)">
@@ -75,6 +84,7 @@
 
                                 </select>
                             </td>
+                            @if (userType !== 'Riders')
                             <td>
                                 <select class="form-select" x-on:change="changeRider($event, order.orderTransactionId)">
                                     <option default>Select rider</option>
@@ -85,6 +95,7 @@
                                     </template>
                                 </select>
                             </td>
+                            @endif
                         </tr>
                     </template>
                 </tbody>

@@ -2,15 +2,16 @@ import type { HttpContext } from '@adonisjs/core/http'
 import Order from '../../Websites/models/order.js';
 
 import _ from 'lodash'
+import historyService from '../services/historyServices.js';
 
 export default class TrackingsController {
 
-    async index({ view }: HttpContext) {
-
+    async index({ view, auth }: HttpContext) {
+        await historyService(auth.user?.firstname!, `View Tracking Reports Page`)
         return view.render('pages/cms/reports/inventory/order_tracking');
     }
 
-    async generate({ request, response }: HttpContext) {
+    async generate({ request, response, auth }: HttpContext) {
 
         let { start, end } = request.qs();
 
@@ -33,7 +34,7 @@ export default class TrackingsController {
             product: query.orderItems.map(item => item.productVariant.product.name),
             transactionStatus: query.transaction.status,
         }))
-
+        await historyService(auth.user?.firstname!, `Generate Trackings`)
         return response.status(200).json({ tracking: tracking.filter(trk => trk.transactionStatus !== 'cancelled') })
     }
 

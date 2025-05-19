@@ -62,6 +62,12 @@ export default class extends BaseSeeder {
       { name: 'websites-brands-edit', description: 'brands edit'},
       { name: 'websites-brands-delete', description: 'brands delete'},
       //
+      { name: 'websites-restocking-view', description: 'restocking view'},
+      { name: 'websites-restocking-index', description: 'restocking index'},
+      { name: 'websites-restocking-add', description: 'restocking add'},
+      { name: 'websites-restocking-edit', description: 'restocking edit'},
+      { name: 'websites-restocking-delete', description: 'restocking delete'},
+      //
       { name: 'customers-details-view', description: 'details view'},
       { name: 'customers-details-index', description: 'details index'},
       { name: 'customers-details-add', description: 'details add'},

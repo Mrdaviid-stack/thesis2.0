@@ -8,6 +8,7 @@ document.addEventListener("alpine:init", () => {
         form: {...props.formData},
         redirect: props.redirect,
         errors: {},
+        isShowPassword: false,
 
         async submit() {
             const form = document.getElementById("form");
@@ -40,6 +41,10 @@ document.addEventListener("alpine:init", () => {
                         console.error("Unexpected error:", response);
                     }
                 });
+        },
+
+        showPassword() {
+            this.isShowPassword = !this.isShowPassword;
         }
     }))
 })

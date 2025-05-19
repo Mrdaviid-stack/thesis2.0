@@ -7,7 +7,7 @@
         firstname: '{{user.firstname}}',
         lastname: '{{user.lastname}}',
         email: '{{user.email}}',
-        number: '{{user.number}}',
+        number: '{{user.number || '09XX-XXX-XXXX'}}',
         address: '{{user.address}}'
     })">
         <template x-if="isProcessing">
@@ -45,6 +45,7 @@
                         <div class="mb-2">
                             <label>Town / City*</label>
                             <select class="form-select" x-model="orderDetails.city">
+                                <option hidden selected>Select City</option>
                                 <template x-for="city in cities">
                                     <option :value="city.city" x-text="city.city"></option>
                                 </template>
@@ -54,7 +55,7 @@
                     <div class="col">
                         <div class="mb-2">
                             <label>Phone*</label>
-                            <input type="text" class="form-control" x-model="orderDetails.number"/>
+                            <input type="text" class="form-control" placeholder="09XX-XXX-XXXX" x-model="orderDetails.number"/>
                         </div>
                     </div>
                     <div class="col">
@@ -95,7 +96,7 @@
                 </ul>
 
                 <h5>Payment Method:</h5>
-                @let(paymentOptions = [{value: 'cod', label: 'COD', ref: ''},{value: 'gcash', label: 'Gcash', ref: '(09123456789)'},{value: 'paymaya', label: 'PayMaya', ref: '(09123456781)'},{value: 'paypal', label: 'Paypal', ref: ''}])
+                @let(paymentOptions = [{value: 'cod', label: 'COD', ref: ''},{value: 'gcash', label: 'Gcash', ref: '(09123456789)'},{value: 'paymaya', label: 'PayMaya', ref: '(09123456781)'}])
                 <ul class="list-group mb-2" style="background-color: aliceblue!impotant;">
                     <template x-for="options in {{JSON.stringify(paymentOptions)}}">
                         <li class="list-group-item d-flex justify-content-between align-items-center py-3">

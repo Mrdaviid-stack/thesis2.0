@@ -1,0 +1,13 @@
+@layout.online.app({ title: "BSD International | Shop Online" })
+  @slot('meta')
+    <meta name="description" content="A welcome page made with EdgeJS">
+  @endslot
+
+  <div class="banner__container mb-5">
+    <img src="{{ page.files }}" class="banner__img" />
+  </div>
+
+  <div>{{ html.safe(page.content) }}</div>
+
+
+@end
