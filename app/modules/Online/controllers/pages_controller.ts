@@ -2,7 +2,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import Page from '../../CMS/Websites/models/page.js'
 
 export default class PagesController {
-  async index({ view, response }: HttpContext) {
+  async index({ view }: HttpContext) {
     const page = await Page.findByOrFail('slug', 'home')
     const customPages = await Page.query().select('slug')
 
