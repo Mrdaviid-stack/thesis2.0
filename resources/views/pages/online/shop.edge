@@ -11,7 +11,7 @@
         </div>
     @end
     
-    <main x-data="shop({ product: {{ JSON.stringify(product) }} })" class="row mt-5">
+    <main x-data="shop({ product: {{ JSON.stringify(product) }} })"  x-init="init()" class="row mt-5">
         <div class="col">
             <div class="d-flex justify-content-center flex-column">
                 <div class="align-self-center">
@@ -34,6 +34,7 @@
                     </template>
                 </div>
             </div>
+            <div x-html="details.feature"></div>
         </div>
         <div class="col mb-5">
             <h3 x-text="product.name"></h3>
@@ -42,7 +43,7 @@
             <dl class="row mb-5">
                 <dt class="col-3"><p class="text-muted">Color</p></dt>
                 <dd class="col-9">
-                    <select class="form-select w-50" x-model="options.color">
+                    <select class="form-select w-50" x-model="options.color" @change="onChangeColor">
                         <option selected hidden>Choose a color</option>
                         <template x-for="color in variants" :key="color.id">
                             <option :value="color.color" x-text="color.color"></option>

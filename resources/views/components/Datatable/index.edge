@@ -74,7 +74,7 @@
                         <small class="text-muted"> <span x-text="record.modelNumber"></span> | <span x-text="record.status"></span> | </small>
                     @elseif(module == "restocking")
                         <h6 class="card-title" x-text="record.product.name"></h6> 
-                        <small class="text-muted"> <span x-text="record.sku"></span> | <span x-text="record.stock"></span> | </small>
+                        <small class="text-muted"> <span x-text="record.sku"></span> | <span x-text="record.stock"></span> | <span x-text="record.product.batch"></span>-<span>Batch</span> </small>
                     @else
                         <h6 class="card-title" x-text="record.name"></h6> 
                         <small class="text-muted"> <span x-text="record.description"></span> | <span x-text="record.status"></span> | </small>

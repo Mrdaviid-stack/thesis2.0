@@ -14,7 +14,7 @@ export default class HistoriesController {
 
         const query = await History.query()
             .select('*')
-            .whereBetween('created_at', [`${start} 00:00:00.000`, `${end} 23:59:59.000`])
+            .whereBetween('created_at', [`${start}`, `${end}`])
 
 
         const histories = query.map((history) => ({
