@@ -6,6 +6,7 @@ document.addEventListener("alpine:init", () => {
         orders: props.orders || [],
         riders: props.riders || [],
         searchQuery: '',
+        isDisabled: false,
         init() {
             this.riders = this.riders.filter(rider =>
                 rider.groups.some(group => group.name === 'Riders')
@@ -14,7 +15,8 @@ document.addEventListener("alpine:init", () => {
             console.log(this.orders)
         },
         changeDeliveryStatus(event, orderTransactionId) {
-            console.log(orderTransactionId)
+            console.log(event.target.value)
+            
             useForm(`/cashiers/order-tracking/${orderTransactionId}`, {deliveryStatus:event.target.value}, {}, )
         },
         changeRider(event, orderTransactionId) {
