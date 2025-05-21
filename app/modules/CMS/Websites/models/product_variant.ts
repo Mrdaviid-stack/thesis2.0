@@ -26,7 +26,7 @@ export default class ProductVariant extends BaseModel {
 
   @column()
   declare image: string
-  
+
   @column()
   declare sku: string
 
@@ -50,5 +50,4 @@ export default class ProductVariant extends BaseModel {
 
   @hasMany(() => ProductVariantImage)
   declare productVariantImages: HasMany<typeof ProductVariantImage>
-
 }

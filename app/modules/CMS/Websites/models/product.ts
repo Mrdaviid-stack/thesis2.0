@@ -23,6 +23,9 @@ export default class Product extends BaseModel {
   declare modelNumber: string
 
   @column()
+  declare batch: number
+
+  @column()
   declare slug: string
 
   @column()
