@@ -66,7 +66,7 @@
                     </div>
                     <div class="col">
                         <div class="mb-2">
-                            <label>Oder notes (options)*</label>
+                            <label>Order notes (optional)</label>
                             <textarea type="text" class="form-control" rows="5" x-model="orderDetails.notes"></textarea>
                         </div>
                     </div>
@@ -120,7 +120,7 @@
                     <div class="mb-2">
                         <label>Downpayment*</label>
                         <input type="number" class="form-control" x-model="orderDetails.downpayment" placeholder="1000 or 5000"/>
-                        <template x-if="isDownpaymentError"> <span x-text="isDownpymentErrorMemssage"></span></template>
+                        <template x-if="isDownpaymentError"> <span x-text="isDownpymentErrorMemssage" class="text-danger"></span></template>
                     </div>
                 </div>
                 <button @click="checkout" class="btn btn-danger mt-3 w-100" :disabled="isDisbled">PLACED ORDER</button>
