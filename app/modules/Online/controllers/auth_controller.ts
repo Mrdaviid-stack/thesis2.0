@@ -21,6 +21,16 @@ export default class AuthController {
 
         const data = await request.validateUsing(registerValidationSchema)
 
+        const emailExist = await User.findBy('email', data.email) 
+
+        if (emailExist) {
+            return response.status(422).json([{
+                            field: "email",
+                            message: "Email already registered.",
+                            rule: "duplicate"
+                        }])
+        }
+
         const password = nanoid()
 
         const newUser = await User.create({
