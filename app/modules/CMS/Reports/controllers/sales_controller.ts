@@ -15,7 +15,7 @@ export default class SalesController {
         let { start, end } = request.qs()
 
         const transactionQuery = await Transaction.query()
-            .whereBetween('created_at', [`${start} 00:00:00.000`, `${end} 23:59:59.000`])
+            .whereBetween('created_at', [`${start} 00:00:00`, `${end} 23:59:59`])
 
         const totalSales = _.sumBy(transactionQuery, (transaction) => parseInt(transaction.totalAmount))
         await historyService(auth.user?.firstname!, `Generate Sales`)
