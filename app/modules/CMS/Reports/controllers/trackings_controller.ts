@@ -30,7 +30,7 @@ export default class TrackingsController {
             invoice: query.transaction.invoice,
             reference: query.transaction.reference,
             status: query.transaction.deliveryStatus,
-            amount: query.transaction.totalAmount,
+            amount: new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP'}).format(parseFloat(query.transaction.totalAmount)),
             product: query.orderItems.map(item => item.productVariant.product.name),
             transactionStatus: query.transaction.status,
         }))
