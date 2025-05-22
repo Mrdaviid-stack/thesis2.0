@@ -26,12 +26,14 @@
                             <div class="mb-2">
                                 <label>First name*</label>
                                 <input type="text" class="form-control" x-model="orderDetails.firstName"/>
+                                <div class="text-danger" x-show="formFieldError.firstName">First Name cannot be empty.</div>
                             </div>
                         </div>
                         <div class="col col-lg-6">
                             <div class="mb-2">
                                 <label>Last name*</label>
                                 <input type="text" class="form-control" x-model="orderDetails.lastName"/>
+                                <div class="text-danger" x-show="formFieldError.lastName">Last Name cannot be empty.</div>
                             </div>
                         </div>
                     </div>
@@ -39,6 +41,7 @@
                         <div class="mb-2">
                             <label>Street address*</label>
                             <input type="text" class="form-control" placeholder="House number and street name" x-model="orderDetails.address"/>
+                            <div class="text-danger" x-show="formFieldError.address">Address cannot be empty.</div>
                         </div>
                     </div>
                     <div class="col">
@@ -50,18 +53,22 @@
                                     <option :value="city.city" x-text="city.city"></option>
                                 </template>
                             </select>
+                            <div class="text-danger" x-show="formFieldError.city">City cannot be empty.</div>
                         </div>
                     </div>
                     <div class="col">
                         <div class="mb-2">
                             <label>Phone*</label>
-                            <input type="number" class="form-control" placeholder="09XX-XXX-XXXX" x-model="orderDetails.number"/>
+                            <input type="number" class="form-control" placeholder="09XX-XXX-XXXX" x-model="orderDetails.phone"/>
+                            <div class="text-danger" x-show="formFieldError.phone">Contact number cannot be empty.</div>
+                            <div class="text-danger" x-show="formFieldError.phoneLenght">Invalid Contact number.</div>
                         </div>
                     </div>
                     <div class="col">
                         <div class="mb-2">
                             <label>Email address*</label>
                             <input type="text" class="form-control" x-model="orderDetails.email"/>
+                            <div class="text-danger" x-show="formFieldError.email">Email cannot be empty.</div>
                         </div>
                     </div>
                     <div class="col">
@@ -109,21 +116,25 @@
                               </div>
                         </li>
                     </template>
+                    <div class="text-danger" x-show="formFieldError.paymentMethod">Payment Method cannot be empty.</div>
                 </ul>
                 <div class="col">
                     <div class="mb-2">
                         <label>Refereance*</label>
                         <input type="text" class="form-control" x-model="orderDetails.reference"/>
                     </div>
+                    <div class="text-danger" x-show="formFieldError.reference">Reference cannot be empty.</div>
                 </div>
                 <div class="col">
                     <div class="mb-2">
                         <label>Downpayment*</label>
                         <input type="number" class="form-control" x-model="orderDetails.downpayment" placeholder="1000 or 5000"/>
-                        <template x-if="isDownpaymentError"> <span x-text="isDownpymentErrorMemssage"></span></template>
+                        <div class="text-danger" x-show="formFieldError.downpayment">Downpayment cannot be empty.</div>
+                        <div class="text-danger" x-show="formFieldError.requireDownpayment">Downpayment should be more tha half of total price.</div>
                     </div>
+                    <div class="text-danger" x-show="formFieldError.downpayment">Reference cannot be empty.</div>
                 </div>
-                <button @click="checkout" class="btn btn-danger mt-3 w-100" :disabled="isDisbled">PLACED ORDER</button>
+                <button @click.prevent="checkout" class="btn btn-danger mt-3 w-100">PLACED ORDER</button>
    
             </div>
         </div>

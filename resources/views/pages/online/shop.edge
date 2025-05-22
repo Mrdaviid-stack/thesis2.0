@@ -68,8 +68,8 @@
             </template>
             @if(auth.use('web').isAuthenticated) 
                 <div class="d-flex justify-content-start gap-2">
-                    <button @click="submit" class="btn btn-warning" :disabled="details === undefined">ADD TO CART</button>
-                    <button @click="submit" class="btn btn-danger" :disabled="details === undefined">BUY NOW</button>
+                    <button @click="submit" class="btn btn-warning" :disabled=" options.color === '' || options.storage === '' ">ADD TO CART</button>
+                    <button @click="submit" class="btn btn-danger" :disabled=" options.color === '' || options.storage === '' ">BUY NOW</button>
                 </div>
             @end
             <hr class="border"/>
