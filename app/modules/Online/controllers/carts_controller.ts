@@ -4,78 +4,76 @@ import Cart from '../../CMS/Websites/models/cart.js'
 import historyService from '../../CMS/Reports/services/historyServices.js'
 
 export default class CartsController {
+  async index({ view, response, auth }: HttpContext) {
+    if (!(await auth.check())) {
+      return response.redirect('/login')
+    }
+    return view.render('pages/online/cart')
+  }
 
-    async index({ view, response, auth }: HttpContext) {
+  async addToCart({ request, response, auth }: HttpContext) {
+    if (!(await auth.check())) {
+      return response.redirect('/login')
+    }
+    const { variantId } = request.body()
+    // Add product to cart
+    const userCart = await Cart.firstOrCreate({ userId: auth.user?.id })
 
-        if (!await auth.check()) {
-            return response.redirect('/login')
-        }
-        return view.render('pages/online/cart')
+    const cartItem = await CartItem.findBy('productVariantId', variantId)
+    if (cartItem) {
+      cartItem.quantity += 1
+      await cartItem.save()
+    } else {
+      await CartItem.create({
+        cartId: userCart.id,
+        productVariantId: variantId,
+      })
+    }
+    await historyService(auth.user?.lastname!, `Add to cart`)
+    return response.status(200).json({ message: 'Added to cart successfully!' })
+  }
+
+  async getCartItems({ response, auth }: HttpContext) {
+    if (!(await auth.check())) {
+      return response.status(409)
     }
 
-    async addToCart({ request, response, auth }: HttpContext) {
-        if (!await auth.check()) {
-            return response.redirect('/login')
-        }
-        const { variantId } = request.body()
-        // Add product to cart
-        const userCart = await Cart.firstOrCreate(
-            { userId: auth.user?.id}
-        )
+    const userCartWithItems = await Cart.query()
+      .where('userId', auth.user?.id!)
+      .preload('cartItems', (cartItem) =>
+        cartItem.preload('productVariant', (productVariant) => productVariant.preload('product'))
+      )
 
-        const cartItem = await CartItem.findBy('productVariantId', variantId)
-        if (cartItem) {
-            cartItem.quantity += 1
-            await cartItem.save()
-        } else {
-            await CartItem.create({
-                cartId: userCart.id,
-                productVariantId: variantId,
-            })
-        }
-        await historyService(auth.user?.lastname!, `Add to cart`)
-        return response.status(200).json({ message: 'Added to cart successfully!' })
-        
-    }
+    const serializedItems = userCartWithItems.flatMap((items) =>
+      items.cartItems.map((item) => ({
+        id: item.productVariant.id,
+        name: item.productVariant.product.name,
+        color: item.productVariant.color,
+        storage: item.productVariant.storage,
+        price: item.productVariant.price,
+        image: item.productVariant.image,
+        stock: item.productVariant.stock,
+        qty: item.quantity,
+        totalAmount: item.productVariant.price,
+        sale: item.productVariant.product.sale,
+      }))
+    )
 
-    async getCartItems({ response, auth }: HttpContext) {
-        if (!await auth.check()) {
-            return response.status(409)
-        }
+    return response.status(200).json({ cartItems: serializedItems })
+  }
 
-        const userCartWithItems = await Cart.query().where('userId', auth.user?.id!).preload('cartItems', (cartItem) => cartItem.preload('productVariant', (productVariant) => productVariant.preload('product')))
+  async updateQuantityInCart({ response, params, request, auth }: HttpContext) {
+    const data = request.body()
+    const cartItem = await CartItem.find(params.id)
+    await cartItem?.merge({ quantity: Number(Object.keys(data)[0]) }).save()
+    await historyService(auth.user?.lastname!, `Update quantity`)
+    return response.status(200).json({ message: 'Quantity updated successfully!' })
+  }
 
-        const serializedItems = userCartWithItems.flatMap((items) => 
-            items.cartItems.map((item) => ({
-                id: item.productVariant.id,
-                name: item.productVariant.product.name,
-                color: item.productVariant.color,
-                storage: item.productVariant.storage,
-                price: item.productVariant.price,
-                image: item.productVariant.image,
-                stock: item.productVariant.stock,
-                qty: item.quantity,
-                totalAmount: item.productVariant.price,
-                sale: item.productVariant.product.sale,
-            })))
-
-        return response.status(200).json({ cartItems: serializedItems })
-    }
-
-    async updateQuantityInCart({ response, params, request, auth }: HttpContext) {
-        const data = request.body()
-        const cartItem = await CartItem.find(params.id)
-        await cartItem?.merge({quantity: Number(Object.keys(data)[0])}).save()
-        await historyService(auth.user?.lastname!, `Update quantity`)
-        return response.status(200).json({ message: 'Quantity updated successfully!' })
-    }
-
-    async removeItemInCart({ response, params, auth }: HttpContext) {
-        console.log(params.id)
-        const cartItem = await CartItem.findBy('product_variant_id', params.id)
-        await cartItem?.delete()
-        await historyService(auth.user?.lastname!, `Removed item in cart`)
-        return response.status(201).json({success:true})
-    }
-
+  async removeItemInCart({ response, params, auth }: HttpContext) {
+    const cartItem = await CartItem.findBy('product_variant_id', params.id)
+    await cartItem?.delete()
+    await historyService(auth.user?.lastname!, `Removed item in cart`)
+    return response.status(201).json({ success: true })
+  }
 }

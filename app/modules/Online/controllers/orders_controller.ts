@@ -8,7 +8,6 @@ export default class OrdersController {
     if (!(await auth.check())) {
       return response.redirect('/login')
     }
-    console.log(auth.user, 'auth')
     const ordersQuery = await Order.query()
       .where('userId', auth.user?.id!)
       .preload('orderItems', (orderItem) =>
