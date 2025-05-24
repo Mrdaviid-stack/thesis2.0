@@ -4,59 +4,60 @@ import Transaction from '../../CMS/Websites/models/transaction.js'
 import historyService from '../../CMS/Reports/services/historyServices.js'
 
 export default class AcknowledgementsController {
-    async index({ view, response, auth }: HttpContext) {
-
-        const guard = await auth.user?.related('groups').query()
-        if (guard![0].name === 'Riders') {
-            return response.redirect().toPath('/cashiers/order-tracking')
-        }
-
-
-        const ordersQuery = await Order.query()
-            .preload('orderItems', (orderItem) => 
-                orderItem.preload('productVariant', (productVariant) => 
-                    productVariant
-                        .preload('product')
-                )
-            )
-            .preload('transaction', (transaction) => 
-                transaction
-                    .where('orderType', 'online')
-                    
-            )
-            .preload('user')
-
-        const orders = ordersQuery.flatMap((orders) => {
-            return orders.orderItems.map((orderItem) => ({
-                orderTransactionId: orders.transaction?.id,
-                orderDeliveryStatus: orders.transaction?.deliveryStatus,
-                orderInvoice: orders.transaction?.invoice,
-                orderPaymentMethod: orders.transaction?.paymentMethod,
-                orderPaymentReference: orders.transaction?.reference,
-                orderDownpayment: this.CurrencyFormatter(orders.transaction?.downpayment),
-                orderTotalAmount: this.CurrencyFormatter(Number(orders.transaction?.totalAmount)),
-                orderBalance: this.CurrencyFormatter(Number(orders.transaction?.totalAmount) - Number(orders.transaction?.downpayment)),
-                orderProductName: orderItem.productVariant?.product.name,
-                orderProductSKU: orderItem.productVariant?.sku,
-                orderProductColor: orderItem.productVariant?.color,
-                orderProductStorage: orderItem.productVariant?.storage,
-                orderProductImage: orderItem.productVariant?.image,
-                customerName: `${orders.user.firstname} ${orders.user.lastname}`,
-                orderTransactionStatus: orders.transaction?.status,
-            }))
-        })
-
-        return view.render('pages/cashiers/awknowledgements', { orders: orders.filter(order => order.orderDeliveryStatus == 'pending' && order.orderTransactionStatus !== 'cancelled') })
+  async index({ view, response, auth }: HttpContext) {
+    const guard = await auth.user?.related('groups').query()
+    if (guard![0].name === 'Riders') {
+      return response.redirect().toPath('/cashiers/order-tracking')
     }
 
-    async acknowledge({ response, params, auth }: HttpContext) {
-        const transaction = await Transaction.findOrFail(params.transactionId)
-        await transaction.merge({ deliveryStatus: 'processing' }).save()
-        await historyService(auth.user?.firstname!, `Acknowledge Order`)
-        return response.status(201).json({message: 'Order acknowledge successfully' })
-    }
+    const ordersQuery = await Order.query()
+      .preload('orderItems', (orderItem) =>
+        orderItem.preload('productVariant', (productVariant) => productVariant.preload('product'))
+      )
+      .preload('transaction', (transaction) => transaction.where('orderType', 'online'))
+      .preload('user')
 
-    private CurrencyFormatter(number: number) {
-        return new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP'}).format(number)
-    }
+    // eslint-disable-next-line @typescript-eslint/no-shadow
+    const orders = ordersQuery.flatMap((orders) => {
+      return orders.orderItems.map((orderItem) => ({
+        orderTransactionId: orders.transaction?.id,
+        orderDeliveryStatus: orders.transaction?.deliveryStatus,
+        orderInvoice: orders.transaction?.invoice,
+        orderPaymentMethod: orders.transaction?.paymentMethod,
+        orderPaymentReference: orders.transaction?.reference,
+        orderDownpayment: this.CurrencyFormatter(orders.transaction?.downpayment),
+        orderTotalAmount: this.CurrencyFormatter(Number(orders.transaction?.totalAmount)),
+        orderBalance: this.CurrencyFormatter(
+          Number(orders.transaction?.totalAmount) - Number(orders.transaction?.downpayment)
+        ),
+        orderProductName: orderItem.productVariant?.product.name,
+        orderProductSKU: orderItem.productVariant?.sku,
+        orderProductColor: orderItem.productVariant?.color,
+        orderProductStorage: orderItem.productVariant?.storage,
+        orderProductImage: orderItem.productVariant?.image,
+        customerName: `${orders.user.firstname} ${orders.user.lastname}`,
+        customerAddress: orders.user.address,
+        orderTransactionStatus: orders.transaction?.status,
+      }))
+    })
+
+    return view.render('pages/cashiers/awknowledgements', {
+      orders: orders.filter(
+        (order) =>
+          // eslint-disable-next-line eqeqeq
+          order.orderDeliveryStatus == 'pending' && order.orderTransactionStatus !== 'cancelled'
+      ),
+    })
+  }
+
+  async acknowledge({ response, params, auth }: HttpContext) {
+    const transaction = await Transaction.findOrFail(params.transactionId)
+    await transaction.merge({ deliveryStatus: 'processing' }).save()
+    await historyService(auth.user?.firstname!, `Acknowledge Order`)
+    return response.status(201).json({ message: 'Order acknowledge successfully' })
+  }
+
+  private CurrencyFormatter(number: number) {
+    return new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(number)
+  }
 }

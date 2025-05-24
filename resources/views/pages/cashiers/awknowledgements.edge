@@ -19,7 +19,7 @@
                             <div class="card-body" id="printable">
                               <h5 class="card-title" x-text="order.orderProductName"></h5>
                               <p class="card-text">
-                                <small>Color: <span x-text="order.orderInvoice"></span>
+                                <small>Invoice number: <span x-text="order.orderInvoice"></span>
                                 <br/>
                                 <small>Color: <span x-text="order.orderProductColor"></span> | Storage: <span x-text="order.orderProductStorage"></span></small>
                                 <br/>
@@ -31,8 +31,14 @@
                                 <br/>
                                 <small>Balance: <span x-text="order.orderBalance"></span></small>
                               </p>
-                              <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                              <hr/>
+                              <p class="card-text">
+                                <small>Customer Name: <span x-text="order.customerName"></span>
+                                <br/>
+                                <small>Address: <span x-text="order.customerAddress"></span></small>
+                              </p>
                             </div>
+                            
 
                             <template x-if="order.orderTransactionStatus === 'request_cancel'">
                               <button @click="onCancelled(order.orderTransactionId)" class="btn btn-danger">Requesting to cancel</button>
