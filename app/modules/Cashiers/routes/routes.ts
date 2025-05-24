@@ -14,6 +14,7 @@ export default function CashierRoutes() {
 
         router.get('/acknowledgements', [AcknowledgementsController, 'index']).as('acknowledgements').use(middleware.auth())
         router.post('/acknowledgements/:transactionId', [AcknowledgementsController, 'acknowledge']).as('acknowledgements.acknowledge').use(middleware.auth())
+        router.post('/reject/:transactionId', [AcknowledgementsController, 'reject']).as('acknowledgements.reject').use(middleware.auth())
 
         router.get('/order-tracking', [OrderTrackingsController, 'index']).as('order-tracking').use(middleware.auth())
         router.post('/order-tracking/:id', [OrderTrackingsController, 'updateDeliveryStatus']).as('order-tracking.update').use(middleware.auth())

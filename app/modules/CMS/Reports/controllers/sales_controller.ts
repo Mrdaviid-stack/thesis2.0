@@ -13,7 +13,7 @@ export default class SalesController {
   async generate({ request, response, auth }: HttpContext) {
     let { start, end } = request.qs()
 
-    const transactionQuery = await Transaction.query().whereBetween('created_at', [
+    const transactionQuery = await Transaction.query().where('delivery_status', 'delivered').andWhereBetween('created_at', [
       `${start} 00:00:00`,
       `${end} 23:59:59`,
     ])

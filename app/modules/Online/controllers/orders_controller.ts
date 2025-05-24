@@ -18,17 +18,17 @@ export default class OrdersController {
     // eslint-disable-next-line @typescript-eslint/no-shadow
     const orders = ordersQuery.flatMap((orders) => {
       return orders.orderItems.map((orderItem) => ({
-        transactionId: orders.transaction.id,
-        transactionInvoice: orders.transaction.invoice,
-        deliveryStatus: orders.transaction.deliveryStatus,
+        transactionId: orders.transaction?.id,
+        transactionInvoice: orders.transaction?.invoice,
+        deliveryStatus: orders.transaction?.deliveryStatus,
         productName: orderItem.productVariant.product.name,
         productImage: orderItem.productVariant.image,
         productColor: orderItem.productVariant.color,
         productStorage: orderItem.productVariant.storage,
         quantity: orderItem.quantity,
         price: orderItem.price,
-        status: orders.transaction.status,
-        rider: orders.transaction.riderName,
+        status: orders.transaction?.status,
+        rider: orders.transaction?.riderName,
       }))
     })
 

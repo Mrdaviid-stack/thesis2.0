@@ -44,7 +44,10 @@
                               <button @click="onCancelled(order.orderTransactionId)" class="btn btn-danger">Requesting to cancel</button>
                             </template>
                             <template x-if="order.orderTransactionStatus !== 'request_cancel'"">
-                              <button @click="acknowledge(order.orderTransactionId, order)" class="btn btn-warning">Acknowledge</button>
+                              <button @click="reject(order.orderTransactionId, order)" class="btn btn-danger">Reject Order</button>
+                            </template>
+                            <template x-if="order.orderTransactionStatus !== 'request_cancel'"">
+                              <button @click="acknowledge(order.orderTransactionId, order)" class="btn btn-warning">Acknowledge Order</button>
                             </template>
 
                           </div>

@@ -33,7 +33,7 @@ export default class TransactionsController {
           fullname: `${trn.firstName}, ${trn.lastName}`,
           invoice: trn.transaction.invoice,
           reference: trn.transaction.reference,
-          status: !trn.transaction.status ? trn.transaction.deliveryStatus : trn.transaction.status,
+          status: !trn.transaction.status ? (trn.transaction.deliveryStatus === 'to_ship' ? 'Out for delivery' : trn.transaction.deliveryStatus) : trn.transaction.status,
           amount: trn.transaction.totalAmount,
           product: trn.orderItems.map((item: any) => item.productVariant.product.name),
         })

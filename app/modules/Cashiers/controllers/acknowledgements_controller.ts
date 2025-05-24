@@ -15,7 +15,7 @@ export default class AcknowledgementsController {
         orderItem.preload('productVariant', (productVariant) => productVariant.preload('product'))
       )
       .preload('transaction', (transaction) => transaction.where('orderType', 'online'))
-      .preload('user')
+      .preload('user', (userQuery) => userQuery.preload('orders'))
 
     // eslint-disable-next-line @typescript-eslint/no-shadow
     const orders = ordersQuery.flatMap((orders) => {
@@ -35,17 +35,19 @@ export default class AcknowledgementsController {
         orderProductColor: orderItem.productVariant?.color,
         orderProductStorage: orderItem.productVariant?.storage,
         orderProductImage: orderItem.productVariant?.image,
-        customerName: `${orders.user.firstname} ${orders.user.lastname}`,
-        customerAddress: orders.user.address,
-        orderTransactionStatus: orders.transaction?.status,
+        customerName: `${orders.firstName} ${orders.lastName}`,
+        customerAddress: orders.address,
+        orderTransactionStatus: orders.transaction.status,
       }))
-    })
+    }).filter(order => order.orderTransactionStatus !== 'reject' && order.orderTransactionStatus !== 'cancelled')
+
+    console.log(orders)
 
     return view.render('pages/cashiers/awknowledgements', {
       orders: orders.filter(
         (order) =>
           // eslint-disable-next-line eqeqeq
-          order.orderDeliveryStatus == 'pending' && order.orderTransactionStatus !== 'cancelled'
+          order.orderDeliveryStatus == 'pending'
       ),
     })
   }
@@ -55,6 +57,13 @@ export default class AcknowledgementsController {
     await transaction.merge({ deliveryStatus: 'processing' }).save()
     await historyService(auth.user?.firstname!, `Acknowledge Order`)
     return response.status(201).json({ message: 'Order acknowledge successfully' })
+  }
+
+  async reject({ response, params, auth }: HttpContext) {
+    const transaction = await Transaction.findOrFail(params.transactionId)
+    await transaction.merge({ status: 'reject' }).save()
+    await historyService(auth.user?.firstname!, `Order rejected`)
+    return response.status(201).json({ message: 'Order rejected successfully' })
   }
 
   private CurrencyFormatter(number: number) {

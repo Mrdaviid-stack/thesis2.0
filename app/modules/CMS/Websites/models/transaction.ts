@@ -32,7 +32,7 @@ export default class Transaction extends BaseModel {
   declare orderType: 'online' | 'onsite'
 
   @column()
-  declare status: 'request_cancel' | 'cancelled' | 'exchange' | 'returned'
+  declare status: 'request_cancel' | 'cancelled' | 'exchange' | 'returned' | 'reject'
 
   @column()
   declare riderName: string;

@@ -8,7 +8,7 @@ document.addEventListener("alpine:init", () => {
         orders: props.orders || [],
 
         init() {
-            this.orders = this.orders.map(order => ({
+            this.orders = this.orders.filter(or => or.status !== 'reject').map(order => ({
                 ...order,
                 deliveryStatus: (order.deliveryStatus == 'to_ship' || order.deliveryStatus == 'to_receive') ? 'Out for delivery' : order.deliveryStatus
             }));

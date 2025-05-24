@@ -26,6 +26,15 @@ document.addEventListener("alpine:init", () => {
             }
         },
 
+        reject(transactionId, orders) {
+            if (confirm('Are you sure you want to reject this order?')) {
+
+                useForm(`/cashiers/reject/${transactionId}`, {}, {}, '/cashiers/acknowledgements')
+            } else {
+                return;
+            }
+        },
+
         onCancelled(id) {
             console.log('cancel')
             axios.patch(`/my-account/orders/${id}/cancel-confirm`)
