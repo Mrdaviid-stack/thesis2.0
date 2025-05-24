@@ -11,8 +11,6 @@ export default class TransactionsController {
   async generate({ request, response, auth }: HttpContext) {
     let { start, end } = request.qs()
 
-    console.log(start, end)
-
     const query = await Order.query()
       .preload('orderItems', (orderItems) =>
         orderItems.preload('productVariant', (productVariantQuery) =>
@@ -37,7 +35,7 @@ export default class TransactionsController {
           reference: trn.transaction.reference,
           status: !trn.transaction.status ? trn.transaction.deliveryStatus : trn.transaction.status,
           amount: trn.transaction.totalAmount,
-          product: trn.orderItems.map((item) => item.productVariant.product.name),
+          product: trn.orderItems.map((item: any) => item.productVariant.product.name),
         })
       }
     }
