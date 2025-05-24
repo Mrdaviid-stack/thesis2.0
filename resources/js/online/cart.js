@@ -10,6 +10,7 @@ document.addEventListener("alpine:init", () => {
         total: 0,
         discount: 0,
         isProcessing: false,
+        requireDownPayment: 0,
         orderDetails: {
             firstName: props.firstname || '',
             lastName: props.lastname || '',
@@ -101,7 +102,9 @@ document.addEventListener("alpine:init", () => {
             const isValid09 = this.orderDetails.phone.startsWith('09') && this.orderDetails.phone.length === 11;
             const isValid63 = this.orderDetails.phone.startsWith('63') && this.orderDetails.phone.length === 12;
 
-            const requiredDownpayment = (parseInt(this.orderDetails.total) / 2);
+            //this.requireDownPayment = (parseInt(this.orderDetails.total) / 2);
+
+            //const requiredDownpayment = (parseInt(this.orderDetails.total) / 2);
 
             for (const field of requiredField) {
                 if (! this.orderDetails[field] || this.orderDetails[field].trim() === '') {
@@ -120,7 +123,10 @@ document.addEventListener("alpine:init", () => {
                     }
 
                     if (this.orderDetails[field] === 'cod') {
-                        if (parseInt(this.orderDetails.downpayment) < requiredDownpayment) {
+
+                        this.requireDownPayment = (parseInt(this.orderDetails.total) / 2);
+
+                        if (parseInt(this.orderDetails.downpayment) < this.requireDownPayment) {
                             this.formFieldError.requireDownpayment = true
                             this.isProcessing = false;
                             return
