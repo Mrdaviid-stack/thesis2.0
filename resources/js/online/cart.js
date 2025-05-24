@@ -47,6 +47,7 @@ document.addEventListener("alpine:init", () => {
             })
 
             this.initializeCart()
+
         },
 
         initializeCart() {
@@ -54,6 +55,8 @@ document.addEventListener("alpine:init", () => {
                 .then((response) => {
                     this.carts.push(...response.data.cartItems);
                 })
+
+            console.log(this.carts, 'carts')
 
             this.$watch('carts', () => {
                 this.total = `₱${this.carts.reduce((sum, item) => sum + item.price * item.qty, 0).toLocaleString()}`
