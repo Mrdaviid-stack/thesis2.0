@@ -66,7 +66,7 @@ export default class CartsController {
     const data = request.body()
     console.log(data, 'data cart')
     console.log(params.id, 'data id')
-    const cartItem = await CartItem.find(params.id)
+    const cartItem = await CartItem.findBy('product_variant_id', params.id)
     console.log(cartItem, 'cart items')
     console.log(Number(Object.keys(data)[0]) , 'Quantity')
     await cartItem?.merge({ quantity: Number(Object.keys(data)[0]) }).save()
