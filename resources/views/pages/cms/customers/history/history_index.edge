@@ -3,7 +3,7 @@
     <h4 class="mb-4">Purchase History</h4>
 
     <div class="card card-body" x-data="purchaseHistory">
-        <section>
+        <section class="mb-5">
             <div class="d-flex flex-row card card-body align-items-center gap-3">
                 <div class=" w-75">
                     <label>Starting Date</label>
@@ -19,10 +19,11 @@
             </div>
         </section>
         <div class="table-responsive">
-        <table class="table table-striped">
+        <table class="table table-striped table-bordered">
             <thead>
                 <th>Name</th>
                 <th>items</th>
+                <th>Invoice</th>
                 <th>Order Reference</th>
                 <th>Payment Method</th>
                 <th>Total Amount</th>
@@ -39,6 +40,7 @@
                                 <span x-text="order.productVariant.product.modelNumber"></span>
                             </template>
                         </td>
+                        <td x-text="purchase.invoice"></td>
                         <td x-text="purchase.reference"></td>
                         <td x-text="purchase.paymentMethod"></td>
                         <td x-text="purchase.totalAmount.toLocaleString()"></td>

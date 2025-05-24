@@ -16,6 +16,7 @@ export default class HistoriesController {
       .select(
         'id',
         'order_id',
+        'invoice',
         'reference',
         'delivery_status',
         'payment_method',
