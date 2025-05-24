@@ -65,6 +65,7 @@ export default class CartsController {
   async updateQuantityInCart({ response, params, request, auth }: HttpContext) {
     const data = request.body()
     console.log(data, 'data cart')
+    console.log(params.id, 'data id')
     const cartItem = await CartItem.find(params.id)
     console.log(cartItem, 'cart items')
     console.log(Number(Object.keys(data)[0]) , 'Quantity')
