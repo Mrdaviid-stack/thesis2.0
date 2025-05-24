@@ -64,8 +64,10 @@ export default class CartsController {
 
   async updateQuantityInCart({ response, params, request, auth }: HttpContext) {
     const data = request.body()
+    console.log(data, 'data cart')
     const cartItem = await CartItem.find(params.id)
     await cartItem?.merge({ quantity: Number(Object.keys(data)[0]) }).save()
+    console.log(cartItem, 'cart-item')
     await historyService(auth.user?.lastname!, `Update quantity`)
     return response.status(200).json({ message: 'Quantity updated successfully!' })
   }
