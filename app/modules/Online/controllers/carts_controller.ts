@@ -16,10 +16,12 @@ export default class CartsController {
       return response.redirect('/login')
     }
     const { variantId } = request.body()
+    console.log(variantId)
     // Add product to cart
+    console.log(auth.user?.id, 'user')
     const userCart = await Cart.firstOrCreate({ userId: auth.user?.id })
 
-    const cartItem = await CartItem.findBy('productVariantId', variantId)
+    const cartItem = await CartItem.findBy('product_variant_id', variantId)
     if (cartItem) {
       cartItem.quantity += 1
       await cartItem.save()
