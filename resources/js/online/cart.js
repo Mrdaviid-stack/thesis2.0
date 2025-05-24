@@ -15,7 +15,7 @@ document.addEventListener("alpine:init", () => {
             lastName: props.lastname || '',
             address: props.address || '',
             city: '',
-            phone: '',
+            phone: props.number || '',
             email: props.email || '',
             notes: '',
             total: '',
