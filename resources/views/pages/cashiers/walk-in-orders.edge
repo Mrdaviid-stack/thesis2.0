@@ -60,6 +60,10 @@
                             </div>
                         </dd>
 
+                        <dt class="col-4">Stock</dt>
+                        <dd class="col-8" x-text="productDetails?.stock">
+                        </dd>
+
                         <dt class="col-4">Price</dt>
                         <dd class="col-8" x-text="productDetails?.price?.toLocaleString()">
                         </dd>
@@ -76,11 +80,44 @@
                             </select>
                         </dd>
                     </dl>
-                <button @click="buyNow" class="btn btn-danger mt-5">BUY NOW</button>
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Proceed
+                </button>
+
             </div>
         </div>
 
-    </div>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Customer Details</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-2">
+                        <input class="form-control" x-model="productDetails.firstName" placeholder="First name" />
+                    </div>
+                     <div class="mb-2">
+                        <input class="form-control" x-model="productDetails.lastName" placeholder="Last name" />
+                    </div>
+                    <div class="mb-2">
+                        <input class="form-control" x-model="productDetails.email" placeholder="Email" />
+                    </div>
+                    <div class="mb-2"> 
+                        <textarea class="form-control" x-model="productDetails.address" cols="6" rows="5" placeholder="Address"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" @click="buyNow" class="btn btn-danger">BUY NOW</button>
+                </div>
+                </div>
+            </div>
+            </div>
+
+            </div>
     
 
     @end

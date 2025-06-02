@@ -33,6 +33,8 @@ export default class OrderTrackingsController {
         customerName: `${orders.firstName} ${orders.lastName}`,
         customerAddress: orders.address,
         customerPhoneNumber: orders.phone,
+        orderTransactionService: orders.transaction?.orderType,
+        orderRiderName: orders.transaction?.riderName
       }))
     })
 
@@ -40,8 +42,17 @@ export default class OrderTrackingsController {
 
     const ridersQuery = await User.query().preload('groups')
 
+    let newOrders;
+
+    if (userQuery[0].groups[0].name === 'Riders') {
+      const riderName = `${auth.user?.firstname}, ${auth.user?.lastname}`
+      newOrders = orders.filter((order) => order.orderDeliveryStatus != 'pending' && order.orderTransactionService === 'online' && order.orderRiderName === riderName)
+    } else {
+      newOrders = orders.filter((order) => order.orderDeliveryStatus != 'pending' && order.orderTransactionService === 'online')
+    }
+
     return view.render('pages/cashiers/order-tracking', {
-      orders: orders.filter((order) => order.orderDeliveryStatus != 'pending'),
+      orders: newOrders,
       userType: await userQuery[0].groups[0].name,
       riders: ridersQuery,
     })

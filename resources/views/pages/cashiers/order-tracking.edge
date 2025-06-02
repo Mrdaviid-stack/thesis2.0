@@ -64,6 +64,7 @@
                                     <span class="badge text-bg-warning">Out for delivery</span>
                                 </template>
                             </td>
+                            @if (userType === 'Riders')
                             <td style="min-width: 220px;">
                                 <select :disabled="order.orderDeliveryStatus === 'delivered'" class="form-select" x-model="status" x-on:change="changeDeliveryStatus($event, order.orderTransactionId)">
                                     <option selected hidden>Select Delivery Status</option>
@@ -81,6 +82,7 @@
 
                                 </select>
                             </td>
+                            @endif
                             @if (userType !== 'Riders')
                             <td>
                                 <select class="form-select" x-on:change="changeRider($event, order.orderTransactionId)">
