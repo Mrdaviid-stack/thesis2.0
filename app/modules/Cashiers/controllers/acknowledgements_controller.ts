@@ -36,7 +36,7 @@ export default class AcknowledgementsController {
         orderProductStorage: orderItem.productVariant?.storage,
         orderProductImage: orderItem.productVariant?.image,
         customerName: `${orders.firstName} ${orders.lastName}`,
-        customerAddress: orders.address,
+        customerAddress: orders.address + " " + orders.city,
         orderTransactionStatus: orders.transaction?.status,
       }))
     }).filter(order => order.orderTransactionStatus !== 'reject' && order.orderTransactionStatus !== 'cancelled')
