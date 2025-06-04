@@ -29,6 +29,8 @@ export default class OrdersController {
         price: orderItem.price,
         status: orders.transaction?.status,
         rider: orders.transaction?.riderName,
+        downpayment: orders.transaction?.downpayment,
+        balance: (Number(orderItem.price) !== Number(orders.transaction?.downpayment)) ? (Number(orderItem.price) - Number(orders.transaction?.downpayment)) : 0
       }))
     })
 
