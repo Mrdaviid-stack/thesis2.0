@@ -7,6 +7,8 @@ document.addEventListener("alpine:init", () => {
     Alpine.data("acknowledgement", (props) => ({
         orders: props.orders || [],
         searchQuery: '',
+        activeReceiptOrder: null, 
+        showModal: false,
         filteredOrders() {
             return this.orders.filter((order) => 
                 (order.orderInvoice.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
@@ -42,6 +44,12 @@ document.addEventListener("alpine:init", () => {
                     location.reload()
                 })
                 .catch(error => console.log(error))
+        },
+
+        // optional: reset modal
+        closeModal() {
+            this.showModal = false;
+            this.activeReceiptOrder = null;
         }
     }))
 })

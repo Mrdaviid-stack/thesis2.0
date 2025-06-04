@@ -38,6 +38,12 @@ export default class Transaction extends BaseModel {
   declare paidStatus: 'fullypaid' | 'downpayment'
 
   @column()
+  declare receipt: string;
+
+  @column()
+  declare fullpaymentReceipt: string;
+
+  @column()
   declare riderName: string;
 
   @column.dateTime({ autoCreate: true })

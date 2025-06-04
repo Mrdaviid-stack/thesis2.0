@@ -17,7 +17,7 @@ document.addEventListener("alpine:init", () => {
             lastName: props.lastname || '',
             address: props.address || '',
             city: '',
-            phone: props.number || '',
+            phone: (props.number) ? (props.number.length !== 11) ? props.number.slice(0, 11) : props.number : '',
             email: props.email || '',
             notes: '',
             total: '',
@@ -26,6 +26,7 @@ document.addEventListener("alpine:init", () => {
             number: props.number || '',
             paymentMethod: '',
             carts: [],
+            receipt: '',
         },
         formFieldError: {
             firstName: false,
@@ -144,13 +145,40 @@ document.addEventListener("alpine:init", () => {
                 }
             }
 
-            useForm("/checkout", this.orderDetails, this.errors, '/')
-            
+            useForm("/checkout", this.orderDetails, this.errors, '/')            
         },
         disCountedPrice(original, discount) {
             const discountAmount = original * discount / 100;
             const discountedPrice = original - discountAmount;
             return discountedPrice
+        },
+        uploadReceipt(event) {
+            console.log(event.target.files[0])
+            const file = event.target.files[0];
+
+            if (!(file instanceof File)) return;
+
+            const imageData = new FormData();
+            imageData.append('image', file);
+
+            this.isProcessing = true;
+
+            axios.post('cms/files/uploads', imageData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then(res => {
+                // Save uploaded file path to orderDetails.receipt
+                this.orderDetails.receipt = res.data.location;
+                console.log('Receipt uploaded:', res);
+            })
+            .catch(err => {
+                console.error('Receipt upload failed:', err);
+            })
+            .finally(() => {
+                this.isProcessing = false;
+            });
         }
     }))
 })

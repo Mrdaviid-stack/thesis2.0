@@ -21,6 +21,7 @@ export default class CheckoutsController {
 
   async checkout({ request, response, auth }: HttpContext) {
     const data = request.body()
+    console.log(data)
     const order = await Order.create({
       userId: auth.user?.id,
       firstName: data.firstName,
@@ -54,7 +55,8 @@ export default class CheckoutsController {
       orderType: 'online',
       reference: data.reference,
       downpayment: data.downpayment,
-      paidStatus: (Number(data.total) !== Number(data.downpayment)) ? 'downpayment' : 'fullypaid'
+      paidStatus: (Number(data.total) !== Number(data.downpayment)) ? 'downpayment' : 'fullypaid',
+      receipt: data.receipt
     })
     await Cart.query().where('userId', auth.user!.id).delete()
 
