@@ -28,6 +28,8 @@ export default function useForm(url, formData, errors, redirect) {
                 for (const error of response.data) {
                     errors[error.field] = error.message;
                 }
+            } else if (status === 500) {
+                errors['currentPassword'] = response.data.message
             } else {
                 console.error("Unexpected error:", response);
             }

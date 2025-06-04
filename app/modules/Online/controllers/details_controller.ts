@@ -2,6 +2,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import { UpdateAccountValidationSchema } from '../validators/auth.js'
 import User from '../../CMS/Admin/models/user.js'
 import historyService from '../../CMS/Reports/services/historyServices.js'
+import hash from '@adonisjs/core/services/hash'
 
 export default class DetailsController {
 
@@ -19,6 +20,17 @@ export default class DetailsController {
 
         const data = await request.validateUsing(UpdateAccountValidationSchema)
         const user = await User.findOrFail(auth.user?.id)
+
+        console.log(data)
+
+        if (data && data.currentPassword) { 
+            const isMatch = await hash.verify(user.password, data.currentPassword)
+
+            if (!isMatch) {
+                // Password is incorrect
+                throw new Error('Current password does not match')
+            }
+        }
 
         if (data.password) {
             user.firstname = data.firstname;
