@@ -16,6 +16,7 @@ export default function OnlineRoutes() {
 
     router.get('/bsd/:slug', [PagesController, 'slugPage'])
     router.get('/custom/pages', [PagesController, 'getCustomPages'])
+    router.get('/custom/categories', [PagesController, 'getCategories'])
 
     router.get('/login', [AuthController, 'login']).as('login')
     router.get('/register', [AuthController, 'register']).as('register')

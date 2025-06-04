@@ -15,5 +15,4 @@ import './cahiers/index'
 
 window.Alpine = Alpine
 
-
 Alpine.start()

@@ -3,11 +3,11 @@ import axios from "axios";
 document.addEventListener("alpine:init", () => {
     Alpine.data("landing", (props) => ({
         customPage: [],
+        customCategories: [],
 
         init() {
             this.fetchCustomPage()
             this.customPage = JSON.parse(localStorage.getItem('custom_page'))
-            console.log(this.customPage)
         },
 
         async fetchCustomPage() {
