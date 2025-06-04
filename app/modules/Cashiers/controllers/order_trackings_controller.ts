@@ -34,7 +34,10 @@ export default class OrderTrackingsController {
         customerAddress: orders.address,
         customerPhoneNumber: orders.phone,
         orderTransactionService: orders.transaction?.orderType,
-        orderRiderName: orders.transaction?.riderName
+        orderRiderName: orders.transaction?.riderName,
+        paidStatus: orders.transaction?.paidStatus,
+        receipt: orders.transaction?.receipt,
+        fullpaymentReceipt: orders.transaction?.fullpaymentReceipt,
       }))
     })
 
@@ -82,12 +85,26 @@ export default class OrderTrackingsController {
     const fullname = userQuery[0].firstname + ', ' + userQuery[0].lastname
 
     transaction.riderName = fullname
+    transaction.deliveryStatus = 'to_ship'
 
     transaction.save()
 
     //await transaction.merge({ deliveryStatus: data.deliveryStatus }).save()
     await historyService(auth.user?.firstname!, `Update assign rider`)
     return response.status(200).json({ message: 'Delivery status updated successfully!' })
+  }
+
+  async receipt({ request, response, params }: HttpContext) {
+    const data = request.body()
+    console.log(data)
+    const transaction = await Transaction.findOrFail(params.id)
+
+    transaction.fullpaymentReceipt = data.receipt
+    transaction.paidStatus = 'fullypaid'
+
+    transaction.save()
+
+    return response.status(200).json({ message: 'Receipt uploaded successfully!' })
   }
 
   private CurrencyFormatter(number: number) {
