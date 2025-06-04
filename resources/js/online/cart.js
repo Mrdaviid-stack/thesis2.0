@@ -11,6 +11,7 @@ document.addEventListener("alpine:init", () => {
         discount: 0,
         isProcessing: false,
         requireDownPayment: 0,
+        requiredField: [],
         orderDetails: {
             firstName: props.firstname || '',
             lastName: props.lastname || '',
@@ -42,8 +43,13 @@ document.addEventListener("alpine:init", () => {
 
         init() {
             this.$watch('carts', () =>  console.log('watching carts'))
-            this.$watch('orderDetails.paymentMethod', () => {
+            this.$watch('orderDetails', () => {
                 this.isDisbled = (this.orderDetails.paymentMethod !== '') ? false : true
+                if (this.orderDetails.paymentMethod !== 'cod') {
+                    this.requiredField = ["firstName", "lastName", "address", "city", "phone", "email", "paymentMethod", "reference", "downpayment"]
+                } else {
+                    this.requiredField = ["firstName", "lastName", "address", "city", "phone", "email", "paymentMethod"]
+                }
             })
 
             this.initializeCart()
@@ -100,7 +106,15 @@ document.addEventListener("alpine:init", () => {
         checkout() {
             this.isProcessing = true;
 
-            const requiredField = ["firstName", "lastName", "address", "city", "phone", "email", "paymentMethod", "reference", "downpayment"]
+            // let requiredField;
+
+            // if (this.orderDetails.paymentMethod === 'cod') {
+            //     requiredField = ["firstName", "lastName", "address", "city", "phone", "email", "paymentMethod", "reference", "downpayment"]
+            // } else {
+            //     requiredField = ["firstName", "lastName", "address", "city", "phone", "email", "paymentMethod"]
+            // }
+
+            //const requiredField = ["firstName", "lastName", "address", "city", "phone", "email", "paymentMethod", "reference", "downpayment"]
 
             const isValid09 = this.orderDetails.phone.startsWith('09') && this.orderDetails.phone.length === 11;
             const isValid63 = this.orderDetails.phone.startsWith('63') && this.orderDetails.phone.length === 12;
@@ -109,7 +123,10 @@ document.addEventListener("alpine:init", () => {
 
             //const requiredDownpayment = (parseInt(this.orderDetails.total) / 2);
 
-            for (const field of requiredField) {
+            console.log(this.requiredField)
+
+            for (const field of this.requiredField) {
+
                 if (! this.orderDetails[field] || this.orderDetails[field].trim() === '') {
                     this.formFieldError[field] = true;
                     this.isProcessing = false;
@@ -123,19 +140,6 @@ document.addEventListener("alpine:init", () => {
                         this.formFieldError.phoneLenght = true
                         this.isProcessing = false;
                         return
-                    }
-
-                    if (this.orderDetails[field] === 'cod') {
-
-                        this.requireDownPayment = (parseInt(this.orderDetails.total) / 2);
-
-                        if (parseInt(this.orderDetails.downpayment) < this.requireDownPayment) {
-                            this.formFieldError.requireDownpayment = true
-                            this.isProcessing = false;
-                            return
-                        } else {
-                            this.formFieldError.requireDownpayment = false
-                        }
                     }
                 }
             }
