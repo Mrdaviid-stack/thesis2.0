@@ -26,13 +26,16 @@ export default class Transaction extends BaseModel {
   declare paymentMethod: 'cod' | 'gcash' | 'paymaya' | 'cash' | 'card'
 
   @column()
-  declare deliveryStatus: 'pending' | 'processing' | 'to_ship' | 'to_receive' | 'received' | 'delivered' | 'returned'
+  declare deliveryStatus: 'pending' | 'processing' | 'to_ship' | 'to_receive' | 'received' | 'delivered' | 'confirmed' | 'returned'
 
   @column()
   declare orderType: 'online' | 'onsite'
 
   @column()
   declare status: 'request_cancel' | 'cancelled' | 'exchange' | 'returned' | 'reject'
+
+  @column()
+  declare paidStatus: 'fullypaid' | 'downpayment'
 
   @column()
   declare riderName: string;

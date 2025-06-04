@@ -1,6 +1,7 @@
 import Alpine from "alpinejs"
 import axios from "axios"
 import moment from "moment"
+import printJS from "print-js";
 
 document.addEventListener("alpine:init", () => {
     Alpine.data('transaction', (props) => ({
@@ -34,6 +35,10 @@ document.addEventListener("alpine:init", () => {
                     this.initialData = response.data
                     this.transactions = this.initialData
                 })
+        },
+
+        print() {
+            printJS({printable: 'report_transaction', type: 'html'})
         }
     }))
 })

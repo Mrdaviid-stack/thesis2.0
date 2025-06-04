@@ -54,6 +54,7 @@ export default class CheckoutsController {
       orderType: 'online',
       reference: data.reference,
       downpayment: data.downpayment,
+      paidStatus: (Number(data.total) !== Number(data.downpayment)) ? 'downpayment' : 'fullypaid'
     })
     await Cart.query().where('userId', auth.user!.id).delete()
 

@@ -18,8 +18,9 @@ export default class extends BaseSchema {
       table.string('reference')
       table.float('downpayment')
       table.float('total_amount')
+      table.enu('paid_status', ['fullypaid', 'downpayment']).defaultTo('fullypaid')
       table.enu('payment_method', ['cod','gcash','paymaya','cash','card','paypal']).defaultTo('cod')
-      table.enu('delivery_status', ['pending','processing','to_ship', 'to_receive', 'received', 'delivered', 'returned']).defaultTo('pending')
+      table.enu('delivery_status', ['pending','processing','to_ship', 'to_receive', 'received', 'delivered', 'confirmed', 'returned']).defaultTo('pending')
       table.enu('order_type', ['online','onsite']).defaultTo('online')
       table.enu('status', ['request_cancel', 'cancelled', 'exchange', 'returned', 'reject']).nullable()
       table.string('rider_name').nullable();

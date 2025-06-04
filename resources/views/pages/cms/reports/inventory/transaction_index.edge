@@ -15,6 +15,8 @@
                 </div>
 
                 <button class="btn btn-secondary w-50 mt-4 mb-0" @click="generateTransaction">Submit</button>
+
+                <button class="btn btn-info w-50 mt-4 mb-0" @click="print">Print</button>
             </div>
         </section>
 
@@ -34,7 +36,7 @@
               </div>
 
             <div class="table-responsive">
-                <table class="table table-borderless">
+                <table class="table " id="report_transaction">
                     <thead>
                         <tr>
                             <th>Invoice</th>
@@ -42,7 +44,9 @@
                             <th>Cutomer name</th>
                             <th>Reference</th>
                             <th>Amount</th>
-                            <th>Status</th>
+                            <th>Delivery status</th>
+                            <th>Order created date/time</th>
+                            <th>Ordered date/time settled</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -54,6 +58,8 @@
                                 <td x-text="trns.reference"></td>
                                 <td x-text="new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP'}).format(trns.amount)"></td>
                                 <td x-text="trns.status"></td>
+                                <td x-text="trns.orderCreated"></td>
+                                <td x-text="trns.orderSettled"></td>
                             </tr>
                         </template>
                     </tbody>
