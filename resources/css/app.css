@@ -131,3 +131,11 @@ html, body {
 .product .sale:hover {
     display: none;
 }
+
+#logo {
+    position: absolute;
+    height: 85px;
+    top: 50%;
+    left: 10.5%;
+    transform: translate(-50%, -50%);
+}
