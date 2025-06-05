@@ -46,7 +46,14 @@
                         <td x-text="purchase.reference"></td>
                         <td x-text="purchase.paymentMethod.toUpperCase()"></td>
                         <td x-text="purchase.totalAmount.toLocaleString()"></td>
-                        <td x-text="purchase.deliveryStatus"></td>
+                        <td>
+                            <template x-if="purchase.status !== ''">
+                                <span x-text="purchase.status.toUpperCase()"></span>
+                            </template>
+                            <template x-if="purchase.status === ''">
+                                <span x-text="purchase.deliveryStatus.toUpperCase()"></span>
+                            </template>
+                        </td>
                         <td x-text="purchase.updatedAt"></td>
                     </tr>
                 </template>

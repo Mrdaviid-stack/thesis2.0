@@ -21,7 +21,8 @@ export default class HistoriesController {
         'delivery_status',
         'payment_method',
         'total_amount',
-        'updated_at'
+        'updated_at',
+        'status'
       )
       .whereBetween('created_at', [`${start} 00:00:00.000`, `${end} 23:59:59.000`])
       .preload('order', (orderQuery) => {
@@ -46,7 +47,10 @@ export default class HistoriesController {
       totalAmount: new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(
         Number(data.totalAmount)
       ),
+      status: (data.status) ? data.status : ''
     }))
+
+    console.log(purchaseHistory)
 
     return response.status(200).json({ data: purchaseHistory })
   }
