@@ -11,6 +11,7 @@ document.addEventListener("alpine:init", () => {
         isDisabled: false,
         activeReceiptOrder: null, 
         showModal: false,
+        finalReceipt: '',
         init() {
             this.riders = this.riders.filter(rider =>
                 rider.groups.some(group => group.name === 'Riders')
@@ -49,7 +50,7 @@ document.addEventListener("alpine:init", () => {
             .then(res => {
                 // Save uploaded file path to orderDetails.receipt
                 console.log('Receipt uploaded:', res);
-
+                this.finalReceipt = res.data.location;
                 axios.post(`/cashiers/order-tracking/receipt/${orderTransactionId}`, {receipt: res.data.location})
                     .then(res => {
                         console.log('Receipt saved:', res);

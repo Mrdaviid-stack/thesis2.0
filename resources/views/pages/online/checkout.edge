@@ -135,7 +135,7 @@
                 <div class="col">
                     <div class="mb-2">
                         <label>Downpayment* <template x-if="requireDownPayment !== 0"><p>Downpayment Should be (<span x-text="requireDownPayment"></span>)</p></template></label>
-                        <input type="number" class="form-control" x-model="orderDetails.downpayment" placeholder="Enter Down Payment or Full Payment Amount"/>
+                        <input type="number" class="form-control" x-model="orderDetails.downpayment" :placeholder="placeholder"/>
                         <div class="text-danger" x-show="formFieldError.downpayment">Downpayment cannot be empty.</div>
                         <div class="text-danger" x-show="formFieldError.requireDownpayment">Downpayment should be more tha half of total price.</div>
                     </div>

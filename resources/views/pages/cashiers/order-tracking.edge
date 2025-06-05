@@ -27,6 +27,7 @@
                         <th>Product</th>
                         <th>Invoice</th>
                         <th>Cutomer Info</th>
+                        <th>Payment Method</th>
                         <th>Balance</th>
                         <th>Status</th>
                         @if (userType === 'Riders')
@@ -60,6 +61,7 @@
                                     <span x-text="order.customerPhoneNumber"></span>
                                 </p>
                             </td>
+                            <td x-text="order.orderPaymentMethod.toUpperCase()"></td>
                             <td x-text="order.orderBalance"></td>
                             <td>
                                 <template x-if="order.orderDeliveryStatus !== 'to_ship'">
@@ -75,7 +77,7 @@
                                 <input :disabled="order.orderDeliveryStatus === 'delivered'" type="file" class="form-control" @change="uploadbalanceReceipt($event, order.orderTransactionId)" />
                             </td>
                             <td style="min-width: 220px;">
-                                <select :disabled="order.orderDeliveryStatus === 'delivered'" class="form-select" x-model="status" x-on:change="changeDeliveryStatus($event, order.orderTransactionId)">
+                                <select :disabled="order.orderDeliveryStatus === 'delivered' || finalReceipt === ''" class="form-select" x-model="status" x-on:change="changeDeliveryStatus($event, order.orderTransactionId)">
                                     <option selected hidden>Select Delivery Status</option>
                                     @if (userType === 'Cashiers')
                                      <option value="processing">processing</option> 

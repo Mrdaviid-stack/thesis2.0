@@ -11,6 +11,7 @@ document.addEventListener("alpine:init", () => {
         discount: 0,
         isProcessing: false,
         requireDownPayment: 0,
+        placeholder: '',
         requiredField: [],
         orderDetails: {
             firstName: props.firstname || '',
@@ -56,15 +57,24 @@ document.addEventListener("alpine:init", () => {
 
             this.initializeCart()
 
+            console.log(this.total)
+
         },
 
         initializeCart() {
             axios.get('/cart/items')
                 .then((response) => {
                     this.carts.push(...response.data.cartItems);
+                    const totalAmount = this.carts.reduce((acc, curr) => acc + curr.price * curr.qty, 0)
+                    this.placeholder = `Please Settle ${(totalAmount / 2).toLocaleString()} or higher.`;
+                    this.requireDownPayment = (totalAmount / 2);
                 })
 
             console.log(this.carts, 'carts')
+
+            const test = this.carts.reduce((acc, curr) => acc + curr.price, 0)
+
+            console.log(test)
 
             this.$watch('carts', () => {
                 this.total = `₱${this.carts.reduce((sum, item) => sum + item.price * item.qty, 0).toLocaleString()}`
@@ -121,6 +131,8 @@ document.addEventListener("alpine:init", () => {
             const isValid09 = this.orderDetails.phone.startsWith('09') && this.orderDetails.phone.length === 11;
             const isValid63 = this.orderDetails.phone.startsWith('63') && this.orderDetails.phone.length === 12;
 
+            const downpayment = parseInt(this.orderDetails.downpayment) >= parseInt(this.requireDownPayment);
+
             //this.requireDownPayment = (parseInt(this.orderDetails.total) / 2);
 
             //const requiredDownpayment = (parseInt(this.orderDetails.total) / 2);
@@ -141,6 +153,15 @@ document.addEventListener("alpine:init", () => {
                         this.isProcessing = false;
                         return
                     }
+
+                    if (!downpayment) {
+                        this.formFieldError.requireDownpayment = true;
+                        this.isProcessing = false;
+                        return;
+                    } else {
+                        this.formFieldError.requireDownpayment = false;
+                    }
+                    
                 }
             }
 
