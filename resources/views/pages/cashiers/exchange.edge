@@ -30,7 +30,7 @@
                                 <td>
                                     <span class="badge bg-warning" x-text="item.status"></span>
                                 </td>
-                                <td >description</td>
+                                <td x-text="item.description"></td>
                                 <td x-text="item.reason"></td>
                                 <td>
                                     <button class="btn btn-outline-info" @click="activeReceiptOrder = item; showModal = true">View attach file</button>
