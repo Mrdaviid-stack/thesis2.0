@@ -14,8 +14,10 @@
                   Filter by:
                 </button>
                 <ul class="dropdown-menu">
+                <li><a @click="filterStatus('all')" class="dropdown-item" href="#"">All</a></li>
                   <li><a @click="filterStatus('delivered')" class="dropdown-item" href="#">Delivered</a></li>
-                  <li><a @click="filterStatus('to_ship')" class="dropdown-item" href="#">To Ship</a></li>
+                  <li><a @click="filterStatus('to_ship')" class="dropdown-item" href="#">Out for delivery</a></li>
+                  <li><a @click="filterStatus('processing')" class="dropdown-item" href="#">Processing</a></li>
                 </ul>
               </div>
         </div>
@@ -66,9 +68,11 @@
                             <td>
                                 <template x-if="order.orderDeliveryStatus !== 'to_ship'">
                                     <span class="badge text-bg-warning" x-text="order.orderDeliveryStatus"></span>
+                                    <br/>
                                 </template>
                                 <template x-if="order.orderDeliveryStatus === 'to_ship'">
                                     <span class="badge text-bg-warning">Out for delivery</span><span class="badge text-bg-warning">Out for delivery</span>
+                                    <br/>
                                 </template>
                                 <span class="badge text-bg-warning" x-text="order.paidStatus.toUpperCase()"></span>
                             </td>

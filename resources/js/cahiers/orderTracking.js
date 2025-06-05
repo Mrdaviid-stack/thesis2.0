@@ -29,7 +29,7 @@ document.addEventListener("alpine:init", () => {
             useForm(`/cashiers/order-tracking/rider/${orderTransactionId}`, {riderId:event.target.value}, {}, )
         },
         filterStatus(status = 'in_transit') {
-            this.orders = props.orders.filter(order => order.orderDeliveryStatus === status)
+            this.orders = props.orders.filter(order => (status === 'all') ? order :  order.orderDeliveryStatus === status)
         },
         uploadbalanceReceipt(event, orderTransactionId) {
             console.log(event.target.files[0])
