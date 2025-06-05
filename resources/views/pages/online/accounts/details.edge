@@ -66,26 +66,26 @@
                         <p class="text-danger" x-text="errors.address"></p>
                     </div>
 
-                    <h4>Password Change</h4>
+                    <h4>Password Change</h4> 
+                        <u><span role="button" @click="showPassword" x-text="!isShowPassword ? 'Show Password' : 'Hide Password'"></span></u>
                     <hr class="border border-2"/>
                     <div class="col-12 mb-3">
                         <label>Enter old password (leave blank to leave unchange)</label>
                         <input :type="!isShowPassword ? 'password' : 'text'" class="form-control form-control-lg" x-model="form.currentPassword"/>
-                        <i @click="showPassword" :class="!isShowPassword ? 'fas fa-eye-slash' : 'fas fa-eye'" style="position:absolute; top:80.5%; left: 80.5%; transform: translate(50%, 50%)"></i>
                         <p class="text-danger" x-text="errors.currentPassword"></p>
                     </div>
                     <div class="col-12 mb-3">
                         <label>New password (leave blank to leave unchange)</label>
                         <input :type="!isShowPassword ? 'password' : 'text'" class="form-control form-control-lg" x-model="form.password"/>
-                        <i @click="showPassword" :class="!isShowPassword ? 'fas fa-eye-slash' : 'fas fa-eye'" style="position:absolute; top:91%; left: 80.5%; transform: translate(50%, 50%)"></i>
                         <p class="text-danger" x-text="errors.password"></p>
                     </div>
                     <div class="col-12 mb-3">
                         <label>Confirm new password</label>
                         <input :type="!isShowPassword ? 'password' : 'text'" class="form-control form-control-lg" x-model="form.confirmPassword"/>
-                        <i @click="showPassword" :class="!isShowPassword ? 'fas fa-eye-slash' : 'fas fa-eye'" style="position:absolute; top:101%; left: 80.5%; transform: translate(50%, 50%)"></i>
                         <p class="text-danger" x-text="errors.confirmPassword"></p>
                     </div>
+
+
                     <button class="btn btn-danger btn-lg">SAVE CHANGES</button>
                 </form>
             </div>
