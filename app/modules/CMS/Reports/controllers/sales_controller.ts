@@ -13,10 +13,12 @@ export default class SalesController {
   async generate({ request, response, auth }: HttpContext) {
     let { start, end } = request.qs()
 
-    const transactionQuery = await Transaction.query().where('paid_status', 'fullypaid').andWhereBetween('created_at', [
+    const transactionQuery = await Transaction.query().where('paid_status', 'fullypaid').whereNull('status').orWhere('status', 'exchange').andWhereBetween('created_at', [
       `${start} 00:00:00`,
       `${end} 23:59:59`,
     ])
+
+    console.log(transactionQuery)
 
     const totalSales = _.sumBy(transactionQuery, (transaction) => Number(transaction.totalAmount))
     await historyService(auth.user?.firstname!, `Generate Sales`)

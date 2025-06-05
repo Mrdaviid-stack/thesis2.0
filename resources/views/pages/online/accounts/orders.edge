@@ -54,11 +54,11 @@
                                         <button class="btn btn-danger" :disabled="order.status === 'request_cancel'" @click="onCancelOrder(order.transactionId)">CANCEL ORDER</button>
                                     </template>
                                     <template x-if="order.deliveryStatus === 'delivered'">
-                                        <button :disabled="order.status === 'exchange'" class="btn btn-outline-danger btn-sm" @click="activeReceiptOrder = order; showModal = true">
-                                            <template x-if="order.status === 'exchange'">
+                                        <button :disabled="order.status === 'returned'" class="btn btn-outline-danger btn-sm" @click="activeReceiptOrder = order; showModal = true">
+                                            <template x-if="order.status === 'returned'">
                                                 <span class="text-success">EXCHANGE REQUESTED</span>
                                             </template>
-                                            <template x-if="order.status !== 'exchange'">
+                                            <template x-if="order.status !== 'returned'">
                                                 <span>REQUEST EXCHANGE</span>
                                             </template>
                                         </button>
@@ -120,7 +120,7 @@
                                         </div>
                                         <div class="col-6">
                                             <label>Short Description</label>
-                                            <input class="form-control" type="text" placeholder="Short description of the reason" />
+                                            <input class="form-control" type="text" placeholder="Short description of the reason" x-model="replacementDescription" />
                                         </div>
                                     </div>
                                     <div class="row">

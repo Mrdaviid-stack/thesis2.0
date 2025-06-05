@@ -35,7 +35,7 @@ export default class TrackingsController {
             transactionStatus: query.transaction.status,
         }))
         await historyService(auth.user?.firstname!, `Generate Trackings`)
-        return response.status(200).json({ tracking: tracking.filter(trk => trk.transactionStatus !== 'cancelled') })
+        return response.status(200).json({ tracking: tracking.filter(trk => (trk.transactionStatus !== 'cancelled') && (trk.transactionStatus !== 'reject')) })
     }
 
 }

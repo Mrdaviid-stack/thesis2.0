@@ -125,8 +125,6 @@ document.addEventListener("alpine:init", () => {
 
             //const requiredDownpayment = (parseInt(this.orderDetails.total) / 2);
 
-            console.log(this.requiredField)
-
             for (const field of this.requiredField) {
 
                 if (! this.orderDetails[field] || this.orderDetails[field].trim() === '') {

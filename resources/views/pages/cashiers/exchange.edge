@@ -61,13 +61,13 @@
                     <div class="modal-body" x-show="activeReceiptOrder">
                         <template x-if="activeReceiptOrder.proof.endsWith('.mp4') || activeReceiptOrder.proof.endsWith('.webm')">
                             <video controls class="img-fluid" style="max-width: 100%;">
-                            <source :src="`http://localhost:3333/${activeReceiptOrder.proof}`" type="video/mp4" />
+                            <source :src="activeReceiptOrder.proof" type="video/mp4" />
                             Your browser does not support the video tag.
                             </video>
                         </template>
 
                         <template x-if="activeReceiptOrder.proof.endsWith('.jpg') || activeReceiptOrder.proof.endsWith('.png')">
-                            <img :src="`http://localhost:3333/${activeReceiptOrder.proof}`" class="img-fluid" alt="Proof Image" />
+                            <img :src="activeReceiptOrder.proof" class="img-fluid" alt="Proof Image" />
                         </template>
                     </div>
                 </div>

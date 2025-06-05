@@ -31,7 +31,7 @@ export default class TransactionsController {
     const newTransaction = []
 
     for (const trn of transaction) {
-      if (trn.transaction !== null) {
+      if (trn.transaction !== null && trn.transaction.status !== 'reject') {
         newTransaction.push({
           fullname: `${trn.firstName}, ${trn.lastName}`,
           invoice: trn.transaction.invoice,

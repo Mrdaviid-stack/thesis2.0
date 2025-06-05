@@ -76,7 +76,7 @@ export default class AcknowledgementsController {
 
   async exchangeIndex({ view }: HttpContext) {
 
-    const exchangeQuery = await Transaction.query().where('status', 'delivered').preload('exchange').preload('order')
+    const exchangeQuery = await Transaction.query().where('status', 'returned').preload('exchange').preload('order')
 
     const exchange = exchangeQuery.map((exchange) => ({
       transactionId: exchange.id,

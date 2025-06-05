@@ -64,6 +64,12 @@ export default class OrdersController {
   async exchangeOrder({ request, response, params, auth }: HttpContext) {
     const { proof, reason, description } = request.body();
 
+    const transactionQuery = await Transaction.findOrFail(params.id)
+
+    transactionQuery.status = 'returned',
+
+    transactionQuery.save();
+
     await Exchange.create({
       transactionId: params.id,
       reason: reason as 'Faulty Camera' | 'Software Glitching / Bug' | 'Wrong Item' | 'Damaged Item' | 'Other',
