@@ -2,6 +2,7 @@ import type { HttpContext } from '@adonisjs/core/http'
 import Order from '../../CMS/Websites/models/order.js'
 import Transaction from '../../CMS/Websites/models/transaction.js'
 import historyService from '../../CMS/Reports/services/historyServices.js'
+import Exchange from '../../CMS/Websites/models/exchange.js'
 
 export default class OrdersController {
   async index({ view, response, auth }: HttpContext) {
@@ -30,7 +31,8 @@ export default class OrdersController {
         status: orders.transaction?.status,
         rider: orders.transaction?.riderName,
         downpayment: orders.transaction?.downpayment,
-        balance: (Number(orderItem.price) !== Number(orders.transaction?.downpayment)) ? (Number(orderItem.price) - Number(orders.transaction?.downpayment)) : 0
+        balance: (Number(orderItem.price) !== Number(orders.transaction?.downpayment)) ? (Number(orderItem.price) - Number(orders.transaction?.downpayment)) : 0,
+        customerName: `${orders.firstName}, ${orders.lastName}`,
       }))
     })
 
@@ -57,5 +59,19 @@ export default class OrdersController {
     await historyService(auth.user?.lastname!, `Cancel Confirm`)
 
     return response.status(200).json({ message: 'Cancel Requested!' })
+  }
+
+  async exchangeOrder({ request, response, params, auth }: HttpContext) {
+    const { proof, reason } = request.body();
+
+    await Exchange.create({
+      transactionId: params.id,
+      reason: reason as 'Faulty Camera' | 'Software Glitching / Bug' | 'Wrong Item' | 'Damaged Item' | 'Other',
+      proof: proof || null,
+    })
+
+    await historyService(auth.user?.lastname!, `Exchange Order`)
+    return response.status(200).json({ message: 'Exchange Requested!'})
+
   }
 }

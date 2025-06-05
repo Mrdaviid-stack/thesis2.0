@@ -23,6 +23,9 @@ export default function CashierRoutes() {
 
         router.get('/inventory', [InventoriesController, 'index']).as('inventory').use(middleware.auth())
 
+        router.get('/exchange', [AcknowledgementsController, 'exchangeIndex']).as('exchange.index').use(middleware.auth())
+        router.post('/exchange/accept/:transactionId', [AcknowledgementsController, 'acceptExchange']).as('exchange.accept').use(middleware.auth())
+
     }).prefix('/cashiers')
     
 }

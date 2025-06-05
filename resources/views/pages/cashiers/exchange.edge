@@ -1,0 +1,78 @@
+@layout.cahiers.app({ title: "Order Exchange | Cashiers" })
+    @slot('meta')
+        <meta name="description" content="A welcome page made with EdgeJS">
+    @endslot
+    <div class="mt-5" x-data="exchange({
+        exchange: {{ JSON.stringify(exchange) }}
+    })">
+        <h3>Order Exchange List</h3>
+
+        <div class="card card-body">
+            <div>this is body</div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Customer Name</th>
+                            <th>Invoice</th>
+                            <th>Status</th>
+                            <th>Description</th>
+                            <th>Reason</th>
+                            <th>Proof</th>
+                            <th>Accept</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template x-for="item in exchange" :key="item.id">
+                            <tr>
+                                <td x-text="item.customerName"></td>
+                                <td x-text="item.invoice"></td>
+                                <td>
+                                    <span class="badge bg-warning" x-text="item.status"></span>
+                                </td>
+                                <td >description</td>
+                                <td x-text="item.reason"></td>
+                                <td>
+                                    <button class="btn btn-outline-info" @click="activeReceiptOrder = item; showModal = true">View attach file</button>
+                                </td>
+                                <td>
+                                    <button class="btn btn-success" @click="acceptExchange(item.transactionId)">Accept</button>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div 
+            x-show="showModal" 
+            x-transition.opacity 
+            @click.outside="closeModal" 
+            class="modal fade" 
+            :class="{'show d-block': showModal}" 
+            style="background-color: rgba(0, 0, 0, 0.5);"
+        >
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5">Proof</h1>
+                        <button type="button" class="btn-close" @click="closeModal"></button>
+                    </div>
+                    <div class="modal-body" x-show="activeReceiptOrder">
+                        <template x-if="activeReceiptOrder.proof.endsWith('.mp4') || activeReceiptOrder.proof.endsWith('.webm')">
+                            <video controls class="img-fluid" style="max-width: 100%;">
+                            <source :src="`http://localhost:3333/${activeReceiptOrder.proof}`" type="video/mp4" />
+                            Your browser does not support the video tag.
+                            </video>
+                        </template>
+
+                        <template x-if="activeReceiptOrder.proof.endsWith('.jpg') || activeReceiptOrder.proof.endsWith('.png')">
+                            <img :src="`http://localhost:3333/${activeReceiptOrder.proof}`" class="img-fluid" alt="Proof Image" />
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+@end

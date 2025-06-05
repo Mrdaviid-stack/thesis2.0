@@ -2,6 +2,8 @@ import type { HttpContext } from '@adonisjs/core/http'
 import Order from '../../CMS/Websites/models/order.js'
 import Transaction from '../../CMS/Websites/models/transaction.js'
 import historyService from '../../CMS/Reports/services/historyServices.js'
+import mail from '@adonisjs/mail/services/main'
+import moment from 'moment'
 
 export default class AcknowledgementsController {
   async index({ view, response, auth }: HttpContext) {
@@ -69,5 +71,50 @@ export default class AcknowledgementsController {
 
   private CurrencyFormatter(number: number) {
     return new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP' }).format(number)
+  }
+
+
+  async exchangeIndex({ view }: HttpContext) {
+
+    const exchangeQuery = await Transaction.query().where('status', 'delivered').preload('exchange').preload('order')
+
+    const exchange = exchangeQuery.map((exchange) => ({
+      transactionId: exchange.id,
+      invoice: exchange.invoice,
+      customerName: `${exchange.order?.firstName} ${exchange.order?.lastName}`,
+      status: exchange.status,
+      proof: exchange.exchange?.proof,
+      reason: exchange.exchange?.reason,
+    }))
+    console.log(exchange)
+    return view.render('pages/cashiers/exchange', { exchange: exchange })
+  }
+
+  
+  async acceptExchange({ response, params, auth }: HttpContext) {
+    const TransactionQuery = await Transaction.findOrFail(params.transactionId)
+
+    TransactionQuery.status = 'exchange'
+
+    TransactionQuery.save()
+
+    const transaction = await Transaction.query().where('id', params.transactionId).preload('order').firstOrFail()
+
+    await mail.send((message) => {
+      message
+        .to(`${transaction.order?.email}`)
+        .from('admin@yourdomain.com')
+        .subject(`For Replacement ${TransactionQuery.invoice}`)
+        .htmlView('emails/replace-confirmation', {
+          invoice: transaction.invoice,
+          description: `Hi, Mr/Mrs. ${transaction.order.firstName}, rider is on the way for exchange and please prepare the device, box, and receipt for verification.`,
+          orderDate: moment(transaction.createdAt).format('MMM Do YY'),
+          orderDelivered: moment(transaction.order?.updatedAt).format('MMM Do YY'),
+        })
+    })
+
+    await historyService(auth.user?.lastname!, `Accept Exchange Order`)
+
+    return response.status(200).json({ message: 'Exchange Accepted!' })
   }
 }

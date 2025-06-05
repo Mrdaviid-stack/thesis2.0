@@ -75,6 +75,10 @@ export default function OnlineRoutes() {
       .patch('/my-account/orders/:id/cancel-confirm', [OrdersController, 'cancledConfirm'])
       .as('order-cancel-confirm')
       .use(middleware.auth())
+    router
+      .patch('/my-account/orders/:id/exchange', [OrdersController, 'exchangeOrder'])
+      .as('order-exchange')
+      .use(middleware.auth())
 
     router
       .get('/my-account/details', [DetailsController, 'index'])
