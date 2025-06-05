@@ -40,6 +40,7 @@ document.addEventListener("alpine:init", () => {
             reference: false,
             downpayment: false,
             requireDownpayment: false,
+            receipt: false
         },
 
         init() {
@@ -47,7 +48,7 @@ document.addEventListener("alpine:init", () => {
             this.$watch('orderDetails', () => {
                 this.isDisbled = (this.orderDetails.paymentMethod !== '') ? false : true
                 if (this.orderDetails.paymentMethod !== 'cod') {
-                    this.requiredField = ["firstName", "lastName", "address", "city", "phone", "email", "paymentMethod", "reference", "downpayment"]
+                    this.requiredField = ["firstName", "lastName", "address", "city", "phone", "email", "paymentMethod", "receipt", "reference", "downpayment"]
                 } else {
                     this.requiredField = ["firstName", "lastName", "address", "city", "phone", "email", "paymentMethod"]
                 }

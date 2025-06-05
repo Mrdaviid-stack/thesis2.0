@@ -12,6 +12,9 @@ export default class Exchange extends BaseModel {
   declare reason: 'Faulty Camera' | 'Software Glitching / Bug' | 'Wrong Item' | 'Damaged Item' | 'Other'
 
   @column()
+  declare description: string | null
+
+  @column()
   declare proof: string | null
 
   @column.dateTime({ autoCreate: true })

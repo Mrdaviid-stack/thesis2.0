@@ -62,11 +62,12 @@ export default class OrdersController {
   }
 
   async exchangeOrder({ request, response, params, auth }: HttpContext) {
-    const { proof, reason } = request.body();
+    const { proof, reason, description } = request.body();
 
     await Exchange.create({
       transactionId: params.id,
       reason: reason as 'Faulty Camera' | 'Software Glitching / Bug' | 'Wrong Item' | 'Damaged Item' | 'Other',
+      description: description || null, 
       proof: proof || null,
     })
 

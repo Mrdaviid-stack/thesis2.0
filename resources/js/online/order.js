@@ -10,6 +10,7 @@ document.addEventListener("alpine:init", () => {
         showModal: false,
         replacementProofPath: '',
         replacementReason: '',
+        replacementDescription: '',
 
 
         init() {
@@ -63,9 +64,16 @@ document.addEventListener("alpine:init", () => {
 
         onReturn(transactionID) {
             console.log('cancel')
+
+            if (!this.replacementProofPath || !this.replacementReason || !this.replacementDescription) {
+                alert('Please provide proof and reason for the return.');
+                return;
+            }
+
             axios.patch(`/my-account/orders/${transactionID}/exchange`, { 
                  proof: this.replacementProofPath,
-                 reason: this.replacementReason
+                 reason: this.replacementReason,
+                 description: this.replacementDescription
             })
                 .then(() => {
                     location.reload()

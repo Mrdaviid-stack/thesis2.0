@@ -14,6 +14,7 @@ export default class extends BaseSchema {
         .onDelete('CASCADE')
       table.enu('reason', ['Faulty Camera', 'Software Glitching / Bug', 'Wrong Item', 'Damaged Item', 'Other']).defaultTo('Damaged Item')
       table.string('proof').nullable()
+      table.string('description').nullable()
       table.timestamp('created_at')
       table.timestamp('updated_at')
     })
