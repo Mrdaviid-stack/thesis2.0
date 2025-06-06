@@ -64,7 +64,11 @@
                                 </p>
                             </td>
                             <td x-text="order.orderPaymentMethod.toUpperCase()"></td>
-                            <td x-text="order.orderBalance"></td>
+                            <td>
+                                <template x-if="order.transactionStatus !== 'exchange'">
+                                    <span x-text="order.orderBalance"></span>
+                                </template>
+                            </td>
                             <td>
                                 <template x-if="order.orderDeliveryStatus !== 'to_ship'">
                                     <span class="badge text-bg-warning" x-text="order.orderDeliveryStatus"></span>
