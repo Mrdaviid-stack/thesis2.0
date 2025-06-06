@@ -59,7 +59,7 @@
                     <div class="col">
                         <div class="mb-2">
                             <label>Phone*</label>
-                            <input type="number" class="form-control" placeholder="09XX-XXX-XXXX" x-model="orderDetails.phone"/>
+                            <input type="number" class="form-control" placeholder="09XX-XXX-XXXX" x-model="orderDetails.phone" oninput="javascript: if (this.value.length > 11) this.value = this.value.slice(0, 11);"/>
                             <div class="text-danger" x-show="formFieldError.phone">Contact number cannot be empty.</div>
                             <div class="text-danger" x-show="formFieldError.phoneLenght">Invalid Contact number.</div>
                         </div>
