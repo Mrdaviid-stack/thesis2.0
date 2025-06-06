@@ -100,7 +100,7 @@
                             @endif
                             @if (userType !== 'Riders')
                             <td>
-                                <select :disabled="order.orderRiderName" class="form-select" x-on:change="changeRider($event, order.orderTransactionId)">
+                                <select :disabled="order.orderRiderName || order.orderRiderName !== ''" class="form-select" x-on:change="changeRider($event, order.orderTransactionId)">
                                     <option default>Select rider</option>
                                     <template x-for="rider in riders">
                                         <option :value="rider.id">

@@ -96,6 +96,8 @@ export default class AcknowledgementsController {
     const TransactionQuery = await Transaction.findOrFail(params.transactionId)
 
     TransactionQuery.status = 'exchange'
+    TransactionQuery.deliveryStatus = 'processing'
+    TransactionQuery.riderName = ''
 
     TransactionQuery.save()
 
