@@ -23,7 +23,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <template x-for="item in exchange" :key="item.id">
+                        <template x-for="item in exchange" :key="item.transactionId">
                             <tr>
                                 <td x-text="item.customerName"></td>
                                 <td x-text="item.invoice"></td>
