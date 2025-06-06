@@ -15,10 +15,12 @@
                 </div>
 
                 <button class="btn btn-secondary w-50 mt-4 mb-0" @click="generateHistories">Submit</button>
+
+                <button class="btn btn-info w-50 mt-4 mb-0" @click="print">Print</button>
             </div>
         </section>
 
-        <table class="table table-bordered mt-5">
+        <table class="table table-bordered mt-5" id="report_histories">
             <thead>
                 <tr>
                     <th>User</th>

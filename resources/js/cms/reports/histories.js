@@ -2,6 +2,7 @@ import Alpine from "alpinejs"
 import axios from "axios"
 import moment from "moment"
 import _ from "lodash"
+import printJS from "print-js";
 
 document.addEventListener("alpine:init", () => {
     Alpine.data('histories', (props) => ({
@@ -36,6 +37,9 @@ document.addEventListener("alpine:init", () => {
         },
         prevPage(index) {
             this.histories = this.cacheHistories[this.page - 1]
+        },
+        print() {
+            printJS({printable: 'report_histories', type: 'html'})
         }
     }))
 })

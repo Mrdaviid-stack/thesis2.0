@@ -9,12 +9,16 @@ document.addEventListener("alpine:init", () => {
         cities: cities.sort((a,b) => a.city.localeCompare(b.city)),
         total: 0,
         discount: 0,
+        isProcessing: false,
+        requireDownPayment: 0,
+        placeholder: '',
+        requiredField: [],
         orderDetails: {
             firstName: props.firstname || '',
             lastName: props.lastname || '',
             address: props.address || '',
             city: '',
-            phone: '',
+            phone: (props.number) ? (props.number.length !== 11) ? props.number.slice(0, 11) : props.number : '',
             email: props.email || '',
             notes: '',
             total: '',
@@ -23,44 +27,55 @@ document.addEventListener("alpine:init", () => {
             number: props.number || '',
             paymentMethod: '',
             carts: [],
+            receipt: '',
         },
-        isProcessing: false,
+        formFieldError: {
+            firstName: false,
+            lastName: false,
+            address: false,
+            city: false,
+            phone: false,
+            phoneLenght: false,
+            email: false,
+            paymentMethod: false,
+            reference: false,
+            downpayment: false,
+            requireDownpayment: false,
+            receipt: false
+        },
 
-        isDownpaymentError: '',
-        isDownpymentErrorMemssage: '',
-
-        isDisbled: true,
         init() {
             this.$watch('carts', () =>  console.log('watching carts'))
-            this.$watch('orderDetails.paymentMethod', () => {
-                this.isDisbled = (this.orderDetails.paymentMethod !== '') ? false : true
-            })
-
             this.$watch('orderDetails', () => {
-                if (this.orderDetails.firstName === '' || 
-                    this.orderDetails.lastName === '' || 
-                    this.orderDetails.address === '' || 
-                    this.orderDetails.city === '' ||
-                    (this.orderDetails.number.includes('XXX') || this.orderDetails.number === '') || 
-                    this.orderDetails.email === '' || 
-                    this.paymentMethod === '' ||
-                    this.reference === '' ||
-                    this.downpayment === ''
-                ) {
-                    this.isDisbled = true
+                this.isDisbled = (this.orderDetails.paymentMethod !== '') ? false : true
+                if (this.orderDetails.paymentMethod !== 'cod') {
+                    this.requiredField = ["firstName", "lastName", "address", "city", "phone", "email", "paymentMethod", "receipt", "reference", "downpayment"]
                 } else {
-                    this.isDisbled = false
+                    this.requiredField = ["firstName", "lastName", "address", "city", "phone", "email", "paymentMethod"]
                 }
             })
 
             this.initializeCart()
+
+            console.log(this.total)
+
         },
+
         initializeCart() {
             axios.get('/cart/items')
                 .then((response) => {
                     this.carts.push(...response.data.cartItems);
+                    const totalAmount = this.carts.reduce((acc, curr) => acc + curr.price * curr.qty, 0)
+                    this.placeholder = `Please Settle ${(totalAmount / 2).toLocaleString()} or higher.`;
+                    this.requireDownPayment = (totalAmount / 2);
                 })
-            console.log(this.carts)
+
+            console.log(this.carts, 'carts')
+
+            const test = this.carts.reduce((acc, curr) => acc + curr.price, 0)
+
+            console.log(test)
+
             this.$watch('carts', () => {
                 this.total = `₱${this.carts.reduce((sum, item) => sum + item.price * item.qty, 0).toLocaleString()}`
                 this.discount = `₱${this.carts.reduce((sum, item) => sum + this.disCountedPrice(item.price, item.sale) * item.qty, 0).toLocaleString()}`
@@ -69,6 +84,7 @@ document.addEventListener("alpine:init", () => {
                 this.orderDetails.carts = this.carts
             })
         },
+
         addQty(id) {
 
             const cart = this.carts.find(cart => cart.id === id);
@@ -76,12 +92,14 @@ document.addEventListener("alpine:init", () => {
             cart.totalAmount = cart.price * cart.qty;
             this.updateItemQuantity(id, cart.qty)
         },
+
         subtractQty(id) {
             const cart = this.carts.find(cart => cart.id === id);
             cart.qty--;
             cart.totalAmount = cart.price * cart.qty;
             this.updateItemQuantity(id, cart.qty)
         },
+
         removeItem(id) {
             axios.delete(`/cart/${id}/remove`)
                 .then(() => {
@@ -90,32 +108,139 @@ document.addEventListener("alpine:init", () => {
                     location.reload()
                 })
         },
+
         updateItemQuantity(id, qty) {
             console.log(qty)
             axios.put(`/cart/${id}/update`, qty)
                 .then(() => console.log('updated quantity'))
         },
+
         checkout() {
             this.isProcessing = true;
-            // check if downapyment is equal or greater done 50% of total price.
-            if (this.orderDetails.paymentMethod === 'cod') {
-                const downpayment = (this.orderDetails.total / 2);
 
-                if (! parseFloat(this.orderDetails.downpayment) < downpayment) {
-                    this.isDownpaymentError = true;
+            // let requiredField;
+
+            // if (this.orderDetails.paymentMethod === 'cod') {
+            //     requiredField = ["firstName", "lastName", "address", "city", "phone", "email", "paymentMethod", "reference", "downpayment"]
+            // } else {
+            //     requiredField = ["firstName", "lastName", "address", "city", "phone", "email", "paymentMethod"]
+            // }
+
+            //const requiredField = ["firstName", "lastName", "address", "city", "phone", "email", "paymentMethod", "reference", "downpayment"]
+
+            const isValid09 = this.orderDetails.phone.startsWith('09') && this.orderDetails.phone.length === 11;
+            const isValid63 = this.orderDetails.phone.startsWith('63') && this.orderDetails.phone.length === 12;
+
+            const downpayment = parseInt(this.orderDetails.downpayment) >= parseInt(this.requireDownPayment);
+
+            //this.requireDownPayment = (parseInt(this.orderDetails.total) / 2);
+
+            //const requiredDownpayment = (parseInt(this.orderDetails.total) / 2);
+
+            for (const field of this.requiredField) {
+
+                if (! this.orderDetails[field] || this.orderDetails[field].trim() === '') {
+                    this.formFieldError[field] = true;
                     this.isProcessing = false;
-                    this.isDownpymentErrorMemssage = 'Settle atleast ' + downpayment.toLocaleString();
-                    return;
+                    return
+                } else {
+                    this.formFieldError[field] = false;
+
+                    if (isValid09 || isValid63) {
+                        this.formFieldError.phoneLenght = false
+                    } else {
+                        this.formFieldError.phoneLenght = true
+                        this.isProcessing = false;
+                        return
+                    }
+
+                    if (this.orderDetails.paymentMethod !== 'cod') {
+                        if (!downpayment) {
+                            this.formFieldError.requireDownpayment = true;
+                            this.isProcessing = false;
+                            return;
+                        } else {
+                            this.formFieldError.requireDownpayment = false;
+                        }
+                    }
+
+                    if (this.orderDetails.paymentMethod === 'cod') {
+                        const hasAny = this.orderDetails.receipt || this.orderDetails.reference || this.orderDetails.downpayment;
+
+                        if (hasAny) {
+                            // If reference has value, receipt is required
+                            if (this.orderDetails.reference && !this.orderDetails.receipt) {
+                                this.formFieldError.receipt = true;
+                                this.isProcessing = false;
+                                return;
+                            } else {
+                                this.formFieldError.receipt = false;
+                            }
+
+                            // Both reference and downpayment are required if any of the three has value
+                            if (!this.orderDetails.reference || !this.orderDetails.downpayment) {
+                                this.formFieldError.reference = !this.orderDetails.reference;
+                                this.formFieldError.downpayment = !this.orderDetails.downpayment;
+                                this.isProcessing = false;
+                                return;
+                            } else {
+                                this.formFieldError.reference = false;
+                                this.formFieldError.downpayment = false;
+                            }
+                            if (parseInt(this.orderDetails.downpayment) < parseInt(this.requireDownPayment)) {
+                                this.formFieldError.requireDownpayment = true;
+                                this.isProcessing = false;
+                                return;
+                            } else {
+                                this.formFieldError.requireDownpayment = false;
+                            }
+                        } else {
+                            // If all are empty, not required
+                            this.formFieldError.reference = false;
+                            this.formFieldError.downpayment = false;
+                            this.formFieldError.receipt = false;
+                        }
+                    }
+                    
                 }
-            } 
-            
-            useForm("/checkout", this.orderDetails, this.errors, '/')
-            
+            }
+
+            console.log('continue')
+
+            useForm("/checkout", this.orderDetails, this.errors, '/')            
         },
         disCountedPrice(original, discount) {
             const discountAmount = original * discount / 100;
             const discountedPrice = original - discountAmount;
             return discountedPrice
+        },
+        uploadReceipt(event) {
+            console.log(event.target.files[0])
+            const file = event.target.files[0];
+
+            if (!(file instanceof File)) return;
+
+            const imageData = new FormData();
+            imageData.append('image', file);
+
+            this.isProcessing = true;
+
+            axios.post('cms/files/uploads', imageData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+            .then(res => {
+                // Save uploaded file path to orderDetails.receipt
+                this.orderDetails.receipt = res.data.location;
+                console.log('Receipt uploaded:', res);
+            })
+            .catch(err => {
+                console.error('Receipt upload failed:', err);
+            })
+            .finally(() => {
+                this.isProcessing = false;
+            });
         }
     }))
 })

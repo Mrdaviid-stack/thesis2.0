@@ -3,8 +3,6 @@
         <meta name="description" content="A welcome page made with EdgeJS">
     @endslot
 
-    {{{ console.log(userType) }}}
-
     <div class="mt-5" x-data="orderTracking({
         orders: {{JSON.stringify(orders)}},
         riders: {{JSON.stringify(riders)}}
@@ -16,23 +14,31 @@
                   Filter by:
                 </button>
                 <ul class="dropdown-menu">
+                <li><a @click="filterStatus('all')" class="dropdown-item" href="#"">All</a></li>
                   <li><a @click="filterStatus('delivered')" class="dropdown-item" href="#">Delivered</a></li>
-                  <li><a @click="filterStatus('to_ship')" class="dropdown-item" href="#">To Ship</a></li>
+                  <li><a @click="filterStatus('to_ship')" class="dropdown-item" href="#">Out for delivery</a></li>
+                  <li><a @click="filterStatus('processing')" class="dropdown-item" href="#">Processing</a></li>
                 </ul>
-              </div>
+            </div>
         </div>
         @if(orders.length > 0)
         <div class="table-responsive">
-            <table class="table table-borderless align-middle">
+            <table class="table table-borderless align-middle table-sm">
                 <thead>
                     <tr>
                         <th>Product</th>
                         <th>Invoice</th>
                         <th>Cutomer Info</th>
+                        <th>Payment Method</th>
                         <th>Balance</th>
-                        <th colspan="2">Status</th>
+                        <th>Status</th>
+                        @if (userType === 'Riders')
+                            <th>Upload receipt</th>
+                            <th>Delivery Status</th>
+                        @endif
                         @if (userType !== 'Riders')
                             <th>Rider</th>
+                            <th>Receipt</th>
                         @endif
                     </tr>
                 </thead>
@@ -57,24 +63,38 @@
                                     <span x-text="order.customerPhoneNumber"></span>
                                 </p>
                             </td>
-                            <td x-text="order.orderBalance"></td>
+                            <td x-text="order.orderPaymentMethod.toUpperCase()"></td>
+                            <td>
+                                <template x-if="order.transactionStatus !== 'exchange'">
+                                    <span x-text="order.orderBalance"></span>
+                                </template>
+                            </td>
                             <td>
                                 <template x-if="order.orderDeliveryStatus !== 'to_ship'">
                                     <span class="badge text-bg-warning" x-text="order.orderDeliveryStatus"></span>
                                 </template>
                                 <template x-if="order.orderDeliveryStatus === 'to_ship'">
-                                    <span class="badge text-bg-warning">Out for delivery</span>
+                                    <span class="badge text-bg-warning">Out for delivery</span><span class="badge text-bg-warning">Out for delivery</span>
+                                </template>
+                                 <br/>
+                                <span class="badge text-bg-warning" x-text="order.paidStatus.toUpperCase()"></span>
+                                 <br/>
+                                <template x-if="order.transactionStatus === 'exchange'">
+                                    <span class="badge text-bg-warning">FOR REPLACEMENT</span>
                                 </template>
                             </td>
+                            @if (userType === 'Riders')
+                            <td>
+                                <input :disabled="order.orderDeliveryStatus === 'delivered'" type="file" class="form-control" @change="uploadbalanceReceipt($event, order.orderTransactionId)" />
+                            </td>
                             <td style="min-width: 220px;">
-                                <select class="form-select" x-on:change="changeDeliveryStatus($event, order.orderTransactionId)">
+                                <select :disabled="order.orderDeliveryStatus === 'delivered' || finalReceipt === ''" class="form-select" x-model="status" x-on:change="changeDeliveryStatus($event, order.orderTransactionId)">
                                     <option selected hidden>Select Delivery Status</option>
                                     @if (userType === 'Cashiers')
                                      <option value="processing">processing</option> 
                                      <option value="returned">Returned</option>
                                     @end
-                                    <option value="to_ship">Out for Delivery</option>
-                                    <option value="to_receive">To Receive</option>
+                                    {{-- <option value="to_ship">Out for Delivery</option> --}}
 
                                     @if (userType !== 'Cashiers' && userType !== 'Riders')
                                         <option value="received">Received</option>
@@ -84,9 +104,10 @@
 
                                 </select>
                             </td>
+                            @endif
                             @if (userType !== 'Riders')
                             <td>
-                                <select class="form-select" x-on:change="changeRider($event, order.orderTransactionId)">
+                                <select :disabled="order.orderRiderName || order.orderRiderName !== ''" class="form-select" x-on:change="changeRider($event, order.orderTransactionId)">
                                     <option default>Select rider</option>
                                     <template x-for="rider in riders">
                                         <option :value="rider.id">
@@ -95,12 +116,40 @@
                                     </template>
                                 </select>
                             </td>
+                            <td>
+                                <button class="btn btn-info btn-sm" @click="activeReceiptOrder = order; showModal = true">View Receipt</button>
+                            </td>
                             @endif
                         </tr>
                     </template>
                 </tbody>
             </table>
         </div>
+                   <div 
+              x-show="showModal" 
+              x-transition.opacity 
+              @click.outside="closeModal" 
+              class="modal fade" 
+              :class="{'show d-block': showModal}" 
+              style="background-color: rgba(0, 0, 0, 0.5);"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5">Receipt</h1>
+                    <button type="button" class="btn-close" @click="closeModal"></button>
+                  </div>
+                  <div class="modal-body" x-show="activeReceiptOrder">
+                    <template x-if="activeReceiptOrder && activeReceiptOrder.receipt">
+                      <img :src="activeReceiptOrder.receipt" class="img-fluid rounded-start" />
+                    </template>
+                    <template x-if="activeReceiptOrder && activeReceiptOrder.fullpaymentReceipt">
+                      <img :src="activeReceiptOrder.fullpaymentReceipt" class="img-fluid rounded-start" />
+                    </template>
+                  </div>
+                </div>
+              </div>
+            </div>
         @else
             <div class="bg-secondary py-4 px-3 border-top border-warning border-5">
                 <p class="mb-0">No Orders</p>

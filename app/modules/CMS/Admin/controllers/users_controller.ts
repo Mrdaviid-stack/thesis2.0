@@ -53,7 +53,7 @@ export default class UsersController {
 
     async store({request, response, auth}: HttpContext) {
         const data = request.body()
-        console.log(data)
+
         if (data.id) {
             const user = await User.find(data.id)
             await user?.merge({
@@ -69,6 +69,18 @@ export default class UsersController {
         }
 
         const result = await UserValidationSchema.validate(data)
+
+        const emailExist = await User.findBy('email', result.email) 
+        
+        if (emailExist) {
+            return response.status(422).json([{
+                            field: "email",
+                            message: "Email already registered.",
+                            rule: "duplicate"
+                        }])
+        }
+        
+
         const user = await User.create({
             firstname: result.firstname,
             lastname: result.lastname,

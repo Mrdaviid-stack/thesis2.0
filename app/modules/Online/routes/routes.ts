@@ -16,6 +16,7 @@ export default function OnlineRoutes() {
 
     router.get('/bsd/:slug', [PagesController, 'slugPage'])
     router.get('/custom/pages', [PagesController, 'getCustomPages'])
+    router.get('/custom/categories', [PagesController, 'getCategories'])
 
     router.get('/login', [AuthController, 'login']).as('login')
     router.get('/register', [AuthController, 'register']).as('register')
@@ -73,6 +74,10 @@ export default function OnlineRoutes() {
     router
       .patch('/my-account/orders/:id/cancel-confirm', [OrdersController, 'cancledConfirm'])
       .as('order-cancel-confirm')
+      .use(middleware.auth())
+    router
+      .patch('/my-account/orders/:id/exchange', [OrdersController, 'exchangeOrder'])
+      .as('order-exchange')
       .use(middleware.auth())
 
     router

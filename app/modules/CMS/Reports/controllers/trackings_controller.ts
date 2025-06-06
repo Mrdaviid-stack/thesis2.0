@@ -22,7 +22,7 @@ export default class TrackingsController {
                 )
             )
             .preload('transaction', (transactionQuery) => 
-                transactionQuery.whereBetween('created_at', [`${start} 00:00:00.000`, `${end} 23:59:59.000`])
+                transactionQuery.whereBetween('created_at', [`${start} 00:00:00`, `${end} 23:59:59`])
             );
 
         const tracking = query.map(query => ({
@@ -30,12 +30,12 @@ export default class TrackingsController {
             invoice: query.transaction.invoice,
             reference: query.transaction.reference,
             status: query.transaction.deliveryStatus,
-            amount: query.transaction.totalAmount,
+            amount: new Intl.NumberFormat('en-PH', { style: 'currency', currency: 'PHP'}).format(parseFloat(query.transaction.totalAmount)),
             product: query.orderItems.map(item => item.productVariant.product.name),
             transactionStatus: query.transaction.status,
         }))
         await historyService(auth.user?.firstname!, `Generate Trackings`)
-        return response.status(200).json({ tracking: tracking.filter(trk => trk.transactionStatus !== 'cancelled') })
+        return response.status(200).json({ tracking: tracking.filter(trk => (trk.transactionStatus !== 'cancelled') && (trk.transactionStatus !== 'reject')) })
     }
 
 }

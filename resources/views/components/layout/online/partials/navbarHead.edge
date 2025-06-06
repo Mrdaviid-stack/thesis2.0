@@ -1,6 +1,8 @@
 <nav class="navbar navbar-expand bg-body-tertiary w-100 py-4 fixed-top">
     <div class="container">
-        <a class="navbar-brand text-danger" href="/">BSD International</a>
+        <a class="navbar-brand text-danger" href="/">
+            <img src="{{ asset('resources/img/bsd-logo.jpg') }}" id="logo" alt="bsd" />
+        </a>
 
             <ul class="navbar-nav d-flex ms-auto mb-2 mb-lg-0">
                 @if(!await auth.use('web').check())

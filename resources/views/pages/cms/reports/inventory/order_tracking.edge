@@ -15,6 +15,9 @@
                 </div>
 
                 <button class="btn btn-secondary w-50 mt-4 mb-0" @click="generateTracking">Submit</button>
+
+                <button class="btn btn-info w-50 mt-4 mb-0" @click="print">Print</button>
+
             </div>
         </section>
 
@@ -37,7 +40,7 @@
               </div>
 
             <div class="table-responsive">
-                <table class="table table-borderless">
+                <table class="table table-borderless" id="report_tracking">
                     <thead>
                         <tr>
                             <th>Cutomer name</th>

@@ -3,4 +3,4 @@ import './cart'
 import './auth'
 import './order'
 import './landing'
-
+import './navbar'

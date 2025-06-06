@@ -14,12 +14,17 @@ export default function CashierRoutes() {
 
         router.get('/acknowledgements', [AcknowledgementsController, 'index']).as('acknowledgements').use(middleware.auth())
         router.post('/acknowledgements/:transactionId', [AcknowledgementsController, 'acknowledge']).as('acknowledgements.acknowledge').use(middleware.auth())
+        router.post('/reject/:transactionId', [AcknowledgementsController, 'reject']).as('acknowledgements.reject').use(middleware.auth())
 
         router.get('/order-tracking', [OrderTrackingsController, 'index']).as('order-tracking').use(middleware.auth())
         router.post('/order-tracking/:id', [OrderTrackingsController, 'updateDeliveryStatus']).as('order-tracking.update').use(middleware.auth())
         router.post('/order-tracking/rider/:id', [OrderTrackingsController, 'updateRider']).as('order-tracking-rider.update').use(middleware.auth())
+        router.post('/order-tracking/receipt/:id', [OrderTrackingsController, 'receipt']).as('order-tracking.receipt').use(middleware.auth())
 
         router.get('/inventory', [InventoriesController, 'index']).as('inventory').use(middleware.auth())
+
+        router.get('/exchange', [AcknowledgementsController, 'exchangeIndex']).as('exchange.index').use(middleware.auth())
+        router.post('/exchange/accept/:transactionId', [AcknowledgementsController, 'acceptExchange']).as('exchange.accept').use(middleware.auth())
 
     }).prefix('/cashiers')
     

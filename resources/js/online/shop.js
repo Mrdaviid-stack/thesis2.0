@@ -11,13 +11,17 @@ document.addEventListener("alpine:init", () => {
         redirect: '/cart',
 
         init() {
-            this.details = undefined
+            this.details = this.variants[0]
             this.viewImage = this.variants[0].image
 
-
             this.$watch('options.color', () => this.options.storage = '')
-            this.$watch('options.storage', () => this.details = this.variants.filter(variant => variant.color === this.options.color && variant.storage === this.options.storage)[0] )
-            this.$watch('details', () => console.log(this.details.stock))
+            this.$watch('options', () => this.details = this.variants.filter(variant => variant.color === this.options.color && variant.storage === this.options.storage)[0] )
+            this.$watch('options', () => console.log(this.product.id,  this.details.id, 'testing'))
+
+            this.$nextTick(() => {
+                console.log('After DOM update, details.feature:', this.details)
+            })
+
         },
         get displayPrice() {
             const isPriceMoreThanOne = this.product.productVariants.length > 1
@@ -33,6 +37,10 @@ document.addEventListener("alpine:init", () => {
         },
         onShowImage(image) {
             this.viewImage = image
+        },
+        onChangeColor() {
+            this.details = this.variants.filter(variant => variant.color === this.options.color)[0]
+            console.log(this.details)
         },
         async submit() {
             const form = document.getElementById("form");

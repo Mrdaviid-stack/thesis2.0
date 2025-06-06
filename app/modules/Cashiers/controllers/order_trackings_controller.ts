@@ -33,6 +33,13 @@ export default class OrderTrackingsController {
         customerName: `${orders.firstName} ${orders.lastName}`,
         customerAddress: orders.address,
         customerPhoneNumber: orders.phone,
+        orderTransactionService: orders.transaction?.orderType,
+        orderRiderName: orders.transaction?.riderName,
+        paidStatus: orders.transaction?.paidStatus,
+        receipt: orders.transaction?.receipt,
+        fullpaymentReceipt: orders.transaction?.fullpaymentReceipt,
+        orderPaymentMethod: orders.transaction?.paymentMethod,
+        transactionStatus: orders.transaction?.status
       }))
     })
 
@@ -40,8 +47,17 @@ export default class OrderTrackingsController {
 
     const ridersQuery = await User.query().preload('groups')
 
+    let newOrders;
+
+    if (userQuery[0].groups[0].name === 'Riders') {
+      const riderName = `${auth.user?.firstname}, ${auth.user?.lastname}`
+      newOrders = orders.filter((order) => order.orderDeliveryStatus != 'pending' && order.orderTransactionService === 'online' && order.orderRiderName === riderName)
+    } else {
+      newOrders = orders.filter((order) => order.orderDeliveryStatus != 'pending' && order.orderTransactionService === 'online')
+    }
+
     return view.render('pages/cashiers/order-tracking', {
-      orders: orders.filter((order) => order.orderDeliveryStatus != 'pending'),
+      orders: newOrders,
       userType: await userQuery[0].groups[0].name,
       riders: ridersQuery,
     })
@@ -71,12 +87,26 @@ export default class OrderTrackingsController {
     const fullname = userQuery[0].firstname + ', ' + userQuery[0].lastname
 
     transaction.riderName = fullname
+    transaction.deliveryStatus = 'to_ship'
 
     transaction.save()
 
     //await transaction.merge({ deliveryStatus: data.deliveryStatus }).save()
     await historyService(auth.user?.firstname!, `Update assign rider`)
     return response.status(200).json({ message: 'Delivery status updated successfully!' })
+  }
+
+  async receipt({ request, response, params }: HttpContext) {
+    const data = request.body()
+    console.log(data)
+    const transaction = await Transaction.findOrFail(params.id)
+
+    transaction.fullpaymentReceipt = data.receipt
+    transaction.paidStatus = 'fullypaid'
+
+    transaction.save()
+
+    return response.status(200).json({ message: 'Receipt uploaded successfully!' })
   }
 
   private CurrencyFormatter(number: number) {

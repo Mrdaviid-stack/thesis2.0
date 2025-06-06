@@ -34,12 +34,13 @@ export default class WalkInOrdersController {
 
     async order({ request, response, auth }: HttpContext) {
         const data = request.body()
+
         const order = await Order.create({
-            userId: auth.user?.id,
-            firstName: auth.user?.firstname,
-            lastName: auth.user?.lastname,
-            address: auth.user?.address,
-            email: auth.user?.email,
+            userId: 1,
+            firstName: data.firstName,
+            lastName: data.lastName,
+            address: data.address,
+            email: data.email,
         })
 
         const variant =await ProductVariant.find(data.variantId)

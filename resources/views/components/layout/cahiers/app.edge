@@ -46,6 +46,15 @@
                         </li>
                         @end
 
+                        @can('hasAccess', 'cashiers-acknowledgement-index')
+                        <li class="nav-item">
+                            <a class="nav-link" href="/cashiers/exchange">
+                                <i class="fa-solid fa-list"></i>
+                                <span>Order Exchange</span>
+                            </a>
+                        </li>
+                        @end
+
                         @can('hasAccess', 'cashiers-tracking-index')
                         <li class="nav-item">
                             <a class="nav-link" href="/cashiers/order-tracking">

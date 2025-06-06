@@ -19,9 +19,11 @@
                             <div class="card-body" id="printable">
                               <h5 class="card-title" x-text="order.orderProductName"></h5>
                               <p class="card-text">
-                                <small>Color: <span x-text="order.orderInvoice"></span>
+                                <small>Invoice number: <span x-text="order.orderInvoice"></span>
                                 <br/>
                                 <small>Color: <span x-text="order.orderProductColor"></span> | Storage: <span x-text="order.orderProductStorage"></span></small>
+                                <br/>
+                                <small>Payment Method: <span x-text="order.orderPaymentMethod.toUpperCase()"></span></small>
                                 <br/>
                                 <small>Payment Reference: <span x-text="order.orderPaymentReference"></span></small>
                                 <br/>
@@ -31,14 +33,25 @@
                                 <br/>
                                 <small>Balance: <span x-text="order.orderBalance"></span></small>
                               </p>
-                              <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                              <hr/>
+                              <p class="card-text">
+                                <small>Customer Name: <span x-text="order.customerName"></span>
+                                <br/>
+                                <small>Address: <span x-text="order.customerAddress"></span></small>
+                              </p>
                             </div>
+                            
 
+                            <button class="btn btn-info btn-sm" @click="activeReceiptOrder = order; showModal = true">View Receipt</button>
+                
                             <template x-if="order.orderTransactionStatus === 'request_cancel'">
-                              <button @click="onCancelled(order.orderTransactionId)" class="btn btn-danger">Requesting to cancel</button>
+                              <button @click="onCancelled(order.orderTransactionId)" class="btn btn-danger btn-sm">Requesting to cancel</button>
                             </template>
                             <template x-if="order.orderTransactionStatus !== 'request_cancel'"">
-                              <button @click="acknowledge(order.orderTransactionId, order)" class="btn btn-warning">Acknowledge</button>
+                              <button @click="reject(order.orderTransactionId, order)" class="btn btn-danger btn-sm">Reject Order</button>
+                            </template>
+                            <template x-if="order.orderTransactionStatus !== 'request_cancel'"">
+                              <button @click="acknowledge(order.orderTransactionId, order)" class="btn btn-warning btn-sm">Acknowledge Order</button>
                             </template>
 
                           </div>
@@ -46,6 +59,29 @@
                     </div>
                 </div>
             </template>
+
+            <div 
+              x-show="showModal" 
+              x-transition.opacity 
+              @click.outside="closeModal" 
+              class="modal fade" 
+              :class="{'show d-block': showModal}" 
+              style="background-color: rgba(0, 0, 0, 0.5);"
+            >
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1 class="modal-title fs-5">Receipt</h1>
+                    <button type="button" class="btn-close" @click="closeModal"></button>
+                  </div>
+                  <div class="modal-body" x-show="activeReceiptOrder">
+                    <template x-if="activeReceiptOrder">
+                      <img :src="activeReceiptOrder.receipt" class="img-fluid rounded-start" />
+                    </template>
+                  </div>
+                </div>
+              </div>
+            </div>
         </div>
         @else
             <div class="bg-secondary py-4 px-3 border-top border-warning border-5">

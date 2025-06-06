@@ -10,8 +10,8 @@ document.addEventListener("alpine:init", () => {
 
         async submit() {
             const form = document.getElementById("form");
-            console.log(this.form)
             useForm(form.action, this.form, this.errors, this.redirect)
+            console.log(this.errors, 'errors')
         },
 
         showPassword() {

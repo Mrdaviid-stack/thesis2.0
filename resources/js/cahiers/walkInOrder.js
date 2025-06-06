@@ -1,6 +1,7 @@
 import Alpine from "alpinejs";
 import ImageZoom from "js-image-zoom";
 import useForm from "../useForms"
+import alertify from "alertifyjs";
 document.addEventListener("alpine:init", () => {
     Alpine.data("walkInOrder", (props) => ({
         errors: {},
@@ -14,11 +15,17 @@ document.addEventListener("alpine:init", () => {
             qty: 1,
             stock: '',
             paymentType: '',
+
+            firstName: '',
+            lastName: '',
+            email: '',
+            address: '',
         },
         init() {
             console.log(this.products)
             this.$watch('productDetails', ()=> {
                 const variants = this.productToBuy?.productVariants?.filter(product => (product.color == this.productDetails.color) && (product.storage == this.productDetails.storage))[0]
+                console.log(variants.price)
                 this.productDetails.variantId = variants?.id
                 this.productDetails.price = variants?.price * this.productDetails.qty
                 this.productDetails.stock = variants?.stock
@@ -41,6 +48,7 @@ document.addEventListener("alpine:init", () => {
         },
         buyNow() {
             useForm('/cashiers/order', this.productDetails, this.errors, '/cashiers')
+            console.log(this.productDetails)
         }
     }))
 })
