@@ -17,7 +17,7 @@ document.addEventListener("alpine:init", () => {
                 rider.groups.some(group => group.name === 'Riders')
             );
 
-            console.log(this.orders)
+            this.orders = this.orders.sort((a, b) => a.customerName.localeCompare(b.customerName))
         },
         changeDeliveryStatus(event, orderTransactionId) {
             console.log(event.target.value)
@@ -29,7 +29,7 @@ document.addEventListener("alpine:init", () => {
             useForm(`/cashiers/order-tracking/rider/${orderTransactionId}`, {riderId:event.target.value}, {}, )
         },
         filterStatus(status = 'in_transit') {
-            this.orders = props.orders.filter(order => (status === 'all') ? order :  order.orderDeliveryStatus === status)
+            this.orders = props.orders.filter(order => (status === 'all') ? order :  order.orderDeliveryStatus === status).sort((a, b) => a.customerName.localeCompare(b.customerName))
         },
         uploadbalanceReceipt(event, orderTransactionId) {
             console.log(event.target.files[0])

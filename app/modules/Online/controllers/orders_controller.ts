@@ -40,7 +40,7 @@ export default class OrdersController {
 
 
     return view.render('pages/online/accounts/orders', {
-      orders: orders.filter((order) => order.status !== 'cancelled'),
+      orders: orders.filter((order) => order.status !== 'cancelled').sort((a, b) => b.transactionId - a.transactionId),
     })
   }
 
