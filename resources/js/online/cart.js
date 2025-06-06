@@ -163,9 +163,49 @@ document.addEventListener("alpine:init", () => {
                             this.formFieldError.requireDownpayment = false;
                         }
                     }
+
+                    if (this.orderDetails.paymentMethod === 'cod') {
+                        const hasAny = this.orderDetails.receipt || this.orderDetails.reference || this.orderDetails.downpayment;
+
+                        if (hasAny) {
+                            // If reference has value, receipt is required
+                            if (this.orderDetails.reference && !this.orderDetails.receipt) {
+                                this.formFieldError.receipt = true;
+                                this.isProcessing = false;
+                                return;
+                            } else {
+                                this.formFieldError.receipt = false;
+                            }
+
+                            // Both reference and downpayment are required if any of the three has value
+                            if (!this.orderDetails.reference || !this.orderDetails.downpayment) {
+                                this.formFieldError.reference = !this.orderDetails.reference;
+                                this.formFieldError.downpayment = !this.orderDetails.downpayment;
+                                this.isProcessing = false;
+                                return;
+                            } else {
+                                this.formFieldError.reference = false;
+                                this.formFieldError.downpayment = false;
+                            }
+                            if (parseInt(this.orderDetails.downpayment) < parseInt(this.requireDownPayment)) {
+                                this.formFieldError.requireDownpayment = true;
+                                this.isProcessing = false;
+                                return;
+                            } else {
+                                this.formFieldError.requireDownpayment = false;
+                            }
+                        } else {
+                            // If all are empty, not required
+                            this.formFieldError.reference = false;
+                            this.formFieldError.downpayment = false;
+                            this.formFieldError.receipt = false;
+                        }
+                    }
                     
                 }
             }
+
+            console.log('continue')
 
             useForm("/checkout", this.orderDetails, this.errors, '/')            
         },
