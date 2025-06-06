@@ -154,12 +154,14 @@ document.addEventListener("alpine:init", () => {
                         return
                     }
 
-                    if (!downpayment) {
-                        this.formFieldError.requireDownpayment = true;
-                        this.isProcessing = false;
-                        return;
-                    } else {
-                        this.formFieldError.requireDownpayment = false;
+                    if (this.orderDetails.paymentMethod !== 'cod') {
+                        if (!downpayment) {
+                            this.formFieldError.requireDownpayment = true;
+                            this.isProcessing = false;
+                            return;
+                        } else {
+                            this.formFieldError.requireDownpayment = false;
+                        }
                     }
                     
                 }
