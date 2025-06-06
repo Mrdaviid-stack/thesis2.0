@@ -38,7 +38,8 @@ export default class OrderTrackingsController {
         paidStatus: orders.transaction?.paidStatus,
         receipt: orders.transaction?.receipt,
         fullpaymentReceipt: orders.transaction?.fullpaymentReceipt,
-        orderPaymentMethod: orders.transaction?.paymentMethod
+        orderPaymentMethod: orders.transaction?.paymentMethod,
+        transactionStatus: orders.transaction?.status
       }))
     })
 

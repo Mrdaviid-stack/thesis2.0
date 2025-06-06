@@ -18,6 +18,8 @@ document.addEventListener("alpine:init", () => {
             );
 
             this.orders = this.orders.sort((a, b) => a.customerName.localeCompare(b.customerName))
+
+            console.log(this.orders)
         },
         changeDeliveryStatus(event, orderTransactionId) {
             console.log(event.target.value)

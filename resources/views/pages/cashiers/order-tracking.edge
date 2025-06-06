@@ -68,13 +68,16 @@
                             <td>
                                 <template x-if="order.orderDeliveryStatus !== 'to_ship'">
                                     <span class="badge text-bg-warning" x-text="order.orderDeliveryStatus"></span>
-                                    <br/>
                                 </template>
                                 <template x-if="order.orderDeliveryStatus === 'to_ship'">
                                     <span class="badge text-bg-warning">Out for delivery</span><span class="badge text-bg-warning">Out for delivery</span>
-                                    <br/>
                                 </template>
+                                 <br/>
                                 <span class="badge text-bg-warning" x-text="order.paidStatus.toUpperCase()"></span>
+                                 <br/>
+                                <template x-if="order.transactionStatus === 'exchange'">
+                                    <span class="badge text-bg-warning">FOR REPLACEMENT</span>
+                                </template>
                             </td>
                             @if (userType === 'Riders')
                             <td>
