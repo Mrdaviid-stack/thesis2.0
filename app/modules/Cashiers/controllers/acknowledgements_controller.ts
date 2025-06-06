@@ -87,7 +87,7 @@ export default class AcknowledgementsController {
       reason: exchange.exchange?.reason,
       description: exchange.exchange?.description,
     }))
-    console.log(exchange)
+
     return view.render('pages/cashiers/exchange', { exchange: exchange })
   }
 

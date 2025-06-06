@@ -35,15 +35,27 @@
                                 <div class="d-flex">
                                     <img :src="order.productImage" width="150" :alt="order.productName" />
                                     <div class="lh-1">
-                                        <strong x-text="order.productName"></strong>
-                                        <p class="mb-0"><strong>Invoice:</strong> <span x-text="order.transactionInvoice"></span></p>
-                                        <p class="mb-0"><strong>Color:</strong> <span x-text="order.productColor"></span></p>
-                                        <p class="mb-0"><strong>Storage:</strong> <span x-text="order.productStorage"></span></p>
-                                        <p class="mb-0"><strong>Quantity:</strong> <span x-text="order.quantity"></span></p>
-                                        <p class="mb-0"><strong>Amount:</strong> <span x-text="order.price.toLocaleString()"></span></p>
-                                        <p class="mb-0"><strong>Downpayment:</strong> <span x-text="order.downpayment.toLocaleString()"></span></p>
-                                        <p class="mb-0"><strong>Balance:</strong> <span x-text="order.balance.toLocaleString()"></span></p>
-                                        <p class="mb-0"><strong>Rider:</strong> <span x-text="order.rider"></span></p>
+                                        <div class="d-flex justify-content-start gap-3">
+                                            <strong x-text="order.productName"></strong>
+                                            <div>
+                                                <a class="" type="button" data-bs-toggle="collapse" :href="`#${order.transactionInvoice}`" aria-expanded="false" :aria-controls="`${order.transactionInvoice}`">
+                                                    View Details
+                                                </a>
+                                                <div class="collapse" :id="`${order.transactionInvoice}`">
+                                                    <div class="card card-body">
+                                                        <small class="mb-0"><strong>Invoice:</strong> <span x-text="order.transactionInvoice"></span></small>
+                                                        <p class="mb-0"><strong>Color:</strong> <span x-text="order.productColor"></span></p>
+                                                        <p class="mb-0"><strong>Storage:</strong> <span x-text="order.productStorage"></span></p>
+                                                        <p class="mb-0"><strong>Quantity:</strong> <span x-text="order.quantity"></span></p>
+                                                        <p class="mb-0"><strong>Amount:</strong> <span x-text="order.price.toLocaleString()"></span></p>
+                                                        <p class="mb-0"><strong>Downpayment:</strong> <span x-text="order.downpayment.toLocaleString()"></span></p>
+                                                        <p class="mb-0"><strong>Balance:</strong> <span x-text="order.balance.toLocaleString()"></span></p>
+                                                        <p class="mb-0"><strong>Rider:</strong> <span x-text="order.rider"></span></p>
+                                                        <p class="mb-0"><strong>Order Date:</strong> <span x-text="order.orderDate"></span></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="d-flex gap-2">

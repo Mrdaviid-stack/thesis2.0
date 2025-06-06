@@ -3,6 +3,7 @@ import Order from '../../CMS/Websites/models/order.js'
 import Transaction from '../../CMS/Websites/models/transaction.js'
 import historyService from '../../CMS/Reports/services/historyServices.js'
 import Exchange from '../../CMS/Websites/models/exchange.js'
+import moment from 'moment'
 
 export default class OrdersController {
   async index({ view, response, auth }: HttpContext) {
@@ -33,8 +34,10 @@ export default class OrdersController {
         downpayment: orders.transaction?.downpayment,
         balance: (Number(orderItem.price) !== Number(orders.transaction?.downpayment)) ? (Number(orderItem.price) - Number(orders.transaction?.downpayment)) : 0,
         customerName: `${orders.firstName}, ${orders.lastName}`,
+        orderDate: moment.parseZone(orders.createdAt.toISO()).utcOffset(8).format("YYYY-MM-DD, h:mm:ss a") //moment(orders.transaction?.createdAt).format('YYYY Do YY'),
       }))
     })
+
 
     return view.render('pages/online/accounts/orders', {
       orders: orders.filter((order) => order.status !== 'cancelled'),
